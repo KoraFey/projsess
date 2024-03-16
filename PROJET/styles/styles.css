@@ -1,0 +1,121 @@
+body {
+    display: grid;
+    grid-template-rows: 1f 10f 1f;
+    grid-template-columns: 20% 60% 20%;
+    grid-template-areas:
+        "entete entete  entete"
+        "menu   main    contact"
+        "bas    bas     bas";
+}
+
+.conteneur {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;    
+    gap: 35px;
+ 
+}
+
+.lien {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+    grid-area: menu;
+    background-color: lightgrey;
+    border-right: 1px solid black;
+
+    font-size: 30px;
+    font-family: 'Trebuchet MS', sans-serif;
+
+}
+
+.lien li{
+    list-style: none;
+    padding: 10px;
+
+}
+
+.lien a:hover{
+    transition: color 0.2s ease-out;
+    color: rgb(156, 156, 156);
+}
+.lien a{
+    color: grey;
+    margin: 20px;
+}
+
+
+.amis a{
+    color: grey;
+    margin: 20px;
+}
+
+.amis a:hover{
+    transition: color 0.2s ease-out;
+    color: rgb(156, 156, 156);
+}
+
+.amis li{
+    list-style: none;
+    color: grey;
+
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+}
+
+.amis li img {
+    width: 30px;
+    height: 30px;
+}
+
+.convo h3 {
+    font-family: 'Trebuchet MS', sans-serif;
+    margin: 20px;
+
+}
+
+h2{
+    font-size: 40px;
+    font-family: 'Trebuchet MS', sans-serif;
+    margin: 20px;
+}
+
+.convo {
+    display: flex;
+    flex-direction: column;
+
+    grid-area: contact;
+    background-color: lightgrey;
+    border-left: 1px solid rgb(95, 151, 255);
+
+    font-size: 30px;
+}
+
+header img {
+    width: 50px;
+    height: 50px;
+    margin: 20px;
+}
+
+/* TEMPLATE */
+header {
+    background-color: rgb(109, 165, 255);
+    grid-area: entete;
+
+    display: flex;
+    flex-direction: row;
+}
+
+main {
+    background-color: white;
+    grid-area: main;
+}
+
+footer {
+    background-color: rgb(86, 145, 234);
+    grid-area: bas;
+}
