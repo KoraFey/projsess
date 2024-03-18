@@ -180,12 +180,6 @@ footer {
     margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
 }
 
-
-
-body {
-    background-color: #d2baba; /* Couleur de fond générale de la page */
-}
-
 .profile-container {
     max-width: 600px;
     margin: 0 auto;
