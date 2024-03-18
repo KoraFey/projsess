@@ -76,7 +76,7 @@ require_once __DIR__.'/config.php'; ?>
 
                 <!-- Déconnexion -->
                 <div class="setting">
-                    <a href="#">Déconnexion</a>
+                    <a href="?logout=1">Déconnexion</a>
                 </div>
             </div>
         </div>

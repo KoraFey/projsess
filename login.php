@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($user && password_verify($password, $user['password'])) {
       $_SESSION['usager'] = $user['id'];
-      //*location router a implementer
+      header("Location: /index.php");      
       exit;
   } else {
       $error = "Nom d'utilisateur ou mot de passe incorrect.";
@@ -60,10 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <button type="submit" >
             Se connecter
           </button>
-           <button >
-            Créer un compte
-        </button>
-          
+          <button onclick="window.location.href='newUser.php'">Créer un compte</button>          
         </form>
       </section>
     </div>
