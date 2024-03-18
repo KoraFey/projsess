@@ -32,7 +32,7 @@
             <!-- Profil Icon -->
             <div class="setting">
                 <img src="images/utilisateur.png" alt="utilisateur" class="utilisateur">
-                <a href="profil.html">Profil</a>
+                <a href="./profil.php">Profil</a>
 
                 <!-- Changer Mot de Passe -->
                 <div class="setting">
