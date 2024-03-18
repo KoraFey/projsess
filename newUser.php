@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insérer le nouvel utilisateur
         $stmt = $pdo->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
         if ($stmt->execute([$username, $passwordHash])) {
-           //*location router a implementer
+            header("Location: /login.php");            
             exit;
         } else {
             $message = 'Erreur lors de la création du compte.';
