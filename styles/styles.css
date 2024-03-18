@@ -123,3 +123,68 @@ footer {
 
 /*settings*/
 
+.settings-container {
+    position: relative;
+}
+
+.settings-toggle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+}
+
+.settings-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.setting {
+    margin-bottom: 10px;
+}
+
+.setting label {
+    margin-right: 10px;
+}
+
+.setting input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.setting a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.setting a:hover {
+    text-decoration: underline;
+}
+.parametres {
+    width: 20px; /* Largeur de l'icône */
+    height: auto; /* Hauteur automatique pour maintenir les proportions */
+    margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
+}
+.dark-mode {
+    background-color: #3c3333;
+    color: #fff;
+}
+.utilisateur, .lune, .mdp, .notification, .publication, .ami, .historique, .paiement{
+    width: 20px; /* Largeur de l'icône */
+    height: auto; /* Hauteur automatique pour maintenir les proportions */
+    margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* Couleur de fond du conteneur principal */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
