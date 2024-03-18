@@ -3,10 +3,20 @@
 session_start();
 
 //Configuration et connexion à la base de données
-$host = 'localhost';
-$db   = 'equipe302';
-$user = 'equipe302';
-$pass = 'mqhcFCeYsRQ/Hav4';
+$host = parse_url($_SERVER["HTTP_HOST"], PHP_URL_HOST);
+if($host=="localhost"){
+    //Code d'accès à la base de données locale
+    $host = 'db';
+    $db = 'mydatabase';
+    $user = 'user';
+    $pass = 'password';
+} else {
+//Codes d'accès à la base de données de production
+    $host = 'localhost';
+    $db   = 'equipe302';
+    $user = 'equipe302';
+    $pass = 'mqhcFCeYsRQ/Hav4';
+}
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
