@@ -17,7 +17,6 @@
         <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
             <img src="images/parametres.png" alt="Paramètres" class="parametres">
-            <span>Paramètres</span>
         </div>
 
         <div class="settings-menu" id="settingsMenu">

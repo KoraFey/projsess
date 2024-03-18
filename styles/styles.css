@@ -125,6 +125,7 @@ footer {
 
 .settings-container {
     position: relative;
+    float: right;
 }
 
 .settings-toggle {
