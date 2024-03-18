@@ -25,7 +25,23 @@ CREATE TABLE Block_List(
     user_id int NOT NULL,
     blocked_id int NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (blocked_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE CASCADE
 
+);
+
+--table des chat room
+CREATE TABLE Chat_Room(
+    id int PRIMARY KEY,
+    owner_id int,
+    name varchar(50) NOT NULL,
+    url_icone varchar(255)
+);
+
+--liaison chat room et user
+CREATE TABLE Chat_Room_User(
+    chat_room_id int NOT NULL,
+    user_id int NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (chat_room_id) REFERENCES Chat_Room(id) ON DELETE CASCADE
 );
