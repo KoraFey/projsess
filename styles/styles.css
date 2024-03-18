@@ -25,7 +25,6 @@ body {
     padding: 10px;
     grid-area: menu;
     background-color: lightgrey;
-    border-right: 1px solid black;
 
     font-size: 30px;
     font-family: 'Trebuchet MS', sans-serif;
@@ -43,7 +42,7 @@ body {
     color: rgb(156, 156, 156);
 }
 .lien a{
-    color: grey;
+    color: rgb(44, 44, 44);
     margin: 20px;
 }
 
@@ -91,7 +90,6 @@ h2{
 
     grid-area: contact;
     background-color: lightgrey;
-    border-left: 1px solid rgb(95, 151, 255);
 
     font-size: 30px;
 }
@@ -107,6 +105,15 @@ header img {
     flex-direction: row;
 }
 
+.dark-elements {
+    background-color: rgb(57, 57, 57);
+}
+
+.dark-settings {
+    background-color: rgb(81, 81, 81);
+
+}
+
 /* TEMPLATE */
 header {
     background-color: rgb(109, 165, 255);
@@ -118,7 +125,7 @@ header {
 }
 
 main {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     grid-area: main;
 }
 
@@ -177,7 +184,7 @@ footer {
     margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
 }
 .dark-mode {
-    background-color: #3c3333;
+    background-color: #303030;
     color: #fff;
 }
 .utilisateur, .lune, .mdp, .notification, .publication, .ami, .historique, .paiement{
@@ -190,7 +197,7 @@ footer {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff; /* Couleur de fond du conteneur principal */
+    background-color: #ffffff; /* Couleur de fond du conteneur principal */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

@@ -3,8 +3,8 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    url_pfp VARCHAR(255)
-    type_usager ENUM('regulier', 'admin') NOT NULL DEFAULT 'regulier';
+    url_pfp VARCHAR(255),
+    type_usager ENUM('regulier', 'admin') NOT NULL DEFAULT 'regulier'
 );
 
 

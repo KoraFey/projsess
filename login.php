@@ -25,11 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>All in one</title>
+    <title>All in One</title>
   </head>
   <body>
     <header>
-      <h1>All in one</h1>
+      <h1>All in One</h1>
     </header>
 
     <div>

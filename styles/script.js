@@ -11,12 +11,33 @@ function toggleDarkMode() {
     var darkModeCheckbox = document.getElementById("dark-mode");
     var body = document.body;
     var main = document.querySelector('main')
+    var navConvo = document.querySelector('nav.convo');
+    var navLien = document.querySelector('nav.lien');
+    var settings = document.getElementById('settingsMenu');
+    var header = document.querySelector('header');
+    var footer = document.querySelector('footer');
+
+    var elements = [body,main];
+    var elementsNav = [navConvo,navLien];
+
     if (darkModeCheckbox.checked) {
-        body.classList.add("dark-mode");
-        main.classList.add("dark-mode");
+        for(var i = 0; i < elements.length; i++)
+            elements[i].classList.add("dark-mode");
+        for(var i = 0; i < elementsNav.length; i++)
+            elementsNav[i].classList.add("dark-elements");
+        
+        settings.style.backgroundColor = 'rgb(59, 59, 59)';
+        header.style.backgroundColor = 'rgb(51, 0, 95)';
+        footer.style.backgroundColor = 'rgb(58, 0, 79)';
     } else {
-        body.classList.remove("dark-mode");
-        main.classList.remove("dark-mode");
+        for(var i = 0; i < elements.length; i++)
+            elements[i].classList.remove("dark-mode");
+        for(var i = 0; i < elementsNav.length; i++)
+            elementsNav[i].classList.remove("dark-elements");
+
+            settings.style.backgroundColor = 'white';
+            header.style.backgroundColor = 'rgb(109, 165, 255)';
+            footer.style.backgroundColor = 'rgb(86, 145, 234)';
     }
 }
 
