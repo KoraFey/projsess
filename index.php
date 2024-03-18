@@ -79,6 +79,7 @@
         </div>
         </div>
 
+
         <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
     </header>
 

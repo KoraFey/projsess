@@ -107,8 +107,7 @@ header {
     grid-area: entete;
 
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row;
 }
 
 main {
@@ -125,6 +124,7 @@ footer {
 /*settings*/
 
 .settings-container {
+    position: relative;
 }
 
 .settings-toggle {
