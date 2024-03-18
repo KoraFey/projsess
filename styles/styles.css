@@ -101,6 +101,11 @@ header img {
     margin: 20px;
 }
 
+.logo {
+    display: flex;
+    flex-direction: row;
+}
+
 /* TEMPLATE */
 header {
     background-color: rgb(109, 165, 255);
@@ -125,7 +130,7 @@ footer {
 
 .settings-container {
     position: relative;
-    float: right;
+    margin-right: 100px;
 }
 
 .settings-toggle {
