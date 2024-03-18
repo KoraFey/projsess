@@ -13,6 +13,71 @@
     <header>
         <img src="./images/USL League One Icon.png">
         <h2>All in One</h2>
+
+        <div class="settings-container">
+        <div class="settings-toggle" onclick="toggleSettings()">
+            <img src="images/parametres.png" alt="Paramètres" class="parametres">
+            <span>Paramètres</span>
+        </div>
+
+        <div class="settings-menu" id="settingsMenu">
+            <!-- Dark Mode Toggle -->
+            <div class="setting">
+                <img src="images/lune.png" alt="lune" class="lune">
+                <label for="dark-mode">Mode sombre :</label>
+                <input type="checkbox" id="dark-mode" onchange="toggleDarkMode()">
+            </div>
+
+            <!-- Profil Icon -->
+            <div class="setting">
+                <img src="images/utilisateur.png" alt="utilisateur" class="utilisateur">
+                <a href="profil.html">Profil</a>
+
+                <!-- Changer Mot de Passe -->
+                <div class="setting">
+                    <img src="images/reinitialiser-le-mot-de-passe.png" alt="mdp" class="mdp">
+                    <a href="#" id="change-password-link">Changer Mot de Passe</a>
+                </div>
+
+                <!-- Notification -->
+                <div class="setting">
+                    <img src="images/notification.png" alt="notification" class="notification">
+                    <a href="#">Notification</a>
+                </div>
+
+                <!-- Publication -->
+                <div class="setting">
+                    <img src="images/publication.png" alt="publication" class="publication">
+                    <a href="#">Publication</a>
+                </div>
+
+                <!-- Amis -->
+                <div class="setting">
+                    <img src="images/amis.png" alt="ami" class="ami">
+                    <a href="#">Amis</a>
+                </div>
+
+                <!-- Historique d'activité -->
+                <div class="setting">
+                    <img src="images/historique.png" alt="historique-activite" class="historique">
+                    <a href="#">Historique d'activité</a>
+                </div>
+
+                <!-- Paiement -->
+                <div class="setting">
+                    <img src="images/paiement-securise.png" alt="paiement" class="paiement">
+                    <a href="#">Paiement</a>
+                </div>
+
+
+                <!-- Déconnexion -->
+                <div class="setting">
+                    <a href="#">Déconnexion</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
     </header>
 
     <nav class="lien">
@@ -54,71 +119,8 @@
             </article>
         </div>
 
-        <div class="settings-container">
-        <div class="settings-toggle" onclick="toggleSettings()">
-            <img src="images/parametres.png" alt="Paramètres" class="parametres">
-            <span>Paramètres</span>
-        </div>
-
-        <div class="settings-menu" id="settingsMenu">
-            <!-- Dark Mode Toggle -->
-            <div class="setting">
-                <img src="images/lune.png" alt="lune" class="lune">
-                <label for="dark-mode">Mode sombre :</label>
-                <input type="checkbox" id="dark-mode" onchange="toggleDarkMode()">
-            </div>
-
-            <!-- Profil Icon -->
-            <div class="setting">
-                <img src="images/utilisateur.png" alt="utilisateur" class="utilisateur">
-                <a href="profil.html">Profil</a>
-
-                <!-- Changer Mot de Passe -->
-                <div class="setting">
-                    <img src="images/reinitialiser-le-mot-de-passe.png" alt="mdp" class="mdp">
-                    <a href="#" id="change-password-link">Changer Mot de Passe</a>
-                </div>
-
-                <!-- Notification -->
-                <div class="setting">
-                    <img src="images/notification.png" alt="notification" class="notification">
-                    <a href="#">Notification</a>
-                </div>
-
-                <!-- Publication -->
-                <div class="setting">
-                    <img src="images/publication.png" alt="publication" class="publication">
-                    <a href="#">Publication</a>
-                </div>
-
-                <!-- Amis -->
-                <div class="setting">
-                    <img src="images/amis.png" alt="amis" class="amis">
-                    <a href="#">Amis</a>
-                </div>
-
-                <!-- Historique d'activité -->
-                <div class="setting">
-                    <img src="images/historique.png" alt="historique-activite" class="historique">
-                    <a href="#">Historique d'activité</a>
-                </div>
-
-                <!-- Paiement -->
-                <div class="setting">
-                    <img src="images/paiement-securise.png" alt="paiement" class="paiement">
-                    <a href="#">Paiement</a>
-                </div>
-
-
-                <!-- Déconnexion -->
-                <div class="setting">
-                    <a href="#">Déconnexion</a>
-                </div>
-            </div>
-        </div>
-
-        <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
     </main>
+
     <footer>
         <p>© All in One</p>
     </footer>
