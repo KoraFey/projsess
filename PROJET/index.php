@@ -20,65 +20,58 @@ require_once __DIR__ . '/config.php';
 
 
 
-    
-
-
-
-
-
-
  <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
-            <img src="img/parametres.png" alt="Paramètres" class="parametres">
+            <img src="images/parametres.png" alt="Paramètres" class="parametres">
             <span>Paramètres</span>
         </div>
 
         <div class="settings-menu" id="settingsMenu">
             <!-- Dark Mode Toggle -->
             <div class="setting">
-                <img src="img/lune.png" alt="lune" class="lune">
+                <img src="images/lune.png" alt="lune" class="lune">
                 <label for="dark-mode">Mode sombre :</label>
                 <input type="checkbox" id="dark-mode" onchange="toggleDarkMode()">
             </div>
 
             <!-- Profil Icon -->
             <div class="setting">
-                <img src="img/utilisateur.png" alt="utilisateur" class="utilisateur">
+                <img src="images/utilisateur.png" alt="utilisateur" class="utilisateur">
                 <a href="profil.html">Profil</a>
 
                 <!-- Changer Mot de Passe -->
                 <div class="setting">
-                    <img src="img/reinitialiser-le-mot-de-passe.png" alt="mdp" class="mdp">
+                    <img src="images/reinitialiser-le-mot-de-passe.png" alt="mdp" class="mdp">
                     <a href="#" id="change-password-link">Changer Mot de Passe</a>
                 </div>
 
                 <!-- Notification -->
                 <div class="setting">
-                    <img src="img/notification.png" alt="notification" class="notification">
+                    <img src="images/notification.png" alt="notification" class="notification">
                     <a href="#">Notification</a>
                 </div>
 
                 <!-- Publication -->
                 <div class="setting">
-                    <img src="img/publication.png" alt="publication" class="publication">
+                    <img src="images/publication.png" alt="publication" class="publication">
                     <a href="#">Publication</a>
                 </div>
 
                 <!-- Amis -->
                 <div class="setting">
-                    <img src="img/amis.png" alt="amis" class="amis">
+                    <img src="images/amis.png" alt="amis" class="amis">
                     <a href="#">Amis</a>
                 </div>
 
                 <!-- Historique d'activité -->
                 <div class="setting">
-                    <img src="img/historique.png" alt="historique-activite" class="historique">
+                    <img src="images/historique.png" alt="historique-activite" class="historique">
                     <a href="#">Historique d'activité</a>
                 </div>
 
                 <!-- Paiement -->
                 <div class="setting">
-                    <img src="img/paiement-securise.png" alt="paiement" class="paiement">
+                    <img src="images/paiement-securise.png" alt="paiement" class="paiement">
                     <a href="#">Paiement</a>
                 </div>
 
@@ -91,16 +84,6 @@ require_once __DIR__ . '/config.php';
         </div>
 
         <script src="script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
-
-
-
-
-
-
-
-
-
-
 
 
 
