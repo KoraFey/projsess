@@ -7,7 +7,7 @@ $message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $email = $_POST['email'];
+
 
     // Vérifier si l'utilisateur existe déjà
     $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         // Insérer le nouvel utilisateur
-        $stmt = $pdo->prepare('INSERT INTO users (username, password, email) VALUES (?, ?, ?)');
-        if ($stmt->execute([$username, $passwordHash, $email])) {
+        $stmt = $pdo->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+        if ($stmt->execute([$username, $passwordHash])) {
            //*location router a implementer
             exit;
         } else {
