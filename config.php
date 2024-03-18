@@ -2,19 +2,14 @@
 // Démarrage de la session
 session_start();
 
-if(isset($_GET["deconnexion"])){
-    unset($_SESSION['usager']);
-    header("Location: index.php");
-    exit;
-}
-
-$host = "db";
-$database = "mydatabase";
-$username = "user";
-$password = "password";
+//Configuration et connexion à la base de données
+$host = 'localhost';
+$db   = 'equipe302';
+$user = 'equipe302';
+$pass = 'mqhcFCeYsRQ/Hav4';
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$database;charset=$charset";
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -22,8 +17,53 @@ $options = [
 ];
 
 try {
-    $pdo = new PDO($dsn, $username, $password, $options);
+    $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    die("Erreur de connexion à la base de données: ".$e->getMessage());
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
+}
+
+
+//Vérification de l'authentification
+
+//Authentification par méthode BASIC pour l'API
+if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+    $username = $_SERVER['PHP_AUTH_USER'];
+    $password = $_SERVER['PHP_AUTH_PW'];
+    
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['usager'] = $user['id'];
+    } else {
+        http_response_code(403);
+        echo "Authentification erronée.";
+        exit;
+    }
+}
+
+
+// Vérification si l'utilisateur est connecté, sinon redirection vers la page de connexion
+if ((!isset($gPublic) || !$gPublic) &&  !isset($_SESSION["usager"])) {
+    if(isset($_SERVER["CONTENT_TYPE"]) && $_SERVER["CONTENT_TYPE"]=='application/json'){
+        http_response_code(403);
+        echo "Authentification requise";
+        exit;
+    } else {
+        header("Location: login.php");
+        exit;
+    }
+} elseif(isset($_SESSION["usager"])) {
+    // Obtention de l'ID de l'utilisateur connecté
+    $gUserId = $_SESSION["usager"];
+} else { //Usager pas authentifié mais la page est publique
+    $gUserId = 0;
+}
+
+if(isset($_GET["logout"])){
+    unset($_SESSION['usager']);
+    header("Location: login.php");
+    exit;
 }
 
