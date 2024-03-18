@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <script src="script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
+        <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
     </main>
     <footer>
         <p>© All in One</p>
