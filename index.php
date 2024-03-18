@@ -11,8 +11,10 @@
 </head>
 <body>
     <header>
-        <img src="./images/USL League One Icon.png">
-        <h2>All in One</h2>
+        <div class="logo">
+            <img src="./images/USL League One Icon.png">
+            <h2>All in One</h2>
+        </div>
 
         <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
@@ -74,6 +76,7 @@
                     <a href="#">Déconnexion</a>
                 </div>
             </div>
+        </div>
         </div>
 
         <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->

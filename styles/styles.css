@@ -108,6 +108,7 @@ header {
 
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 main {
@@ -125,7 +126,6 @@ footer {
 
 .settings-container {
     position: relative;
-    float: right;
 }
 
 .settings-toggle {
