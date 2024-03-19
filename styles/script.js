@@ -3,21 +3,27 @@ var conteneurFriends = document.getElementById("conteneurFriends");
 var conteneurMarket = document.getElementById("conteneurMarket");
 var conteneurGroup = document.getElementById("conteneurGroup");
 var conteneurFood = document.getElementById("conteneurFood");
-var conteneurPrincipal = [conteneurFeed,conteneurFriends,conteneurMarket,conteneurGroup,conteneurFood];
+var conteneurPrincipal = [
+  conteneurFeed,
+  conteneurFriends,
+  conteneurMarket,
+  conteneurGroup,
+  conteneurFood,
+];
 
 function displayConteneur(conteneur) {
-    for(var i = 0; i < conteneurPrincipal.length; i++){
-        conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === conteneur ? 'flex' : 'none';
-    }
+  for (var i = 0; i < conteneurPrincipal.length; i++) {
+    conteneurPrincipal[i].style.display =
+      conteneurPrincipal[i].id === conteneur ? "flex" : "none";
+  }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    for(var i = 0; i < conteneurPrincipal.length; i++){
-        conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === "conteneurFeed" ? 'flex' : 'none';
-    }
+document.addEventListener("DOMContentLoaded", function () {
+  for (var i = 0; i < conteneurPrincipal.length; i++) {
+    conteneurPrincipal[i].style.display =
+      conteneurPrincipal[i].id === "conteneurFeed" ? "flex" : "none";
+  }
 });
-
-
 
 function toggleSettings() {
   var settingsMenu = document.getElementById("settingsMenu");
@@ -42,6 +48,7 @@ function toggleDarkMode() {
   var elementsNav = [navConvo, navLien];
 
   if (darkModeCheckbox.checked) {
+    setting["dark_mode"] = 1;
     for (var i = 0; i < elements.length; i++)
       elements[i].classList.add("dark-mode");
     for (var i = 0; i < elementsNav.length; i++)
@@ -51,6 +58,7 @@ function toggleDarkMode() {
     header.style.backgroundColor = "rgb(51, 0, 95)";
     footer.style.backgroundColor = "rgb(58, 0, 79)";
   } else {
+    setting["dark_mode"] = 0;
     for (var i = 0; i < elements.length; i++)
       elements[i].classList.remove("dark-mode");
     for (var i = 0; i < elementsNav.length; i++)
@@ -61,13 +69,26 @@ function toggleDarkMode() {
     footer.style.backgroundColor = "rgb(86, 145, 234)";
   }
 
-  //   fetch("api/setSettings", {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(postIts[postItIndex]),
-  //   });
+  fetch("/api/setSettings/" + setting["user_id"], {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(setting),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          "La requête a échoué avec le statut " + response.status
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {})
+    .catch((error) => {
+      alert("Erreur lors de la modification des settings: " + error);
+      console.error("Erreur lors de la requête:", error);
+    });
 }
 
 document

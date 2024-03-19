@@ -13,6 +13,7 @@ get('/api/posts', '/api/post/getPosts.php');
 post('/api/posts', '/api/post/postPost.php');
 put('/api/posts/$id', '/api/post/putPost.php');
 delete('/api/posts/$id', '/api/post/deletePost.php');
+put('/api/setSettings/$id', '/api/setSettings.php');
 
 
 //route introuvable

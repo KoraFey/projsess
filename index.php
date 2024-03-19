@@ -17,7 +17,7 @@ $settingJson = json_encode($settings);
 
 
     <script>
-      let settings = <?= $settingJson ?>;
+      let setting = <?= $settingJson ?>;
     </script>
 </head>
 <body>
