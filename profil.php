@@ -20,7 +20,7 @@ require_once __DIR__.'/config.php'; ?>
 
     <div class="profile-info">
         <div class="profile-image">
-            <img src="img/utilisateur.png" alt="Photo de profil">
+            <img src="images/utilisateur.png" alt="Photo de profil">
         </div>
         <div class="profile-details">
             <p><strong>Nom :</strong> <span id="nom">John</span></p>
@@ -34,7 +34,7 @@ require_once __DIR__.'/config.php'; ?>
     <form id="edit-profile-form" class="edit-profile-form" style="display: none;">
         <h2>Modifier le Profil</h2>
         <label for="edit-nom">Nom :</label>
-        <input type="text" id="edit-nom"><br>
+        <input type="text" name="edit-nom" id="edit-nom"><br>
         <label for="edit-prenom">Prénom :</label>
         <input type="text" id="edit-prenom"><br>
         <label for="edit-age">Âge :</label>
@@ -44,6 +44,7 @@ require_once __DIR__.'/config.php'; ?>
         <button type="submit">Enregistrer</button>
         <button id="retourButton">Retour</button>
     </form>
+    
 
     <!-- Script pour afficher le formulaire de modification si l'utilisateur est admin -->
     <script>
@@ -52,11 +53,38 @@ require_once __DIR__.'/config.php'; ?>
             document.getElementById("edit-profile-form").style.display = "block";
         }
 
-        // Ajout d'un écouteur d'événements au bouton "Retour"
-        document.getElementById("retourButton").addEventListener("click", function () {
-            // Redirection vers index.html
-            window.location.href = "index.php";
-        });
+      
+    
+    var retourBtn = document.getElementById('retourButton');
+    retourBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = './index.php';
+    });
+
+
+
+
+    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Empêche le rechargement de la page
+
+        // Récupération des valeurs des champs de texte
+        var nouveauNom = document.getElementById('edit-nom').value;
+        var nouveauPrenom = document.getElementById('edit-prenom').value;
+        var nouvelAge = document.getElementById('edit-age').value;
+        var nouveauSexe = document.getElementById('edit-sexe').value;
+
+        // Mise à jour des éléments sur la page
+        document.getElementById('nom').innerText = nouveauNom;
+        document.getElementById('prenom').innerText = nouveauPrenom;
+        document.getElementById('age').innerText = nouvelAge + ' ans';
+        document.getElementById('sexe').innerText = nouveauSexe;
+
+        // Afficher un message de confirmation (facultatif)
+        alert('Profil mis à jour avec succès !');
+    });
+
+
+
     </script>
 
 </body>
