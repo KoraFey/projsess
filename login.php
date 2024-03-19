@@ -7,8 +7,6 @@ $error ='';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST['username'];
   $password = $_POST['password'];
-  echo $username;
-  echo $password;
   $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
   $stmt->execute([$username]);
   $user = $stmt->fetch();
@@ -61,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <button type="submit" >
             Se connecter
           </button>
-          <button onclick="window.location.href='newUser.php'">Créer un compte</button>          
+          <button onclick="window.location.href='./newUser.php'">Créer un compte</button>          
         </form>
       </section>
     </div>
