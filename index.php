@@ -91,16 +91,16 @@ $settingJson = json_encode($settings);
         </div>
 
 
-        <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
+       
     </header>
 
     <nav class="lien">
         <ul class="categorie">
-            <li><a href="">Feed</a></li>
-            <li><a href="">Friends</a></li>
-            <li><a href="">Marketplace</a></li>
-            <li><a href="">Group</a></li>
-            <li><a href="">Food</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
         </ul>
     </nav>
 
@@ -115,7 +115,7 @@ $settingJson = json_encode($settings);
     </nav>
 
     <main>
-        <div class="conteneur">
+        <div id="conteneurFeed">
             <article>
             <h3>Charlie Vu</h3>
                 <p>Bonjour, ceci est mon premier post</p>
@@ -133,10 +133,44 @@ $settingJson = json_encode($settings);
             </article>
         </div>
 
+        <div id="conteneurFriends">
+        </div>
+
+        <div id="conteneurMarket">
+            <article>
+                <h3>Charlie Vu</h3>
+                <p>AMG GT63s</p>
+                <img src="./images/imageMarket/amg.png" alt="amg">
+            </article>
+            <article>
+                <h3>Charlie Vu</h3>
+                <p>Machine à laver</p>
+                <img src="./images/imageMarket/machine.png" alt="machine">
+            </article>
+            <!--
+            <article>
+                <h3>Charlie Vu</h3>
+                <p>divant</p>
+                <img src="./images/imageMarket/divant.jpeg" alt="machine">
+            </article>
+            <article>
+                <h3>Charlie Vu</h3>
+                <p>ps5</p>
+                <img src="./images/imageMarket/ps5.jpeg" alt="machine">
+            </article>
+            -->
+        </div>
+
+        <div id="conteneurGroup">
+        </div>
+
+        <div id="conteneurFood">
+        </div>
     </main>
 
     <footer>
         <p>© All in One</p>
     </footer>
+    <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
 </body>
 </html>

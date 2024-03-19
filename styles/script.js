@@ -1,3 +1,24 @@
+var conteneurFeed = document.getElementById("conteneurFeed");
+var conteneurFriends = document.getElementById("conteneurFriends");
+var conteneurMarket = document.getElementById("conteneurMarket");
+var conteneurGroup = document.getElementById("conteneurGroup");
+var conteneurFood = document.getElementById("conteneurFood");
+var conteneurPrincipal = [conteneurFeed,conteneurFriends,conteneurMarket,conteneurGroup,conteneurFood];
+
+function displayConteneur(conteneur) {
+    for(var i = 0; i < conteneurPrincipal.length; i++){
+        conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === conteneur ? 'flex' : 'none';
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    for(var i = 0; i < conteneurPrincipal.length; i++){
+        conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === "conteneurFeed" ? 'flex' : 'none';
+    }
+});
+
+
+
 function toggleSettings() {
   var settingsMenu = document.getElementById("settingsMenu");
   if (settingsMenu.style.display === "block") {

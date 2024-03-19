@@ -9,7 +9,7 @@ body {
     
 }
 
-.conteneur {
+#conteneurFeed {
     display: flex;
     flex-direction: column;
     justify-content: center; 
@@ -113,6 +113,29 @@ header img {
     background-color: rgb(81, 81, 81);
 
 }
+
+#conteneurFeed article img {
+    width: 400px;
+    height: 400px;
+}
+
+#conteneurMarket article img {
+    width: 400px; 
+    height: 400px; 
+    object-fit: cover;
+}
+
+#conteneurMarket {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 35px; 
+
+    justify-content: center; 
+    align-items: center;    
+}
+
+
+
 
 /* TEMPLATE */
 header {
