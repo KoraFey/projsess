@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__.'/config.php';
+$stmt = $pdo->prepare('SELECT * FROM settings WHERE user_id = ? ');
+$stmt->execute([$_SESSION["usager"]]);
+$settings = $stmt->fetch();
+$settingJson = json_encode($settings);
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +15,10 @@ require_once __DIR__.'/config.php';
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="stylesheet" href="./styles/normalize.css">
 
+
+    <script>
+      let settings = <?= $settingJson ?>;
+    </script>
 </head>
 <body>
     <header>
