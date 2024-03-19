@@ -53,8 +53,10 @@ $settingJson = json_encode($settings);
 
                 <!-- Notification -->
                 <div class="setting">
-                    <img src="images/notification.png" alt="notification" class="notification">
-                    <a href="#">Notification</a>
+                <img src="images/notification.png" alt="notification" class="notification">
+                <label for="dark-mode">Notification :</label>
+                <input type="checkbox" id="notification" onchange="toggleNotification()">
+
                 </div>
 
                 <!-- Publication -->

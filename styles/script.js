@@ -69,6 +69,37 @@ function toggleDarkMode() {
     footer.style.backgroundColor = "rgb(86, 145, 234)";
   }
 
+  //fetch pour update les settings
+  fetch("/api/setSettings/" + setting["user_id"], {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(setting),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          "La requête a échoué avec le statut " + response.status
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {})
+    .catch((error) => {
+      alert("Erreur lors de la modification des settings: " + error);
+      console.error("Erreur lors de la requête:", error);
+    });
+}
+
+function toggleNotification() {
+  let notifCheckBox = document.getElementById("notification");
+  if (notifCheckBox.checked) {
+    setting["notification"] = 1;
+  } else {
+    setting["notification"] = 0;
+  }
+  //fetch pour update les settings
   fetch("/api/setSettings/" + setting["user_id"], {
     method: "PUT",
     headers: {
