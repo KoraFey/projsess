@@ -20,12 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insérer le nouvel utilisateur
         $stmt = $pdo->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+        
         if ($stmt->execute([$username, $passwordHash])) {
+            $tempId =  $pdo->lastInsertId(); 
+            $stmt = $pdo->prepare('INSERT INTO settings (user_id) VALUES (?)');
+            $stmt->execute([$tempId]);
             header("Location: /login.php");            
             exit;
         } else {
             $message = 'Erreur lors de la création du compte.';
         }
+
+       
+
+
     }
 }
 ?>
