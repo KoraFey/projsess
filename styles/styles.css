@@ -196,6 +196,12 @@ footer {
     margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
 }
 
+
+
+
+/*page profil*/
+
+
 .profile-container {
     max-width: 600px;
     margin: 0 auto;
@@ -203,4 +209,87 @@ footer {
     background-color: #ffffff; /* Couleur de fond du conteneur principal */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Style de l'en-tête */
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-header h1 {
+    color: #333;
+}
+
+/* Style de la section d'informations du profil */
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-details {
+    color: #555;
+}
+
+.profile-details p {
+    margin: 5px 0;
+}
+
+/* Style du formulaire de modification */
+.edit-profile-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-form h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.edit-profile-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.edit-profile-form input {
+    width: calc(100% - 10px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-profile-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-profile-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Bouton de retour */
+#retourButton {
+    background-color: #dc3545;
+}
+
+#retourButton:hover {
+    background-color: #bd2130;
 }

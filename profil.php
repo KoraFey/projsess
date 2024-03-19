@@ -11,7 +11,7 @@ require_once __DIR__.'/config.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Fichier CSS pour le style -->
+    <link rel="stylesheet" href="styles/styles.css"> 
 </head>
 
 <body>
@@ -33,7 +33,7 @@ require_once __DIR__.'/config.php'; ?>
     <!-- Seul l'admin aura accès à ce formulaire pour modifier les informations -->
     <form id="edit-profile-form" class="edit-profile-form" style="display: none;">
         <h2>Modifier le Profil</h2>
-        <label for="edit-nom">Nom :</label>
+        <label for="edit-nom">Nom utilisateur :</label>
         <input type="text" name="edit-nom" id="edit-nom"><br>
         <label for="edit-prenom">Prénom :</label>
         <input type="text" id="edit-prenom"><br>
@@ -41,6 +41,11 @@ require_once __DIR__.'/config.php'; ?>
         <input type="text" id="edit-age"><br>
         <label for="edit-sexe">Sexe :</label>
         <input type="text" id="edit-sexe"><br>
+
+        <label for="edit-mdp">Mot de passe : </label>
+        <input type="password" id="edit-password">  <br>
+
+
         <button type="submit">Enregistrer</button>
         <button id="retourButton">Retour</button>
     </form>
