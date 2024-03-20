@@ -1,9 +1,10 @@
-var conteneurFeed = document.getElementById("conteneurFeed");
-var conteneurFriends = document.getElementById("conteneurFriends");
-var conteneurMarket = document.getElementById("conteneurMarket");
-var conteneurGroup = document.getElementById("conteneurGroup");
-var conteneurFood = document.getElementById("conteneurFood");
-var conteneurPrincipal = [
+let conteneurFeed = document.getElementById("conteneurFeed");
+let conteneurFriends = document.getElementById("conteneurFriends");
+let conteneurMarket = document.getElementById("conteneurMarket");
+let conteneurGroup = document.getElementById("conteneurGroup");
+let conteneurFood = document.getElementById("conteneurFood");
+let darkModeCheckbox = document.getElementById("dark-mode");
+let conteneurPrincipal = [
   conteneurFeed,
   conteneurFriends,
   conteneurMarket,
@@ -12,21 +13,26 @@ var conteneurPrincipal = [
 ];
 
 function displayConteneur(conteneur) {
-  for (var i = 0; i < conteneurPrincipal.length; i++) {
+  for (let i = 0; i < conteneurPrincipal.length; i++) {
     conteneurPrincipal[i].style.display =
       conteneurPrincipal[i].id === conteneur ? "flex" : "none";
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  for (var i = 0; i < conteneurPrincipal.length; i++) {
+  for (let i = 0; i < conteneurPrincipal.length; i++) {
     conteneurPrincipal[i].style.display =
       conteneurPrincipal[i].id === "conteneurFeed" ? "flex" : "none";
+  }
+
+  if(setting["dark_mode"] == 1){
+    darkModeCheckbox.checked = true;
+    toggleDarkMode();
   }
 });
 
 function toggleSettings() {
-  var settingsMenu = document.getElementById("settingsMenu");
+  let settingsMenu = document.getElementById("settingsMenu");
   if (settingsMenu.style.display === "block") {
     settingsMenu.style.display = "none";
   } else {
@@ -35,23 +41,22 @@ function toggleSettings() {
 }
 
 function toggleDarkMode() {
-  var darkModeCheckbox = document.getElementById("dark-mode");
-  var body = document.body;
-  var main = document.querySelector("main");
-  var navConvo = document.querySelector("nav.convo");
-  var navLien = document.querySelector("nav.lien");
-  var settings = document.getElementById("settingsMenu");
-  var header = document.querySelector("header");
-  var footer = document.querySelector("footer");
+  let body = document.body;
+  let main = document.querySelector("main");
+  let navConvo = document.querySelector("nav.convo");
+  let navLien = document.querySelector("nav.lien");
+  let settings = document.getElementById("settingsMenu");
+  let header = document.querySelector("header");
+  let footer = document.querySelector("footer");
 
-  var elements = [body, main];
-  var elementsNav = [navConvo, navLien];
+  let elements = [body, main];
+  let elementsNav = [navConvo, navLien];
 
   if (darkModeCheckbox.checked) {
     setting["dark_mode"] = 1;
-    for (var i = 0; i < elements.length; i++)
+    for (let i = 0; i < elements.length; i++)
       elements[i].classList.add("dark-mode");
-    for (var i = 0; i < elementsNav.length; i++)
+    for (let i = 0; i < elementsNav.length; i++)
       elementsNav[i].classList.add("dark-elements");
 
     settings.style.backgroundColor = "rgb(59, 59, 59)";
@@ -59,9 +64,9 @@ function toggleDarkMode() {
     footer.style.backgroundColor = "rgb(58, 0, 79)";
   } else {
     setting["dark_mode"] = 0;
-    for (var i = 0; i < elements.length; i++)
+    for (let i = 0; i < elements.length; i++)
       elements[i].classList.remove("dark-mode");
-    for (var i = 0; i < elementsNav.length; i++)
+    for (let i = 0; i < elementsNav.length; i++)
       elementsNav[i].classList.remove("dark-elements");
 
     settings.style.backgroundColor = "white";
