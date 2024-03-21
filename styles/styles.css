@@ -9,6 +9,56 @@ body {
     
 }
 
+#rechercheButton {
+    padding: 10px;
+    width: 70px;
+    height: 42px;
+    align-self: center;
+
+    border: 1px solid rgb(0, 0, 0);
+    border-top-right-radius: 20px; 
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 0; 
+    border-bottom-left-radius: 0;    
+    cursor: pointer;
+    margin: px;
+}
+
+#searchResultatsWindow{
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 350px;
+    z-index: 999;
+
+    border: 1px solid rgb(0, 0, 0);
+}
+
+#rechercheInput {
+    padding: 10px;
+    width: 300px;
+    height: 20px;
+
+    align-self: center;
+    border: 1px solid rgb(0, 0, 0);
+    border-top-right-radius: 0; 
+    border-bottom-right-radius:0;
+    border-top-left-radius: 20px; 
+    border-bottom-left-radius: 20px;        
+}
+#rechercheResultats {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#rechercheResultats li {
+    padding: 10px;
+    cursor: pointer;
+}
+#rechercheResultats li:hover {
+    background-color: #f0f0f0;
+}
+
 #conteneurFeed {
     display: flex;
     flex-direction: column;
@@ -31,10 +81,13 @@ body {
 
 }
 
+.highlighted {
+    color: rgb(156, 156, 156);
+}
+
 .lien li{
     list-style: none;
     padding: 10px;
-
 }
 
 .lien a:hover{
@@ -42,10 +95,12 @@ body {
     color: rgb(156, 156, 156);
 }
 .lien a{
-    color: rgb(44, 44, 44);
     margin: 20px;
 }
 
+.unhighlighted {
+    color: rgb(44, 44, 44);
+}
 
 .amis a{
     color: grey;
