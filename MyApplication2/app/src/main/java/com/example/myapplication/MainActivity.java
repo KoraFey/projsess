@@ -20,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getStarted = findViewById(R.id.getStarted);
 
+        getStarted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Login.class);
+                intent.putExtra("prix", 123);
+                startActivity(intent);
+            }
+        });
+
 
 
 
