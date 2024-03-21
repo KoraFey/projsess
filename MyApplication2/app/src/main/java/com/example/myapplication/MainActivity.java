@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Login.class);
-                intent.putExtra("prix", 123);
                 startActivity(intent);
             }
         });

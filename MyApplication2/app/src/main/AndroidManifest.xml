@@ -27,6 +27,9 @@
         <activity
             android:name=".Login"
             android:exported="false" />
+        <activity
+            android:name=".newUser"
+            android:exported="false" />
     </application>
 
 </manifest>
