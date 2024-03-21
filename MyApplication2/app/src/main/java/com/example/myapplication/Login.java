@@ -31,12 +31,18 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new Thread() {
-                    @Override
-                    public void run() {
-                        //traitement effectué par le thread
-                    }
-                }).start();
+                //verifie que les champs username password sont remplis
+                if ((username.getText().length() == 0) || (password.getText().length() == 0)) {
+                    Toast t = Toast.makeText(getApplicationContext(),"le password ou le username est manquant",Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    (new Thread() {
+                        @Override
+                        public void run() {
+                            //traitement effectué par le thread
+                        }
+                    }).start();
+                }
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
