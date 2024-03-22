@@ -56,6 +56,18 @@
     </nav>
 
     <main>
+         <div class="profile-info">
+        <div class="profile-image">
+            <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
+            
+        </div>
+        <div class="profile-details">
+            <p><strong>Nom :</strong> <span id="nom">John</span></p>
+            <p><strong>Prénom :</strong> <span id="prenom">Doe</span></p>
+          
+             
+        </div>
+    </div>
        <main>
     <div class="chat-container">
         <div class="chat-messages" id="chatMessages">

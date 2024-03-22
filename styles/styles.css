@@ -402,17 +402,21 @@ footer {
 .chat-messages {
     flex-grow: 1;
     overflow-y: auto; /* Si la liste de messages dépasse la hauteur, ajoutez une barre de défilement */
+    text-align: right;
 }
 
 .message-form {
     display: flex;
     align-items: flex-end; /* Aligner le formulaire au bas de la zone de chat */
+    position: sticky;
     margin-top: auto; /* Déplacez le formulaire vers le bas autant que possible */
+    
 }
 
 #messageInput {
     flex: 1; /* Le champ de texte prend tout l'espace disponible */
     margin-right: 10px; /* Ajoutez un peu d'espace entre le champ de texte et le bouton */
+    
 }
 
 #sendMessageButton {
