@@ -229,7 +229,7 @@ footer {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff; /* Couleur de fond du conteneur principal */
+    background-color: #971f1f; /* Couleur de fond du conteneur principal */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -270,6 +270,7 @@ footer {
 
 /* Style du formulaire de modification */
 .edit-profile-form {
+    
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -315,4 +316,86 @@ footer {
 
 #retourButton:hover {
     background-color: #bd2130;
+}
+
+
+/*chatroom*/
+
+.chatroom-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.chatroom-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+
+.chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 20px;
+}
+
+.chat-input {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+textarea {
+    flex: 1;
+    height: 50px;
+    resize: none;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.discussion-list {
+    list-style: none;
+    padding: 0;
+}
+
+.discussion-list li {
+    margin-bottom: 10px;
+}
+
+.discussion-list a {
+    text-decoration: none;
+    color: #333;
+}
+
+.discussion-list a:hover {
+    color: #666;
 }

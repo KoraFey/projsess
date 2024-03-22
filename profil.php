@@ -20,13 +20,15 @@ require_once __DIR__.'/config.php'; ?>
 
     <div class="profile-info">
         <div class="profile-image">
-            <img src="images/utilisateur.png" alt="Photo de profil">
+            <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
+            
         </div>
         <div class="profile-details">
             <p><strong>Nom :</strong> <span id="nom">John</span></p>
             <p><strong>Prénom :</strong> <span id="prenom">Doe</span></p>
             <p><strong>Âge :</strong> <span id="age">30 ans</span></p>
             <p><strong>Sexe :</strong> <span id="sexe">Masculin</span></p>
+             <button id="edit-profile-btn">Modifier</button>
         </div>
     </div>
 
@@ -45,6 +47,8 @@ require_once __DIR__.'/config.php'; ?>
         <label for="edit-mdp">Mot de passe : </label>
         <input type="password" id="edit-password">  <br>
 
+        <label for="edit-image-url">URL de l'image de profil :</label>
+    <input type="text" id="edit-image-url"><br> <!-- Champ pour l'URL de l'image -->
 
         <button type="submit">Enregistrer</button>
         <button id="retourButton">Retour</button>
@@ -53,6 +57,20 @@ require_once __DIR__.'/config.php'; ?>
 
     <!-- Script pour afficher le formulaire de modification si l'utilisateur est admin -->
     <script>
+        // Ajoutez un écouteur d'événement sur le bouton "Modifier"
+document.getElementById('edit-profile-btn').addEventListener('click', function() {
+    // Affiche ou masque le formulaire de modification en fonction de son état actuel
+    var editForm = document.getElementById('edit-profile-form');
+    if (editForm.style.display === 'none' || editForm.style.display === '') {
+        editForm.style.display = 'block';
+    } else {
+        editForm.style.display = 'none';
+    }
+});
+    
+
+
+
         var isAdmin = true; // Mettez à true si l'utilisateur est un admin
         if (isAdmin) {
             document.getElementById("edit-profile-form").style.display = "block";
@@ -77,12 +95,14 @@ require_once __DIR__.'/config.php'; ?>
         var nouveauPrenom = document.getElementById('edit-prenom').value;
         var nouvelAge = document.getElementById('edit-age').value;
         var nouveauSexe = document.getElementById('edit-sexe').value;
+        var nouvelleImageURL = document.getElementById('edit-image-url').value;
 
         // Mise à jour des éléments sur la page
         document.getElementById('nom').innerText = nouveauNom;
         document.getElementById('prenom').innerText = nouveauPrenom;
         document.getElementById('age').innerText = nouvelAge + ' ans';
         document.getElementById('sexe').innerText = nouveauSexe;
+        document.getElementById('profile-img').src = nouvelleImageURL;
 
         // Afficher un message de confirmation (facultatif)
         alert('Profil mis à jour avec succès !');

@@ -103,6 +103,7 @@ $settingJson = json_encode($settings);
             <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
+            <li><a href="chatroom.php">Chatroom</a></li>
         </ul>
     </nav>
 

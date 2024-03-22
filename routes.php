@@ -5,6 +5,7 @@ require_once __DIR__.'/router.php';
 get('/', 'index.php');
 get('/index.php', 'index.php');
 get('/profil.php', 'profil.php');
+get('/chatroom.php','chatroom.php');
 any('/login.php', 'login.php');
 any('/newUser.php', 'newUser.php');
 
