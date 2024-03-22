@@ -392,3 +392,34 @@ footer {
 .back-button-acceuil:hover {
     background-color: #0056b3;
 }
+.chat-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto; /* Si la liste de messages dépasse la hauteur, ajoutez une barre de défilement */
+}
+
+.message-form {
+    display: flex;
+    align-items: flex-end; /* Aligner le formulaire au bas de la zone de chat */
+    margin-top: auto; /* Déplacez le formulaire vers le bas autant que possible */
+}
+
+#messageInput {
+    flex: 1; /* Le champ de texte prend tout l'espace disponible */
+    margin-right: 10px; /* Ajoutez un peu d'espace entre le champ de texte et le bouton */
+}
+
+#sendMessageButton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
