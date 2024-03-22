@@ -37,14 +37,7 @@
         <ul id="rechercheResultats"></ul>
     </div>
 
-    <nav class="lien">
-        <ul class="categorie">
-            <li><a href="#" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
-            <li><a href="chatroom.php">Chatroom</a></li>
+ 
             
             
 </div>
