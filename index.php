@@ -123,12 +123,17 @@ $usersJson = json_encode($users);
             <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
+            <li><a href="chatroom.php">Chatroom</a></li>
+            
+            
+</div>
         </ul>
     </nav>
 
     <nav class="convo">
         <h3>Conversation</h3>
         <ul class="amis">
+            
             <li><img src="./images/user.png"><a href="ali">Ali</a></li>
             <li><img src="./images/user.png"><a href="bob">Bob</a></li>
             <li><img src="./images/user.png"><a href="charles">Charles</a></li>
@@ -188,6 +193,7 @@ $usersJson = json_encode($users);
 
         <div id="conteneurFood">
         </div>
+    
     </main>
 
     <footer>

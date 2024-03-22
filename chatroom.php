@@ -3,37 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatroom</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>All in One</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./styles/normalize.css">
+
+
+    <script>
+      let setting = <?= $settingJson ?>;
+      let usersList = <?= $usersJson ?>;
+      console.log(usersList);
+    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <h2>New Chat</h2>
-            <ul class="discussion-list">
-                <!-- Liste des discussions -->
-                <li><a href="#">Discussion 1</a></li>
-                <li><a href="#">Discussion 2</a></li>
-                <li><a href="#">Discussion 3</a></li>
-                <!-- Ajouter d'autres discussions si nécessaire -->
-            </ul>
+    <header>
+        <div class="logo">
+            <img src="./images/USL League One Icon.png">
+            <h2>Chatroom</h2>
+
+            <input type="text" id="rechercheInput" placeholder="Search for users...">     
+            <input type="button" id="rechercheButton" value="Search"> 
+            <a href="index.php" class="back-button-acceuil">Retour acceuil</a>
         </div>
-        <div class="chat">
-            <div class="chat-header">
-                <h2>ChatGPT</h2>
-            </div>
-            <div class="chat-messages">
-                <!-- Messages de la conversation -->
-                <!-- Les messages seront affichés ici -->
-            </div>
-            <div class="chat-input">
-                <textarea placeholder="Votre message"></textarea>
-                <button>Envoyer</button>
-            </div>
-        </div>
+
+
+        
+
+
+       
+    </header>
+
+
+    <div id="searchResultatsWindow" style="display: none;">
+        <ul id="rechercheResultats"></ul>
     </div>
 
-    <script src="script.js"></script> <!-- Fichier JavaScript pour la gestion des interactions -->
+    <nav class="lien">
+        <ul class="categorie">
+            <li><a href="#" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
+            <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
+            <li><a href="chatroom.php">Chatroom</a></li>
+            
+            
+</div>
+        </ul>
+    </nav>
+
+    <nav class="convo">
+        <h3>Conversation</h3>
+        <ul class="amis">
+            
+            <li><img src="./images/user.png"><a href="ali">Ali</a></li>
+            <li><img src="./images/user.png"><a href="bob">Bob</a></li>
+            <li><img src="./images/user.png"><a href="charles">Charles</a></li>
+            <li><img src="./images/user.png"><a href="dave">Dave</a></li>
+        </ul>
+    </nav>
+
+    <main>
+       
+    
+    </main>
+
+    <footer>
+        <p>© All in One</p>
+    </footer>
+    <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
 </body>
 </html>
 
