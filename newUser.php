@@ -42,10 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
+     <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?val=1" />
     <title>Inscription allinone</title>
 </head>
 <body>
     <header >
+        <header class="bg-primary text-white text-center py-3">
         <h1>All in One</h1>
     </header>
 
@@ -66,13 +72,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="password" id="password" name="password" class="form-control" required />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Create Account</button>
+                <button type="submit" class="btn btn-primary">Create Account</button><br>
+                
+                <button type="connexion" id="retour-connexion" class="btn btn-success mt-2 .align-top">retour vers connexion</button>
             </form>
         </section>
     </div>
 
     <footer >
+        <footer class="bg-primary text-white text-center py-3 fixed-bottom">
         <p>&copy; All in One</p>
     </footer>
+
+
+    <script>
+var retourBtn = document.getElementById('retour-connexion');
+    retourBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = './login.php';
+    });
+  </script>
+  
 </body>
 </html>
+
+

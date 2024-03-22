@@ -24,10 +24,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
+      <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
     <title>All in One</title>
   </head>
   <body>
     <header>
+      <header class="bg-primary text-white text-center py-3">
       <h1>All in One</h1>
     </header>
 
@@ -56,11 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             required
           />
 
-          <button type="submit" >
+          <button type="submit" class="btn btn-success mt-2 .align-top">
             Se connecter
           </button>    
         </form>
-        <button onclick="window.location.href='./newUser.php'">Créer un compte</button>      
+        <button onclick="window.location.href='./newUser.php'" class="btn btn-secondary mt-2 .align-top">Créer un compte</button>      
       </section>
     </div>
 
