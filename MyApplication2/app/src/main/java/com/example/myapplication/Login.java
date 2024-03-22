@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.MainActivity.API_URL;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,11 +12,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class Login extends AppCompatActivity {
     private Button login,reset,createAccount;
 
     private EditText username,password;
+    OkHttpClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +53,49 @@ public class Login extends AppCompatActivity {
                     Toast t = Toast.makeText(getApplicationContext(),"le password ou le username est manquant",Toast.LENGTH_SHORT);
                     t.show();
                 } else {
-                    (new Thread() {
-                        @Override
-                        public void run() {
-                            //traitement effectué par le thread
+                    int r = checkSelfPermission("android.permission.INTERNET");
+                    if (r == PackageManager.PERMISSION_GRANTED){
+                        client = new OkHttpClient();
+                        MediaType JSON = MediaType.parse("application/json; chartset=utf-8");
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("username", "userMobile");
+                            obj.put("password", "Mobile");
+
                         }
-                    }).start();
+                        catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        RequestBody corpsRequete = RequestBody.create(String.valueOf(obj), JSON);
+
+
+                        Request requete = new Request.Builder()
+                                .url(API_URL+"/users")
+                                .post(corpsRequete)
+                                .build();
+
+
+
+                        (new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    client.newCall(requete).execute();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }).start();
+                    }else{
+                        Toast.makeText(Login.this, "Non permis!", Toast.LENGTH_LONG).show();
+                    }
+
+
+
+
+
+
+
                 }
             }
         });
