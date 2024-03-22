@@ -60,11 +60,7 @@ $usersJson = json_encode($users);
                 <img src="images/utilisateur.png" alt="utilisateur" class="utilisateur">
                 <a href="./profil.php">Profil</a>
 
-                <!-- Changer Mot de Passe -->
-                <div class="setting">
-                    <img src="images/reinitialiser-le-mot-de-passe.png" alt="mdp" class="mdp">
-                    <a href="#" id="change-password-link">Changer Mot de Passe</a>
-                </div>
+              
 
                 <!-- Notification -->
                 <div class="setting">
@@ -74,11 +70,7 @@ $usersJson = json_encode($users);
 
                 </div>
 
-                <!-- Publication -->
-                <div class="setting">
-                    <img src="images/publication.png" alt="publication" class="publication">
-                    <a href="#">Publication</a>
-                </div>
+              
 
                 <!-- Amis -->
                 <div class="setting">
@@ -86,11 +78,7 @@ $usersJson = json_encode($users);
                     <a href="#">Amis</a>
                 </div>
 
-                <!-- Historique d'activité -->
-                <div class="setting">
-                    <img src="images/historique.png" alt="historique-activite" class="historique">
-                    <a href="#">Historique d'activité</a>
-                </div>
+               
 
                 <!-- Paiement -->
                 <div class="setting">
@@ -101,7 +89,7 @@ $usersJson = json_encode($users);
 
                 <!-- Déconnexion -->
                 <div class="setting">
-                    <a href="?logout=1">Déconnexion</a>
+                    <a href="?logout=1" class="deconnexion"> Déconnexion</a>
                 </div>
             </div>
         </div>

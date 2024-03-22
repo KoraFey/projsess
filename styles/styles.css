@@ -241,6 +241,7 @@ footer {
 
 .setting {
     margin-bottom: 10px;
+   display:block;
 }
 
 .setting label {
@@ -268,10 +269,25 @@ footer {
     background-color: #303030;
     color: #fff;
 }
-.utilisateur, .lune, .mdp, .notification, .publication, .ami, .historique, .paiement{
+.utilisateur, .lune, .notification, .ami, .paiement{
     width: 20px; /* Largeur de l'icône */
     height: auto; /* Hauteur automatique pour maintenir les proportions */
     margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
+    padding: 10px;
+}
+.setting img {
+    display: inline-block; /* Affiche l'image en ligne avec le lien */
+    vertical-align: middle; /* Centre l'image verticalement */
+    margin-right: 10px; /* Ajoute un espace entre l'image et le lien */
+}
+.deconnexion{
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }
 
 
