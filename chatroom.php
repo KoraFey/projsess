@@ -63,9 +63,9 @@
         </div>
         <form id="messageForm" onsubmit="sendMessage(); return false;">
             <input type="text" id="messageInput" placeholder="Écrire un message...">
-            
+            <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
         </form>
-        <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
+        
     </div>
 </main>
     

@@ -396,6 +396,7 @@ footer {
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
 }
 
 .chat-messages {
@@ -417,9 +418,9 @@ footer {
 #sendMessageButton {
     background-color: #007bff;
     color: #fff;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    
+
 }
