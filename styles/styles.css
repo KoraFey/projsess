@@ -8,6 +8,57 @@ body {
         "bas    bas     bas";
     
 }
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    position: relative; 
+}
+
+
+.profile-image {
+    flex: 0 0 auto; 
+    align-self: stretch; 
+
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.chat-container {
+    background-color: rgb(49, 43, 52);
+    flex: 1;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 9;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-height: 500px;
+
+    margin-left: 10px;
+}
+
+.boiteInput {
+    flex: 1;
+    bottom: 0;
+}
+
+#messageInput{
+    padding: 5px;
+    width: 70%;
+    height: 20px;
+
+    
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 20px;
+
+}
 
 #rechercheButton {
     padding: 10px;
@@ -241,7 +292,6 @@ footer {
 
 .setting {
     margin-bottom: 10px;
-   display:block;
 }
 
 .setting label {
@@ -269,25 +319,10 @@ footer {
     background-color: #303030;
     color: #fff;
 }
-.utilisateur, .lune, .notification, .ami, .paiement{
+.utilisateur, .lune, .mdp, .notification, .publication, .ami, .historique, .paiement{
     width: 20px; /* Largeur de l'icône */
     height: auto; /* Hauteur automatique pour maintenir les proportions */
     margin-right: 5px; /* Marge à droite pour l'espace entre le logo et le texte "Paramètres" */
-    padding: 10px;
-}
-.setting img {
-    display: inline-block; /* Affiche l'image en ligne avec le lien */
-    vertical-align: middle; /* Centre l'image verticalement */
-    margin-right: 10px; /* Ajoute un espace entre l'image et le lien */
-}
-.deconnexion{
-    background-color: #007bff;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
 }
 
 
@@ -300,7 +335,7 @@ footer {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #971f1f; /* Couleur de fond du conteneur principal */
+    background-color: #ffffff; /* Couleur de fond du conteneur principal */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -341,7 +376,6 @@ footer {
 
 /* Style du formulaire de modification */
 .edit-profile-form {
-    
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -387,60 +421,4 @@ footer {
 
 #retourButton:hover {
     background-color: #bd2130;
-}
-
-
-/*chatroom*/
-
-.back-button-acceuil {
-    position: fixed;
-    top: 20px; /* Ajustez la distance depuis le haut selon vos besoins */
-    right: 20px; /* Ajustez la distance depuis la droite selon vos besoins */
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.back-button-acceuil:hover {
-    background-color: #0056b3;
-}
-.chat-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.chat-messages {
-    flex-grow: 1;
-    overflow-y: auto; /* Si la liste de messages dépasse la hauteur, ajoutez une barre de défilement */
-    text-align: right;
-}
-
-.message-form {
-    display: flex;
-    align-items: flex-end; /* Aligner le formulaire au bas de la zone de chat */
-    position: sticky;
-    margin-top: auto; /* Déplacez le formulaire vers le bas autant que possible */
-    
-}
-
-#messageInput {
-    flex: 1; /* Le champ de texte prend tout l'espace disponible */
-    margin-right: 10px; /* Ajoutez un peu d'espace entre le champ de texte et le bouton */
-    
-}
-
-#sendMessageButton {
-    background-color: #007bff;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
 }

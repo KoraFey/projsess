@@ -106,15 +106,12 @@ $usersJson = json_encode($users);
 
     <nav class="lien">
         <ul class="categorie">
-            <li><a href="#" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
-            <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
-            <li><a href="chatroom.php">Chatroom</a></li>
-            
-            
-</div>
+            <li><a href="#" class="highlighted" id="conteneurFeedLink" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurFriendsLink" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurMarketLink" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
+            <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Chatroom</a></li>
         </ul>
     </nav>
 
@@ -122,10 +119,7 @@ $usersJson = json_encode($users);
         <h3>Conversation</h3>
         <ul class="amis">
             
-            <li><img src="./images/user.png"><a href="ali">Ali</a></li>
-            <li><img src="./images/user.png"><a href="bob">Bob</a></li>
-            <li><img src="./images/user.png"><a href="charles">Charles</a></li>
-            <li><img src="./images/user.png"><a href="dave">Dave</a></li>
+           
         </ul>
     </nav>
 
@@ -182,6 +176,28 @@ $usersJson = json_encode($users);
         <div id="conteneurFood">
         </div>
     
+
+        <div class="profile-info" id="profileInfo">
+            <div class="profile-image">
+                <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
+            
+                <div class="profile-details">
+                    <p><strong>Nom :</strong> <span id="nom">John</span></p>
+                    <p><strong>Prénom :</strong> <span id="prenom">Doe</span></p>
+                </div>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                <!-- Les messages de la conversation seront affichés ici -->
+                </div>
+                <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
+                    <input type="text" id="messageInput" placeholder="Écrire un message...">
+                    <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
+                </form>
+            </div>
+        </div>
+
+
     </main>
 
     <footer>

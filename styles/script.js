@@ -3,6 +3,8 @@ let conteneurFriends = document.getElementById("conteneurFriends");
 let conteneurMarket = document.getElementById("conteneurMarket");
 let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
+let profileInfo = document.getElementById("profileInfo");
+
 let darkModeCheckbox = document.getElementById("dark-mode");
 let conteneurPrincipal = [
   conteneurFeed,
@@ -10,6 +12,7 @@ let conteneurPrincipal = [
   conteneurMarket,
   conteneurGroup,
   conteneurFood,
+  profileInfo
 ];
 
 function displayConteneur(conteneur) {
@@ -114,6 +117,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+const chatMessages = document.getElementById('chatMessages');
+
+// Fonction pour envoyer un message
+function sendMessage() {
+    // Récupérer le contenu du message depuis l'input
+    const messageInput = document.getElementById('messageInput');
+    const messageContent = messageInput.value.trim();
+
+    // Vérifier si le message n'est pas vide
+    if (messageContent !== '') {
+        // Créer un nouvel élément paragraphe pour afficher le message
+        const messageElement = document.createElement('p');
+        messageElement.textContent = messageContent;
+
+        // Ajouter la classe CSS pour styliser le message (facultatif)
+        messageElement.classList.add('message');
+
+        // Ajouter le message à la zone de chat
+        chatMessages.appendChild(messageElement);
+
+        // Effacer le contenu de l'input après l'envoi du message
+        messageInput.value = '';
+
+        // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+
+
 function toggleSettings() {
   let settingsMenu = document.getElementById("settingsMenu");
   if (settingsMenu.style.display === "block") {
@@ -131,6 +163,8 @@ function toggleDarkMode() {
   let settings = document.getElementById("settingsMenu");
   let header = document.querySelector("header");
   let footer = document.querySelector("footer");
+  let chatMessages = document.getElementById("chatMessages");
+
 
   let elements = [body, main];
   let elementsNav = [navConvo, navLien];
@@ -145,6 +179,7 @@ function toggleDarkMode() {
     settings.style.backgroundColor = "rgb(59, 59, 59)";
     header.style.backgroundColor = "rgb(51, 0, 95)";
     footer.style.backgroundColor = "rgb(58, 0, 79)";
+    chatMessages.style.backgroundColor = "rgb(49, 43, 52)";
   } else {
     setting["dark_mode"] = 0;
     for (let i = 0; i < elements.length; i++)
@@ -155,6 +190,8 @@ function toggleDarkMode() {
     settings.style.backgroundColor = "white";
     header.style.backgroundColor = "rgb(109, 165, 255)";
     footer.style.backgroundColor = "rgb(86, 145, 234)";
+    chatMessages.style.backgroundColor = "white";
+
   }
 
   //fetch pour update les settings
