@@ -11,12 +11,17 @@ require_once __DIR__.'/config.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles/styles.css"> 
 </head>
 
 <body>
-
+ <header class="bg-primary text-white text-center py-3">
     <h1>Profil</h1>
+</header>
 
     <div class="profile-info">
         <div class="profile-image">
@@ -35,7 +40,7 @@ require_once __DIR__.'/config.php'; ?>
     <!-- Seul l'admin aura accès à ce formulaire pour modifier les informations -->
     <form id="edit-profile-form" class="edit-profile-form" style="display: none;">
         <h2>Modifier le Profil</h2>
-        <label for="edit-nom">Nom utilisateur :</label>
+        <label for="edit-nom">Nom :</label>
         <input type="text" name="edit-nom" id="edit-nom"><br>
         <label for="edit-prenom">Prénom :</label>
         <input type="text" id="edit-prenom"><br>
