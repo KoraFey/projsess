@@ -5,8 +5,11 @@ $stmt->execute([$_SESSION["usager"]]);
 $settings = $stmt->fetch();
 $settingJson = json_encode($settings);
 
-$stmt = $pdo->prepare('SELECT username FROM users');
-$stmt->execute();
+
+$loggedUserId = $_SESSION["usager"];
+
+$stmt = $pdo->prepare('SELECT username FROM users WHERE id != ?');
+$stmt->execute([$loggedUserId]);
 $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
 
