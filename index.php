@@ -4,6 +4,15 @@ $stmt = $pdo->prepare('SELECT * FROM settings WHERE user_id = ? ');
 $stmt->execute([$_SESSION["usager"]]);
 $settings = $stmt->fetch();
 $settingJson = json_encode($settings);
+
+
+$loggedUserId = $_SESSION["usager"];
+
+$stmt = $pdo->prepare('SELECT username FROM users WHERE id != ?');
+$stmt->execute([$loggedUserId]);
+$users = $stmt->fetchAll();
+$usersJson = json_encode($users);
+
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +27,8 @@ $settingJson = json_encode($settings);
 
     <script>
       let setting = <?= $settingJson ?>;
+      let usersList = <?= $usersJson ?>;
+      console.log(usersList);
     </script>
 </head>
 <body>
@@ -25,7 +36,11 @@ $settingJson = json_encode($settings);
         <div class="logo">
             <img src="./images/USL League One Icon.png">
             <h2>All in One</h2>
+
+            <input type="text" id="rechercheInput" placeholder="Search for users...">     
+            <input type="button" id="rechercheButton" value="Search"> 
         </div>
+
 
         <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
@@ -96,6 +111,11 @@ $settingJson = json_encode($settings);
        
     </header>
 
+
+    <div id="searchResultatsWindow" style="display: none;">
+        <ul id="rechercheResultats"></ul>
+    </div>
+
     <nav class="lien">
         <ul class="categorie">
             <li><a href="#" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
@@ -103,7 +123,6 @@ $settingJson = json_encode($settings);
             <li><a href="#" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" onclick="displayConteneur('conteneurFood')">Food</a></li>
-            <li><a href="chatroom.php">Chatroom</a></li>
         </ul>
     </nav>
 
