@@ -104,6 +104,7 @@ public class newUser extends AppCompatActivity {
                 username.setText("");
                 password1.setText("");
                 password2.setText("");
+                finish();
             }
         });
 
