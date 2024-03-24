@@ -144,6 +144,26 @@ function sendMessage() {
 
     // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    //fetch les messages pour logs et envoi
+    fetch('/chatroom.php',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', //(a changer?)
+      },
+      body: JSON.stringify({ content: messageContent }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+      //si erreur a envoyer
+    })
+    .catch(error => {
+      console.error('Error sending message:', error.message);
+      // si erreur d'envoi
+    });
+    
   }
 }
 

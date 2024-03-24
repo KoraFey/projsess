@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity {
                     int r = checkSelfPermission("android.permission.INTERNET");
                     if (r == PackageManager.PERMISSION_GRANTED){
                         client = new OkHttpClient();
-                        MediaType JSON = MediaType.parse("application/json; chartset=utf-8");
+                        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                         JSONObject obj = new JSONObject();
                         try {
                             obj.put("username", "userMobile");
