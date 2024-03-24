@@ -12,28 +12,28 @@ let conteneurPrincipal = [
   conteneurMarket,
   conteneurGroup,
   conteneurFood,
-  profileInfo
+  profileInfo,
 ];
 
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
-      conteneurPrincipal[i].style.display =
-          conteneurPrincipal[i].id === conteneur ? "flex" : "none";
+    conteneurPrincipal[i].style.display =
+      conteneurPrincipal[i].id === conteneur ? "flex" : "none";
 
-      let highlightedLien;
-      if (conteneurPrincipal[i].id == conteneur) {
-          highlightedLien = document.getElementById(`${conteneur}Link`);
-          highlightedLien.classList.add("highlighted");
-          highlightedLien.classList.remove("unhighlighted");
-
-      } else {
-          highlightedLien = document.getElementById(`${conteneurPrincipal[i].id}Link`);
-          highlightedLien.classList.add("unhighlighted");
-          highlightedLien.classList.remove("highlighted");
-      }
+    let highlightedLien;
+    if (conteneurPrincipal[i].id == conteneur) {
+      highlightedLien = document.getElementById(`${conteneur}Link`);
+      highlightedLien.classList.add("highlighted");
+      highlightedLien.classList.remove("unhighlighted");
+    } else {
+      highlightedLien = document.getElementById(
+        `${conteneurPrincipal[i].id}Link`
+      );
+      highlightedLien.classList.add("unhighlighted");
+      highlightedLien.classList.remove("highlighted");
+    }
   }
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
@@ -41,110 +41,111 @@ document.addEventListener("DOMContentLoaded", function () {
       conteneurPrincipal[i].id === "conteneurFeed" ? "flex" : "none";
   }
 
-  if(setting["dark_mode"] == 1){
+  if (setting["dark_mode"] == 1) {
     darkModeCheckbox.checked = true;
     toggleDarkMode();
   }
 
-  const rechercheInput = document.getElementById('rechercheInput');
-  const rechercheResultats = document.getElementById('rechercheResultats');
-  const searchResultatsWindow = document.getElementById('searchResultatsWindow');
-  
+  const rechercheInput = document.getElementById("rechercheInput");
+  const rechercheResultats = document.getElementById("rechercheResultats");
+  const searchResultatsWindow = document.getElementById(
+    "searchResultatsWindow"
+  );
+
   function filterUsers(userValue) {
-      return usersList.filter(user => user.username.toLowerCase().includes(userValue.toLowerCase()));
+    return usersList.filter((user) =>
+      user.username.toLowerCase().includes(userValue.toLowerCase())
+    );
   }
-  
+
   function displayResultats(users) {
-      rechercheResultats.innerHTML = '';
-  
-      users.forEach(user => {
-          const li = document.createElement('li');
-          li.textContent = user.username;
-          rechercheResultats.appendChild(li);
-  
-          li.addEventListener('click', () => {
-              rechercheInput.value = user.username;
-              rechercheResultats.innerHTML = ''; 
-          });
+    rechercheResultats.innerHTML = "";
+
+    users.forEach((user) => {
+      const li = document.createElement("li");
+      li.textContent = user.username;
+      rechercheResultats.appendChild(li);
+
+      li.addEventListener("click", () => {
+        rechercheInput.value = user.username;
+        rechercheResultats.innerHTML = "";
       });
-  
-      searchResultatsWindow.style.display = 'block';
+    });
+
+    searchResultatsWindow.style.display = "block";
   }
-  
-  rechercheInput.addEventListener('input', () => {
-      const user = rechercheInput.value.trim();
-  
-      console.log("INPUT");
-  
-      if (user === '') {
-          rechercheResultats.innerHTML = '';
-          searchResultatsWindow.style.display = 'none';
-          return;
-      }
-  
-      const users = filterUsers(user);
-      displayResultats(users);
+
+  rechercheInput.addEventListener("input", () => {
+    const user = rechercheInput.value.trim();
+
+    console.log("INPUT");
+
+    if (user === "") {
+      rechercheResultats.innerHTML = "";
+      searchResultatsWindow.style.display = "none";
+      return;
+    }
+
+    const users = filterUsers(user);
+    displayResultats(users);
   });
-  
-  rechercheInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      displayConteneur('conteneurFriends');
+
+  rechercheInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      displayConteneur("conteneurFriends");
     }
   });
-  rechercheButton.addEventListener('click', (event) => {
-    displayConteneur('conteneurFriends');
+  rechercheButton.addEventListener("click", (event) => {
+    displayConteneur("conteneurFriends");
   });
 
-  let amisList = document.querySelector('.amis');
-  amisList.innerHTML = '';
+  let amisList = document.querySelector(".amis");
+  amisList.innerHTML = "";
 
-  usersList.forEach(user => {
-    let listItem = document.createElement('li');
-    let anchor = document.createElement('a');
+  usersList.forEach((user) => {
+    let listItem = document.createElement("li");
+    let anchor = document.createElement("a");
 
-    anchor.setAttribute('href', user.href);
+    anchor.setAttribute("href", user.href);
     anchor.textContent = user.username;
-    
-    let image = document.createElement('img');
-    image.setAttribute('src', './images/user.png');
+
+    let image = document.createElement("img");
+    image.setAttribute("src", "./images/user.png");
 
     listItem.appendChild(image);
     listItem.appendChild(anchor);
 
     amisList.appendChild(listItem);
+  });
 });
 
-
-});
-
-const chatMessages = document.getElementById('chatMessages');
+const chatMessages = document.getElementById("chatMessages");
 
 // Fonction pour envoyer un message
 function sendMessage() {
-    // Récupérer le contenu du message depuis l'input
-    const messageInput = document.getElementById('messageInput');
-    const messageContent = messageInput.value.trim();
+  // Récupérer le contenu du message depuis l'input
+  const messageInput = document.getElementById("messageInput");
+  const messageContent = messageInput.value.trim();
 
-    // Vérifier si le message n'est pas vide
-    if (messageContent !== '') {
-        // Créer un nouvel élément paragraphe pour afficher le message
-        const messageElement = document.createElement('p');
-        messageElement.textContent = messageContent;
+  // Vérifier si le message n'est pas vide
+  if (messageContent !== "") {
+    // Créer un nouvel élément paragraphe pour afficher le message
+    const messageElement = document.createElement("p");
+    messageElement.textContent = messageContent;
 
-        // Ajouter la classe CSS pour styliser le message (facultatif)
-        messageElement.classList.add('message');
+    // Ajouter la classe CSS pour styliser le message (facultatif)
+    messageElement.classList.add("message");
 
-        // Ajouter le message à la zone de chat
-        chatMessages.appendChild(messageElement);
+    // Ajouter le message à la zone de chat
+    chatMessages.appendChild(messageElement);
 
-        // Effacer le contenu de l'input après l'envoi du message
-        messageInput.value = '';
+    // Effacer le contenu de l'input après l'envoi du message
+    messageInput.value = "";
 
-        // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+    // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 }
-
 
 function toggleSettings() {
   let settingsMenu = document.getElementById("settingsMenu");
@@ -153,6 +154,19 @@ function toggleSettings() {
   } else {
     settingsMenu.style.display = "block";
   }
+}
+
+function toggleCreation() {
+  const creation = document.getElementById("hide create");
+  if (creation.style.display === "block") {
+    creation.style.display = "none";
+  } else {
+    creation.style.display = "block";
+  }
+  const champs = document.querySelectorAll(".new");
+  champs.forEach((e) => {
+    e.remove();
+  });
 }
 
 function toggleDarkMode() {
@@ -164,7 +178,6 @@ function toggleDarkMode() {
   let header = document.querySelector("header");
   let footer = document.querySelector("footer");
   let chatMessages = document.getElementById("chatMessages");
-
 
   let elements = [body, main];
   let elementsNav = [navConvo, navLien];
@@ -191,7 +204,6 @@ function toggleDarkMode() {
     header.style.backgroundColor = "rgb(109, 165, 255)";
     footer.style.backgroundColor = "rgb(86, 145, 234)";
     chatMessages.style.backgroundColor = "white";
-
   }
 
   //fetch pour update les settings
@@ -245,6 +257,14 @@ function toggleNotification() {
       alert("Erreur lors de la modification des settings: " + error);
       console.error("Erreur lors de la requête:", error);
     });
+}
+
+function ajoutChamps() {
+  const newChamp = document.createElement("input");
+  newChamp.setAttribute("type", "text");
+  newChamp.setAttribute("class", "new");
+  const div = document.getElementById("div chat");
+  div.append(newChamp);
 }
 
 document

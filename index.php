@@ -187,6 +187,30 @@ $usersJson = json_encode($users);
                 </div>
             </div>
             <div class="chat-container">
+
+
+
+            
+                <button onClick="toggleCreation();">creer chat</button>
+                <div class = "cree chat" id = "hide create">
+                    <form>
+                        <div id="div chat">
+                            <input type="text" id="1">
+                        </div>
+                        
+                        <button onclick="ajoutChamps();">new user</button>
+                        <button >cree</button>
+                    </form>
+                </div>
+
+                <!-- surely ca peiut etre mieu fait-->
+                <script>
+                    const creation = document.getElementById("hide create");
+                        creation.style.display = "none";
+                </script>
+
+
+
                 <div class="chat-messages" id="chatMessages">
                 <!-- Les messages de la conversation seront affichés ici -->
                 </div>
