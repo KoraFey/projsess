@@ -2,6 +2,8 @@
 // Démarrage de la session
 session_start();
 
+header("Access-Control-Allow-Origin: *");
+
 //Configuration et connexion à la base de données
 $host = parse_url($_SERVER["HTTP_HOST"], PHP_URL_HOST);
 if($host=="localhost"){

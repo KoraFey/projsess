@@ -46,13 +46,13 @@ function populateGIFs(gifs) {
   gifContainer.innerHTML = '';
   gifs.forEach(gif => {
       const gifElement = document.createElement('img');
-      gifElement.src = gif.url; 
+      gifElement.src = "https://i.giphy.com/"+gif.id+".webp"; 
       gifElement.alt = gif.title;
       gifElement.className = 'gif';
       gifElement.addEventListener('click', () => {
           const chatMessages = document.getElementById('chatMessages');
           const messageElement = document.createElement("img");
-          messageElement.src = gif.url; 
+          messageElement.src = "https://i.giphy.com/"+gif.id+".webp";
           messageElement.classList.add("message", "image-chat");
           chatMessages.appendChild(messageElement);
           chatMessages.scrollTop = chatMessages.scrollHeight;

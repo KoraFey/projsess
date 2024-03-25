@@ -14,7 +14,7 @@ $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
 
 
-/*
+
 $stmt = $pdo->prepare('SELECT id FROM Chat_Room WHERE owner_id = ?');
 $stmt->execute([$loggedUserId]);
 $chatRoomData = $stmt->fetch();
@@ -43,14 +43,20 @@ foreach ($users as $user) {
         echo "Utilisateur non trouvé dans la base de données: $username";
     }
 }
-*/
 
 
-$stmt = $pdo->prepare('SELECT * FROM GIFs');
-$stmt->execute();
-$gifs = $stmt->fetchAll();
-$gifsJson = json_encode($gifs);
+$api_key = 'vHYoMfj0cGW2woUjLMrmsPzrZGbAnkux';
 
+$url = 'https://api.giphy.com/v1/gifs/trending?api_key=' . $api_key;
+$response = file_get_contents($url);
+
+if ($response) {
+    $data = json_decode($response, true);
+    $gifs = $data['data'];
+    $gifsJson = json_encode($gifs);
+} else {
+    $gifsJson = json_encode(['error' => 'Failed to fetch GIFs']);
+}
 
 ?>
 
@@ -262,6 +268,7 @@ $gifsJson = json_encode($gifs);
                     <div id="gifModal" style="display: none;">
                         <div id="gifContainer"></div>
                     </div>
+                    
                 </form>
             </div>
         </div>
@@ -272,6 +279,7 @@ $gifsJson = json_encode($gifs);
     <footer>
         <p>© All in One</p>
     </footer>
-    <script src="./styles/script.js"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
+    <script src="./styles/script.js?reload=1"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
+    
 </body>
 </html>

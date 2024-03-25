@@ -78,6 +78,7 @@ public class newUser extends AppCompatActivity {
                                     Response response = null;
                                     try {
                                         response = client.newCall(requete).execute();
+                                        System.out.println(requete);
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
