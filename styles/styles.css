@@ -8,6 +8,25 @@ body {
         "bas    bas     bas";
     
 }
+
+#gifContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gif {
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.image-chat {
+    max-width: 150px;
+    max-height: 150px;
+    margin: 5px;
+}
+
 .profile-info {
     display: flex;
     flex-direction: column;
@@ -97,6 +116,7 @@ body {
     border-top-left-radius: 20px; 
     border-bottom-left-radius: 20px;        
 }
+
 #rechercheResultats {
     list-style-type: none;
     padding: 0;

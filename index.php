@@ -13,6 +13,45 @@ $stmt->execute([$loggedUserId]);
 $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
 
+
+/*
+$stmt = $pdo->prepare('SELECT id FROM Chat_Room WHERE owner_id = ?');
+$stmt->execute([$loggedUserId]);
+$chatRoomData = $stmt->fetch();
+
+if ($chatRoomData) {
+    $chatRoomId = $chatRoomData['id'];
+} else {
+    $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
+    $stmt->execute([$loggedUserId, 'Chat Room Name']);
+    $chatRoomId = $pdo->lastInsertId();
+}
+
+foreach ($users as $user) {
+    $username = $user['username'];
+
+    $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ?');
+    $stmt->execute([$username]);
+    $userData = $stmt->fetch();
+
+    if ($userData) {
+        $userId = $userData['id'];
+
+        $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+        $stmt->execute([$chatRoomId, $userId]);
+    } else {
+        echo "Utilisateur non trouvé dans la base de données: $username";
+    }
+}
+*/
+
+
+$stmt = $pdo->prepare('SELECT * FROM GIFs');
+$stmt->execute();
+$gifs = $stmt->fetchAll();
+$gifsJson = json_encode($gifs);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +67,8 @@ $usersJson = json_encode($users);
     <script>
       let setting = <?= $settingJson ?>;
       let usersList = <?= $usersJson ?>;
-      console.log(usersList);
+      let gifsList = <?= $gifsJson ?>;
+      console.log(gifsList);
     </script>
 </head>
 <body>
@@ -182,8 +222,8 @@ $usersJson = json_encode($users);
                 <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
             
                 <div class="profile-details">
-                    <p><strong>Nom :</strong> <span id="nom">John</span></p>
-                    <p><strong>Prénom :</strong> <span id="prenom">Doe</span></p>
+                    <p><strong>Nom :</strong> <span id="nomProfile">John</span></p>
+                    <p><strong>Prénom :</strong> <span id="prenomProfile">Doe</span></p>
                 </div>
             </div>
             <div class="chat-container">
@@ -217,6 +257,11 @@ $usersJson = json_encode($users);
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
                     <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
+                    <button id="openGifBtn">Select GIF</button>
+
+                    <div id="gifModal" style="display: none;">
+                        <div id="gifContainer"></div>
+                    </div>
                 </form>
             </div>
         </div>

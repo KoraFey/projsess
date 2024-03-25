@@ -4,6 +4,7 @@ let conteneurMarket = document.getElementById("conteneurMarket");
 let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
 let profileInfo = document.getElementById("profileInfo");
+let lienProfile;
 
 let darkModeCheckbox = document.getElementById("dark-mode");
 let conteneurPrincipal = [
@@ -12,27 +13,73 @@ let conteneurPrincipal = [
   conteneurMarket,
   conteneurGroup,
   conteneurFood,
-  profileInfo,
+  profileInfo
 ];
 
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
-    conteneurPrincipal[i].style.display =
-      conteneurPrincipal[i].id === conteneur ? "flex" : "none";
+      conteneurPrincipal[i].style.display =
+          conteneurPrincipal[i].id === conteneur ? "flex" : "none";
 
-    let highlightedLien;
-    if (conteneurPrincipal[i].id == conteneur) {
-      highlightedLien = document.getElementById(`${conteneur}Link`);
-      highlightedLien.classList.add("highlighted");
-      highlightedLien.classList.remove("unhighlighted");
-    } else {
-      highlightedLien = document.getElementById(
-        `${conteneurPrincipal[i].id}Link`
-      );
-      highlightedLien.classList.add("unhighlighted");
-      highlightedLien.classList.remove("highlighted");
-    }
+      let highlightedLien;
+      if (conteneurPrincipal[i].id == conteneur) {
+          highlightedLien = document.getElementById(`${conteneur}Link`);
+          highlightedLien.classList.add("highlighted");
+          highlightedLien.classList.remove("unhighlighted");
+
+      } else {
+          highlightedLien = document.getElementById(`${conteneurPrincipal[i].id}Link`);
+          highlightedLien.classList.add("unhighlighted");
+          highlightedLien.classList.remove("highlighted");
+      }
+
+      if(conteneur == 'profileInfo' && lienProfile != null){
+          let nomProfile = document.getElementById('nomProfile');
+          nomProfile.textContent = `${lienProfile}`;
+      }
   }
+}
+
+
+function populateGIFs(gifs) {
+  const gifContainer = document.getElementById('gifContainer');
+  gifContainer.innerHTML = '';
+  gifs.forEach(gif => {
+      const gifElement = document.createElement('img');
+      gifElement.src = gif.url; 
+      gifElement.alt = gif.title;
+      gifElement.className = 'gif';
+      gifElement.addEventListener('click', () => {
+          const chatMessages = document.getElementById('chatMessages');
+          const messageElement = document.createElement("img");
+          messageElement.src = gif.url; 
+          messageElement.classList.add("message", "image-chat");
+          chatMessages.appendChild(messageElement);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          closeGifs();
+      });
+      gifContainer.appendChild(gifElement);
+  });
+}
+
+
+function openGifs() {
+  const modal = document.getElementById('gifModal');
+  modal.style.display = "block";
+  populateGIFs(gifsList);
+}
+
+function closeGifs() {
+  const modal = document.getElementById('gifModal');
+  modal.style.display = "none";
+}
+
+const btn = document.getElementById("openGifBtn");
+
+btn.addEventListener('click', openGifs);
+
+function sendGIFToChat(gifUrl) {
+  console.log('Sending GIF to chat:', gifUrl);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -51,99 +98,112 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchResultatsWindow = document.getElementById(
     "searchResultatsWindow"
   );
-
+  
   function filterUsers(userValue) {
-    return usersList.filter((user) =>
-      user.username.toLowerCase().includes(userValue.toLowerCase())
-    );
+      return usersList.filter(user => user.username.toLowerCase().includes(userValue.toLowerCase()));
   }
-
+  
   function displayResultats(users) {
-    rechercheResultats.innerHTML = "";
-
-    users.forEach((user) => {
-      const li = document.createElement("li");
-      li.textContent = user.username;
-      rechercheResultats.appendChild(li);
-
-      li.addEventListener("click", () => {
-        rechercheInput.value = user.username;
-        rechercheResultats.innerHTML = "";
+      rechercheResultats.innerHTML = '';
+  
+      users.forEach(user => {
+          const li = document.createElement('li');
+          li.textContent = user.username;
+          rechercheResultats.appendChild(li);
+  
+          li.addEventListener('click', () => {
+              rechercheInput.value = user.username;
+              rechercheResultats.innerHTML = ''; 
+          });
       });
-    });
-
-    searchResultatsWindow.style.display = "block";
+  
+      searchResultatsWindow.style.display = 'block';
   }
-
-  rechercheInput.addEventListener("input", () => {
-    const user = rechercheInput.value.trim();
-
-    console.log("INPUT");
-
-    if (user === "") {
-      rechercheResultats.innerHTML = "";
-      searchResultatsWindow.style.display = "none";
-      return;
+  
+  rechercheInput.addEventListener('input', () => {
+      const user = rechercheInput.value.trim();
+  
+      console.log("INPUT");
+  
+      if (user === '') {
+          rechercheResultats.innerHTML = '';
+          searchResultatsWindow.style.display = 'none';
+          return;
+      }
+  
+      const users = filterUsers(user);
+      displayResultats(users);
+  });
+  
+  rechercheInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      displayConteneur('conteneurFriends');
     }
-
-    const users = filterUsers(user);
-    displayResultats(users);
+  });
+  rechercheButton.addEventListener('click', (event) => {
+    displayConteneur('conteneurFriends');
   });
 
-  rechercheInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      displayConteneur("conteneurFriends");
-    }
-  });
-  rechercheButton.addEventListener("click", (event) => {
-    displayConteneur("conteneurFriends");
-  });
+  let amisList = document.querySelector('.amis');
+  amisList.innerHTML = '';
 
-  let amisList = document.querySelector(".amis");
-  amisList.innerHTML = "";
+  usersList.forEach(user => {
+    let listItem = document.createElement('li');
+    let anchor = document.createElement('a');
 
-  usersList.forEach((user) => {
-    let listItem = document.createElement("li");
-    let anchor = document.createElement("a");
-
-    anchor.setAttribute("href", user.href);
+    anchor.setAttribute('href', '#');
     anchor.textContent = user.username;
-
-    let image = document.createElement("img");
-    image.setAttribute("src", "./images/user.png");
+    
+    let image = document.createElement('img');
+    image.setAttribute('src', './images/user.png');
 
     listItem.appendChild(image);
     listItem.appendChild(anchor);
 
     amisList.appendChild(listItem);
-  });
 });
 
-const chatMessages = document.getElementById("chatMessages");
+//lien pour les liens de convo vers --> profile
+let liens = document.querySelectorAll('.amis a');
+
+liens.forEach(function(lien) {
+  lien.addEventListener('click', function(event) {
+        event.preventDefault(); 
+
+        lienProfile = this.textContent;
+        
+        displayConteneur('profileInfo');
+
+        lienProfile = null;
+    });
+});
+});
+
+const chatMessages = document.getElementById('chatMessages');
 
 // Fonction pour envoyer un message
 function sendMessage() {
-  // Récupérer le contenu du message depuis l'input
-  const messageInput = document.getElementById("messageInput");
-  const messageContent = messageInput.value.trim();
+    // Récupérer le contenu du message depuis l'input
+    const messageInput = document.getElementById("messageInput");
+    const messageContent = messageInput.value.trim();
 
-  // Vérifier si le message n'est pas vide
-  if (messageContent !== "") {
-    // Créer un nouvel élément paragraphe pour afficher le message
-    const messageElement = document.createElement("p");
-    messageElement.textContent = messageContent;
+    // Vérifier si le message n'est pas vide
+    if (messageContent !== "") {
+        // Créer un nouvel élément paragraphe pour afficher le message
+        const messageElement = document.createElement("p");
+        messageElement.textContent = messageContent;
 
-    // Ajouter la classe CSS pour styliser le message (facultatif)
-    messageElement.classList.add("message");
+        // Ajouter la classe CSS pour styliser le message (facultatif)
+        messageElement.classList.add("message");
 
-    // Ajouter le message à la zone de chat
-    chatMessages.appendChild(messageElement);
+        // Ajouter le message à la zone de chat
+        chatMessages.appendChild(messageElement);
 
-    // Effacer le contenu de l'input après l'envoi du message
-    messageInput.value = "";
+        // Effacer le contenu de l'input après l'envoi du message
+        messageInput.value = "";
 
-    // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     
     //fetch les messages pour logs et envoi
     fetch('/chatroom.php',{
@@ -166,6 +226,7 @@ function sendMessage() {
     
   }
 }
+
 
 function toggleSettings() {
   let settingsMenu = document.getElementById("settingsMenu");
@@ -199,6 +260,7 @@ function toggleDarkMode() {
   let footer = document.querySelector("footer");
   let chatMessages = document.getElementById("chatMessages");
 
+
   let elements = [body, main];
   let elementsNav = [navConvo, navLien];
 
@@ -224,6 +286,7 @@ function toggleDarkMode() {
     header.style.backgroundColor = "rgb(109, 165, 255)";
     footer.style.backgroundColor = "rgb(86, 145, 234)";
     chatMessages.style.backgroundColor = "white";
+
   }
 
   //fetch pour update les settings
@@ -247,6 +310,28 @@ function toggleDarkMode() {
       alert("Erreur lors de la modification des settings: " + error);
       console.error("Erreur lors de la requête:", error);
     });
+}
+
+function fetchGIFs() {
+  fetch("/api/gifs/") 
+  .then(response => response.json())
+  .then(data => {
+      const gifs = data.data;
+      const gifContainer = document.getElementById('gifContainer');
+      gifContainer.innerHTML = '';
+      gifs.forEach(gif => {
+          const gifImage = document.createElement('img');
+          gifImage.src = gif.images.fixed_height.url;
+          gifImage.alt = gif.title;
+          gifImage.style.cursor = 'pointer';
+          gifImage.addEventListener('click', () => {
+              sendGIFToChat(gif.images.fixed_height.url);
+              modal.style.display = "none";
+          });
+          gifContainer.appendChild(gifImage);
+      });
+  })
+  .catch(error => console.error('Error fetching GIFs:', error));
 }
 
 function toggleNotification() {
