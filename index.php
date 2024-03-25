@@ -15,34 +15,34 @@ $usersJson = json_encode($users);
 
 
 
-$stmt = $pdo->prepare('SELECT id FROM Chat_Room WHERE owner_id = ?');
-$stmt->execute([$loggedUserId]);
-$chatRoomData = $stmt->fetch();
+// $stmt = $pdo->prepare('SELECT id FROM Chat_Room WHERE owner_id = ?');
+// $stmt->execute([$loggedUserId]);
+// $chatRoomData = $stmt->fetch();
 
-if ($chatRoomData) {
-    $chatRoomId = $chatRoomData['id'];
-} else {
-    $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
-    $stmt->execute([$loggedUserId, 'Chat Room Name']);
-    $chatRoomId = $pdo->lastInsertId();
-}
+// if ($chatRoomData) {
+//     $chatRoomId = $chatRoomData['id'];
+// } else {
+//     $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
+//     $stmt->execute([$loggedUserId, 'Chat Room Name']);
+//     $chatRoomId = $pdo->lastInsertId();
+// }
 
-foreach ($users as $user) {
-    $username = $user['username'];
+// foreach ($users as $user) {
+//     $username = $user['username'];
 
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ?');
-    $stmt->execute([$username]);
-    $userData = $stmt->fetch();
+//     $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ?');
+//     $stmt->execute([$username]);
+//     $userData = $stmt->fetch();
 
-    if ($userData) {
-        $userId = $userData['id'];
+//     if ($userData) {
+//         $userId = $userData['id'];
 
-        $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
-        $stmt->execute([$chatRoomId, $userId]);
-    } else {
-        echo "Utilisateur non trouvé dans la base de données: $username";
-    }
-}
+//         $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+//         $stmt->execute([$chatRoomId, $userId]);
+//     } else {
+//         echo "Utilisateur non trouvé dans la base de données: $username";
+//     }
+// }
 
 
 $api_key = 'vHYoMfj0cGW2woUjLMrmsPzrZGbAnkux';

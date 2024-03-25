@@ -11,7 +11,12 @@ any('/newUser.php', 'newUser.php');
 
 get('/api/posts/$id', '/api/post/getPost.php');
 get('/api/posts', '/api/post/getPosts.php');
+
+
 post('/api/users', '/api/newUserMobiles.php');
+
+
+
 put('/api/posts/$id', '/api/post/putPost.php');
 delete('/api/posts/$id', '/api/post/deletePost.php');
 put('/api/setSettings/$id', '/api/setSettings.php');
