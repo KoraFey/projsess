@@ -5,6 +5,7 @@ let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
+let openGifs = false;
 
 let darkModeCheckbox = document.getElementById("dark-mode");
 let conteneurPrincipal = [
@@ -56,31 +57,35 @@ function populateGIFs(gifs) {
           messageElement.classList.add("message", "image-chat");
           chatMessages.appendChild(messageElement);
           chatMessages.scrollTop = chatMessages.scrollHeight;
-          closeGifs();
+
+          openGifs = false;
+          toggleGifs();
       });
       gifContainer.appendChild(gifElement);
   });
 }
 
 
-function openGifs() {
+function toggleGifs() {
   const modal = document.getElementById('gifModal');
-  modal.style.display = "block";
-  populateGIFs(gifsList);
+  if (openGifs) {
+    modal.style.display = 'block';
+    populateGIFs(gifsList);
+  } else {
+    modal.style.display = 'none';
+  }
 }
 
-function closeGifs() {
-  const modal = document.getElementById('gifModal');
-  modal.style.display = "none";
-}
 
 const btn = document.getElementById("openGifBtn");
+btn.addEventListener('click', function() {
+  if(openGifs)
+    openGifs = false;
+  else
+    openGifs = true;
+  toggleGifs();
+});
 
-btn.addEventListener('click', openGifs);
-
-function sendGIFToChat(gifUrl) {
-  console.log('Sending GIF to chat:', gifUrl);
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
