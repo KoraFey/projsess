@@ -14,35 +14,27 @@ $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
 
 
+$stmt = $pdo->prepare('SELECT id FROM users WHERE id != ?');
+$stmt->execute([$loggedUserId]);
+$userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-// $stmt = $pdo->prepare('SELECT id FROM Chat_Room WHERE owner_id = ?');
-// $stmt->execute([$loggedUserId]);
-// $chatRoomData = $stmt->fetch();
+foreach ($userIds as $userId) {
+    $stmt = $pdo->prepare('SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ? AND chat_room_id IN (SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ?)');
+    $stmt->execute([$loggedUserId, $userId]);
+    $existChatRoomId = $stmt->fetchColumn();
 
-// if ($chatRoomData) {
-//     $chatRoomId = $chatRoomData['id'];
-// } else {
-//     $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
-//     $stmt->execute([$loggedUserId, 'Chat Room Name']);
-//     $chatRoomId = $pdo->lastInsertId();
-// }
+    if (!$existChatRoomId) {
+        $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
+        $stmt->execute([null, 'Chat Room']);
+        $chatRoomId = $pdo->lastInsertId();
 
-// foreach ($users as $user) {
-//     $username = $user['username'];
+        $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+        $stmt->execute([$chatRoomId, $loggedUserId]);
 
-//     $stmt = $pdo->prepare('SELECT id FROM users WHERE username = ?');
-//     $stmt->execute([$username]);
-//     $userData = $stmt->fetch();
-
-//     if ($userData) {
-//         $userId = $userData['id'];
-
-//         $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
-//         $stmt->execute([$chatRoomId, $userId]);
-//     } else {
-//         echo "Utilisateur non trouvé dans la base de données: $username";
-//     }
-// }
+        $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+        $stmt->execute([$chatRoomId, $userId]);
+    }
+}
 
 
 $api_key = 'vHYoMfj0cGW2woUjLMrmsPzrZGbAnkux';
