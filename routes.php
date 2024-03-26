@@ -13,7 +13,7 @@ get('/api/posts/$id', '/api/post/getPost.php');
 get('/api/posts', '/api/post/getPosts.php');
 
 
-post('/api/users', '/api/newUserMobiles.php');
+post('/api/users', '/api/newUserMobile.php');
 
 
 

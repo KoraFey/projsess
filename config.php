@@ -6,7 +6,7 @@ header("Access-Control-Allow-Origin: *");
 
 //Configuration et connexion à la base de données
 $host = parse_url($_SERVER["HTTP_HOST"], PHP_URL_HOST);
-if($host=="localhost"|| $host=="127.0.0.1"){
+if($host=="localhost"|| $host=="10.0.2.2"){
     //Code d'accès à la base de données locale
     $host = 'db';
     $db = 'mydatabase';

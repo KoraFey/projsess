@@ -27,9 +27,12 @@ public class newUser extends AppCompatActivity {
     private EditText username,password1,password2;
     private Button submit,reset;
     OkHttpClient client;
+
+    private Boolean profileIserted;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_login);
+        profileIserted=false;
         //affectation des variable au xml
         username = findViewById(R.id.User_login);
         password1 = findViewById(R.id.password_check);
@@ -84,8 +87,26 @@ public class newUser extends AppCompatActivity {
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
+
+                                    Response finalResponse = response;
+                                    newUser.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if(finalResponse.code()==200)
+                                                profileIserted=true;
+                                        } //Voir exemple du cours (diapo suivante).
+                                    });
+
                                 }
                             }).start();
+                            if(profileIserted){
+                                Toast t = Toast.makeText(getApplicationContext(),"user is created", Toast.LENGTH_SHORT);
+                                t.show();
+                                finish();
+                            }else{
+                                Toast t = Toast.makeText(getApplicationContext(),"erreur insertion du user: usernae already picked", Toast.LENGTH_SHORT);
+                                t.show();
+                            }
 
 
 
