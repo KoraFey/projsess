@@ -54,39 +54,74 @@ public class Login extends AppCompatActivity {
                     t.show();
                 } else {
                     int r = checkSelfPermission("android.permission.INTERNET");
-                    if (r == PackageManager.PERMISSION_GRANTED){
+                    if (r == PackageManager.PERMISSION_GRANTED) {
                         client = new OkHttpClient();
                         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                         JSONObject obj = new JSONObject();
                         try {
-                            obj.put("username", "userMobile");
-                            obj.put("password", "Mobile");
+                            obj.put("username", username.getText().toString());
+                            obj.put("password", password.getText().toString());
 
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                         RequestBody corpsRequete = RequestBody.create(String.valueOf(obj), JSON);
 
 
                         Request requete = new Request.Builder()
-                                .url(API_URL+"/users")
+                                .url(API_URL + "/api/logins")
                                 .post(corpsRequete)
                                 .build();
 
 
-
-                        (new Thread() {
+                        new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                //traitement effectué par le thread
+
+                                Response response = null;
                                 try {
-                                    client.newCall(requete).execute();
+                                    response = client.newCall(requete).execute();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
+
+                                Response finalResponse = response;
+                                Login.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(finalResponse.code()==200){
+                                            ResponseBody responseBody = finalResponse.body();
+                                            String jsonId="";
+                                            JSONObject object;
+                                            try {
+                                                jsonId= responseBody.string();
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            try {
+                                                 object = new JSONObject(jsonId);
+                                            } catch (JSONException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            Intent intent = new Intent(Login.this,MAIN.class);
+                                            try {
+                                                intent.putExtra("userId",object.getString("id"));
+                                            } catch (JSONException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            startActivity(intent);
+                                        }
+                                        else{
+                                            Toast.makeText(Login.this, "erreur du login", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+
                             }
                         }).start();
-                    }else{
+                    }
+                        else{
                         Toast.makeText(Login.this, "Non permis!", Toast.LENGTH_LONG).show();
                     }
 
