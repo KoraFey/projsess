@@ -145,7 +145,7 @@ if ($response) {
     <nav class="lien">
         <ul class="categorie">
             <li><a href="#" class="highlighted" id="conteneurFeedLink" onclick="displayConteneur('conteneurFeed')">Feed</a></li>
-            <li><a href="#" class="unhighlighted" id="conteneurFriendsLink" onclick="displayConteneur('conteneurFriends')">Friends</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurProfileLink" onclick="displayConteneur('conteneurProfile')">Profile</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurMarketLink" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
@@ -180,7 +180,7 @@ if ($response) {
             </article>
         </div>
 
-        <div id="conteneurFriends">
+        <div id="conteneurProfile">
         </div>
 
         <div id="conteneurMarket">

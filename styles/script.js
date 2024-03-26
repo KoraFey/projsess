@@ -1,5 +1,5 @@
 let conteneurFeed = document.getElementById("conteneurFeed");
-let conteneurFriends = document.getElementById("conteneurFriends");
+let conteneurProfile = document.getElementById("conteneurProfile");
 let conteneurMarket = document.getElementById("conteneurMarket");
 let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
@@ -10,7 +10,7 @@ let openGifs = false;
 let darkModeCheckbox = document.getElementById("dark-mode");
 let conteneurPrincipal = [
   conteneurFeed,
-  conteneurFriends,
+  conteneurProfile,
   conteneurMarket,
   conteneurGroup,
   conteneurFood,
@@ -142,11 +142,11 @@ document.addEventListener("DOMContentLoaded", function () {
   
   rechercheInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      displayConteneur('conteneurFriends');
+      displayConteneur('conteneurProfile');
     }
   });
   rechercheButton.addEventListener('click', (event) => {
-    displayConteneur('conteneurFriends');
+    displayConteneur('conteneurProfile');
   });
 
   let amisList = document.querySelector('.amis');
@@ -392,3 +392,4 @@ document
     // Ajoutez ici le code pour gérer le clic sur le lien de changement de mot de passe
     console.log("Lien Changer Mot de Passe cliqué");
   });
+

@@ -62,3 +62,29 @@ CREATE TABLE Chat_Room_User(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (chat_room_id) REFERENCES Chat_Room(id) ON DELETE CASCADE
 );
+*/
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+CREATE TABLE `logs` (
+  `user_id` int(11) NOT NULL,
+  `chatroom_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `time` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `logs`
+--
+ALTER TABLE `logs`
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `chatroom_id` (`chatroom_id`);
+
+--
