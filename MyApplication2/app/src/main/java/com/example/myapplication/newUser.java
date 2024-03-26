@@ -53,6 +53,8 @@ public class newUser extends AppCompatActivity {
                             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                             JSONObject obj = new JSONObject();
                             try {
+
+
                                 obj.put("username", username.getText().toString());
                                 obj.put("password", password1.getText().toString());
 
