@@ -9,14 +9,17 @@ get('/chatroom.php','chatroom.php');
 any('/login.php', 'login.php');
 any('/newUser.php', 'newUser.php');
 
-get('/api/posts/$id', '/api/post/getPost.php');
+get('/api/getSettings/$id', '/api/getSettings.php');
+
+
 get('/api/posts', '/api/post/getPosts.php');
 
 
+
+
 post('/api/users', '/api/newUserMobile.php');
-
-
 post('/api/logins', '/api/loginMobile.php');
+
 
 
 
