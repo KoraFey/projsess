@@ -46,49 +46,41 @@
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <ImageView
-        android:id="@+id/contentPost"
+        android:id="@+id/item"
         android:layout_width="370dp"
         android:layout_height="257dp"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/timePost"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+
     <TextView
         android:id="@+id/description"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:text="caption"
+        android:text="decription"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/contentPost" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/description">
-
-        <RadioButton
-            android:id="@+id/like"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:button="@drawable/like_icone" />
-
-        <RadioButton
-            android:id="@+id/dislike"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:button="@drawable/dislike_icone" />
-    </RadioGroup>
+        app:layout_constraintTop_toBottomOf="@+id/titleMarket" />
 
     <Button
-        android:id="@+id/comments"
+        android:id="@+id/notify"
+        android:layout_width="375dp"
+        android:layout_height="50dp"
+        android:text="envoyer "
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <TextView
+        android:id="@+id/titleMarket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="commentaire"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        android:text="titre"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -132,8 +132,6 @@ public class MAIN extends AppCompatActivity {
                 popupWindow.showAtLocation(layout, Gravity.BOTTOM,0,0);
             }
         });
-        Button save;
-        save = popUp.findViewById(R.id.close);
         Switch dark = popUp.findViewById(R.id.dark_mode);
         Switch notif = popUp.findViewById(R.id.notification);
         try {
