@@ -122,7 +122,7 @@ if ($response) {
                 <!-- Paiement -->
                 <div class="setting">
                     <img src="images/paiement-securise.png" alt="paiement" class="paiement">
-                    <a href="#">Paiement</a>
+                    <a href="./page_paiement.php">Paiement</a>
                 </div>
 
 
@@ -227,21 +227,21 @@ if ($response) {
                             
 
                             <div class="commander-text">
-                               <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                               <button class="btn btn-success" onclick="toggleMenu()">Commander</button>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="images/pizza 2.jpeg" class=".col-md-12" alt="Restaurant 1 Image 2">
 
                             <div class="commander-text">
-                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                                <button class="btn btn-success" onclick="toggleMenu()">Commander</button>
                             </div>
                         </div>
                          <div class="carousel-item">
                             <img src="images/pizza 3.jpeg" class=".col-md-12" alt="Restaurant 1 Image 2">
 
                             <div class="commander-text">
-                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                                <button class="btn btn-success" onclick="toggleMenu()">Commander</button>
                             </div>
                             
                         </div>
@@ -269,19 +269,36 @@ if ($response) {
                         <li data-name="Pizza Margherita" data-price="10">Pizza Frommage - $20.99</li>
                         <li data-name="Pizza Margherita" data-price="10">Pizza Mixte - $30.22</li>
 
-                        <!-- Ajoutez d'autres éléments de menu ici si nécessaire -->
                     
                         <!-- Ajoutez d'autres éléments de menu ici si nécessaire -->
                     </ul>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#panierModal">
+  Voir le panier
+</button>
 
-                </div>
-                <div id="panier">
-                    <h4>Panier</h4>
-                    <ul id="panier-items"></ul>
-                    <p id="total">Total: $0</p>
-                    <button onclick="viderPanier()">Vider le panier</button>
-                    <button onclick="payer()">Payer</button>
-                </div>
+<!-- Définition de la boîte modale -->
+<div class="modal fade" id="panierModal" tabindex="-1" aria-labelledby="panierModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="panierModalLabel">Panier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4>Panier</h4>
+        <ul id="panier-items"></ul>
+        <p id="total">Total: $0</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button onclick="viderPanier()" type="button" class="btn btn-danger">Vider le panier</button>
+        <button onclick="payer()" type="button" class="btn btn-primary">Payer</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+            
                 
             </div>
         </div>
@@ -328,6 +345,7 @@ if ($response) {
                 <p>
                     Contactez-nous pour une livraison à domicile ou pour une commande pour emporter. Notre équipe se fera un plaisir de vous servir !
                     Adresse : 1234, Rue de la Piazza, Montréal, QC H2X 1K5.</p>
+                    
                     
             </div>
         </div>
@@ -459,7 +477,7 @@ if ($response) {
 </script>
 <script>
     function toggleMenu() {
-        var menu = document.getElementById("menu");
+        var menu = document.getElementById("menu1");
         if (menu.style.display === "none") {
             menu.style.display = "block";
         } else {
@@ -514,25 +532,6 @@ if ($response) {
             });
         });
     };
-</script>
-<script>
-    //payment
-function payer() {
-    var modalPaiement = document.getElementById("modal-paiement");
-    modalPaiement.style.display = "block";
-}
-
-function fermerModal() {
-    var modalPaiement = document.getElementById("modal-paiement");
-    modalPaiement.style.display = "none";
-
-    document.getElementById("formulaire-paiement").addEventListener("submit", function(event) {
-    event.preventDefault();
-    // Ici, vous pouvez ajouter la logique pour traiter les informations de paiement
-    alert("Paiement effectué avec succès !");
-    fermerModal();
-});
-}
 </script>
 </body>
 </html>

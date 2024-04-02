@@ -8,6 +8,7 @@ get('/profil.php', 'profil.php');
 get('/chatroom.php','chatroom.php');
 any('/login.php', 'login.php');
 any('/newUser.php', 'newUser.php');
+any('/page_paiement.php','page_paiement.php');
 
 get('/api/getSettings/$id', '/api/getSettings.php');
 
