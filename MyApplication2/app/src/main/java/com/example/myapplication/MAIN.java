@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.TextAttribute;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Switch;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,11 +38,14 @@ import okhttp3.ResponseBody;
 public class MAIN extends AppCompatActivity {
     private TextView title;
     private EditText searchUser;
-    private Button  chat,market,profile,set;
+    private Button  chat,market,profile,set,newChat;
     private String id;
 
     private LinearLayout layout;
+
+    private LinearLayout lay;
     private JSONObject settings;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +56,20 @@ public class MAIN extends AppCompatActivity {
         profile=findViewById(R.id.profile);
         market=findViewById(R.id.market);
         set=findViewById(R.id.settings);
+        newChat = findViewById(R.id.createchat);
+
         layout=findViewById(R.id.linear);
 
 
 
 
+
+        token = getIntent().getStringExtra("token");
         id = getIntent().getStringExtra("userId");
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(API_URL + "/api/getSettings/"+id)
+                .header("Authorization", "Bearer "+token)
                 .get()
                 .build();
         new Thread (new Runnable() {
@@ -110,16 +120,55 @@ public class MAIN extends AppCompatActivity {
 
 
 
-
+    newChat.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CreatePopUpChat();
+        }
+    });
     set.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CreatePopUp();
+            CreatePopUpSettings();
         }
     });
     }
 
-    private void CreatePopUp(){
+    private void CreatePopUpChat(){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUp = inflater.inflate((R.layout.pop_chat),null);
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popUp,width,height,focusable);
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(layout, Gravity.BOTTOM,0,0);
+            }
+        });
+
+        Button add = popUp.findViewById(R.id.addMember);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lay=popUp.findViewById(R.id.layout_list);
+
+                addMember();
+            }
+        });
+
+
+
+
+
+
+
+    }
+
+
+    private void CreatePopUpSettings(){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popUp = inflater.inflate((R.layout.pop_settings),null);
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -191,6 +240,7 @@ public class MAIN extends AppCompatActivity {
 
         Request requete = new Request.Builder()
                 .url(API_URL + "/api/setSettings/"+id)
+                .header("Authorization", "Bearer "+token)
                 .put(corpsRequete)
                 .build();
         new Thread(new Runnable() {
@@ -220,5 +270,21 @@ public class MAIN extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+
+    private void addMember(){
+        final View memberView = getLayoutInflater().inflate(R.layout.new_member_row,null,false);
+        EditText editText = (EditText) memberView.findViewById(R.id.newMemberName);
+        ImageButton supp =(ImageButton) memberView.findViewById(R.id.supp);
+
+        supp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lay.removeView(memberView);
+            }
+
+        });
+        lay.addView(memberView);
+    }
+
 
 }

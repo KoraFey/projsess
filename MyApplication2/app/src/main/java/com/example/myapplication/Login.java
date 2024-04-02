@@ -29,6 +29,7 @@ import okhttp3.ResponseBody;
 
 public class Login extends AppCompatActivity {
     private Button login,reset,createAccount;
+    private String token;
 
     private EditText username,password;
     OkHttpClient client;
@@ -69,7 +70,7 @@ public class Login extends AppCompatActivity {
 
 
                         Request requete = new Request.Builder()
-                                .url(API_URL + "/api/logins")
+                                .url(API_URL + "/api/auth")
                                 .post(corpsRequete)
                                 .build();
 
@@ -107,6 +108,7 @@ public class Login extends AppCompatActivity {
                                             Intent intent = new Intent(Login.this,MAIN.class);
                                             try {
                                                 intent.putExtra("userId",object.getString("id"));
+                                                intent.putExtra("token",object.getString("token"));
                                             } catch (JSONException e) {
                                                 throw new RuntimeException(e);
                                             }
