@@ -22,11 +22,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -134,6 +137,10 @@ public class MAIN extends AppCompatActivity {
     });
     }
 
+
+
+
+
     private void CreatePopUpChat(){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popUp = inflater.inflate((R.layout.pop_chat),null);
@@ -149,7 +156,52 @@ public class MAIN extends AppCompatActivity {
         });
 
         Button add = popUp.findViewById(R.id.addMember);
+        Button create = popUp.findViewById(R.id.createCh);
 
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                lay=popUp.findViewById(R.id.layout_list);
+                int t = lay.getChildCount();
+                ArrayList<String> list = new ArrayList<String>();
+                boolean empty=false;
+                for(int i =0;i < lay.getChildCount();i++){
+                     View member =  lay.getChildAt(i);
+                     EditText memberName = member.findViewById(R.id.newMemberName);
+                     if(memberName.getText().toString().equals("")) {
+                         i=lay.getChildCount();
+                         empty=true;
+                     }
+                     else{
+                         list.add(memberName.getText().toString());
+                     }
+
+
+                    //list[i] = member.getText().toString();
+                }
+                if(empty){
+                    Toast toast = Toast.makeText(MAIN.this,"les username sont mal remplis",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else{
+                    String json = new Gson().toJson(list);
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put( "users",json);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    popupWindow.dismiss();
+                }
+
+
+
+
+
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -285,6 +337,9 @@ public class MAIN extends AppCompatActivity {
         });
         lay.addView(memberView);
     }
+
+
+
 
 
 }

@@ -17,8 +17,8 @@
             android:id="@+id/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Create Chat Room" />
+            android:text="Create Chat Room"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/ListTitle"
@@ -47,7 +47,7 @@
                 android:text="add user " />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/createCh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

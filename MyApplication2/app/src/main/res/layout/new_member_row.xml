@@ -14,12 +14,12 @@
             android:id="@+id/newMemberName"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_corner"
-            android:layout_margin="5dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="Name" />
+            android:hint="name"
+            android:inputType="text" />
 
         <ImageButton
             android:id="@+id/supp"
