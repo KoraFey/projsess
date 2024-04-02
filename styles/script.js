@@ -18,6 +18,209 @@ let conteneurPrincipal = [
   profileInfo
 ];
 
+function genererFormulaireAjout(modifier, type) {
+  let divAjouter = document.createElement('div');
+  divAjouter.id = 'divAjouter';
+
+  let formAjout = document.createElement('form');
+  formAjout.id = 'formAjout';
+
+  const fields = [
+    { label: 'URL image:', type: 'text', id: 'newUrl' },
+    { label: 'Description:', type: 'textarea', id: 'newDesc' },
+    { label: 'Type:', type: 'select', options: ['Actualité', 'Annonce'], id: 'newType' },
+    { label: 'Tag:', type: 'select-multiple', options: usersList.map(user => user.username), id: 'newTags' }
+  ];
+
+  if (type == 'annonce') {
+    fields[3] = { label: 'Prix:', type: 'number', id: 'newPrice' };
+  }
+
+  fields.forEach(field => {
+    const label = document.createElement('label');
+    label.textContent = field.label;
+    formAjout.appendChild(label);
+
+    let input;
+    switch (field.type) {
+      case 'text':
+        input = document.createElement('input');
+        input.type = 'text';
+        break;
+      case 'textarea':
+        input = document.createElement('textarea');
+        break;
+      case 'select':
+        input = document.createElement('select');
+        field.options.forEach(option => {
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.textContent = option;
+          input.appendChild(optionElement);
+        });
+
+        if(type == 'annonce')
+          input.value = field.options[1];
+        else
+          input.value = field.options[0];
+
+        if (field.id === 'newType') {
+          input.addEventListener('change', function () {
+            let selectedValue = this.value;
+            if (selectedValue === 'Actualité') {
+              replaceForm('actualite');
+
+            } else if (selectedValue === 'Annonce') {
+              replaceForm('annonce');
+            }
+          });
+        }
+        break;
+      case 'select-multiple':
+        input = document.createElement('select');
+        input.multiple = true;
+        input.size = 3;
+        field.options.forEach(option => {
+          const optionUser = document.createElement('option');
+          optionUser.value = option;
+          optionUser.textContent = option;
+          input.appendChild(optionUser);
+        });
+        break;
+      case 'number':
+        input = document.createElement('input');
+        input.type = 'number';
+        break;
+    }
+    input.id = field.id;
+    input.name = field.id;
+    formAjout.appendChild(input);
+    formAjout.appendChild(document.createElement('br'));
+  });
+
+
+  /*
+   if (modifier) {
+      switch (ids[i]) {
+        case 'newUrl':
+          input.value = modifier.urlImage;
+          break;
+        case 'newType':
+          input.value = modifier.type;
+          break;
+        case 'newDesc':
+          input.value = modifier.desc;
+          break;
+      }
+    }
+
+  */
+
+  let divButton = document.createElement('div');
+  divButton.id = 'divButtons';
+
+  let buttonForm = document.createElement('button');
+  buttonForm.type = 'submit'
+  if (!modifier) {
+    buttonForm.id = 'ajouter'
+    buttonForm.textContent = 'Ajouter';
+  } else {
+    buttonForm.id = 'modifier'
+    buttonForm.textContent = 'Modifier';
+  }
+
+  let buttonCancel = document.createElement('button');
+  buttonCancel.id = 'annulerForm'
+  buttonForm.type = 'none'
+  buttonCancel.textContent = 'Annuler';
+
+  divButton.appendChild(buttonForm);
+  divButton.appendChild(buttonCancel);
+  formAjout.appendChild(divButton);
+
+  divAjouter.appendChild(formAjout);
+
+  document.querySelector('main').appendChild(divAjouter);
+}
+
+
+function replaceForm(type) {
+  let formAjout = document.getElementById('divAjouter');
+  formAjout.remove();
+
+  genererFormulaireAjout(null, type);
+  document.getElementById('divAjouter').style.display = 'block';
+
+}
+
+let btnAjouterPost = document.createElement('button');
+btnAjouterPost.textContent = 'Publier';
+btnAjouterPost.setAttribute('class', 'btnAjouter');
+btnAjouterPost.setAttribute('id', 'ajouterPost');
+
+let sectionBtnFonctions = document.querySelector('.btnFonctions');
+sectionBtnFonctions.appendChild(btnAjouterPost);
+
+btnAjouterPost.addEventListener('click', function () {
+  genererFormulaireAjout(null, 'actualite');
+
+  document.getElementById('divAjouter').style.display = 'block';
+
+  document.getElementById('annulerForm').addEventListener('click', function (event) {
+    let formAjout = document.getElementById('divAjouter');
+    formAjout.remove();
+  });
+
+  document.getElementById('formAjout').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    let titre = document.getElementById('newTitre').value;
+    let urlImage = document.getElementById('newUrl').value;
+    let type = document.getElementById('newType').value;
+    let desc = document.getElementById('newDesc').value;
+
+    let nouveauPost = {
+      id: -1,
+      titre: titre,
+      urlImage: urlImage,
+      type: type,
+      desc: desc
+    };
+
+    listeArticle.push(nouveauPost);
+
+
+    // POST ARTICLE
+    const newPost = { id: -1, titre: titre, url_image: urlImage, type: type, description: desc };
+    fetch(postApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPost)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('La requête a échoué, code: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        
+      })
+      .catch(error => {
+       
+      });
+
+
+
+    let formAjout = document.getElementById('divAjouter');
+    formAjout.remove();
+  });
+
+});
+
+
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
       conteneurPrincipal[i].style.display =
@@ -393,4 +596,3 @@ document
     // Ajoutez ici le code pour gérer le clic sur le lien de changement de mot de passe
     console.log("Lien Changer Mot de Passe cliqué");
   });
-

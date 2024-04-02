@@ -9,6 +9,79 @@ body {
     
 }
 
+/* div pour ajouter un article */
+
+#divAjouter {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    z-index: 9999;
+}
+
+#formAjout label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#formAjout input,
+#formAjout select,
+#formAjout textarea,
+#formAjout input[type='number'] {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+#formAjout button {
+    background-color: #4c59af;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+#divButtons {
+    display: flex;
+    gap: 20px;
+}
+
+#formAjout button:hover {
+    background-color: #333172;
+}
+
+.btnFonctions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#formAjout {
+    position: relative;
+    margin: 0 auto;
+    top: 7rem;
+    max-width: 600px;
+}
+
+/* fin */
+
+
 #gifContainer {
     display: flex;
     flex-wrap: wrap;
@@ -80,7 +153,6 @@ body {
 }
 
 #rechercheButton {
-    padding: 10px;
     width: 70px;
     height: 42px;
     align-self: center;
@@ -91,7 +163,6 @@ body {
     border-top-left-radius: 0; 
     border-bottom-left-radius: 0;    
     cursor: pointer;
-    margin: px;
 }
 
 #searchResultatsWindow{
@@ -107,7 +178,7 @@ body {
 #rechercheInput {
     padding: 10px;
     width: 300px;
-    height: 20px;
+    height: 42px;
 
     align-self: center;
     border: 1px solid rgb(0, 0, 0);
@@ -204,7 +275,7 @@ body {
 
 }
 
-h2{
+.logo h2{
     font-size: 40px;
     font-family: 'Trebuchet MS', sans-serif;
     margin: 20px;
@@ -229,6 +300,8 @@ header img {
 .logo {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .dark-elements {
@@ -487,4 +560,3 @@ footer {
     background-size: cover; /* Pour couvrir toute la surface */
     /* background-size: contain; */ /* Pour s'adapter à la fenêtre du navigateur sans déformation */
 }
-
