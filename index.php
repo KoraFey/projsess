@@ -1,4 +1,5 @@
 <?php
+$webAccess = true;
 require_once __DIR__.'/config.php';
 $stmt = $pdo->prepare('SELECT * FROM settings WHERE user_id = ? ');
 $stmt->execute([$_SESSION["usager"]]);
