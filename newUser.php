@@ -1,5 +1,6 @@
 <?php
 $gPublic = true;
+$webAccess = true;
 require_once __DIR__.'/config.php';
 
 $message = '';

@@ -1,5 +1,5 @@
 <?php
-
+$webAccess = true;
 require_once __DIR__.'/router.php';
 
 get('/', 'index.php');
@@ -20,7 +20,7 @@ get('/api/posts', '/api/post/getPosts.php');
 
 post('/api/users', '/api/newUserMobile.php');
 post('/api/logins', '/api/loginMobile.php');
-
+post('/api/auth', './api/auth.php');
 
 
 
