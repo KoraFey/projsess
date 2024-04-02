@@ -12,6 +12,23 @@ require_once __DIR__.'/config.php';
     <title>Paiement sécurisé</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     
+
+<style>
+        body {
+            background-image: url('images/money.jpeg');
+            /* Répétez l'image sur l'ensemble de la page */
+            background-repeat: repeat;
+            /* Centrez l'image horizontalement et verticalement */
+            background-position: center center;
+            /* Fixez l'image dans sa position, de sorte qu'elle ne se déplace pas lors du défilement */
+            background-attachment: fixed;
+            /* Taille de l'image de fond */
+            background-size: cover; /* Pour couvrir toute la surface */
+            /* background-size: contain; */ /* Pour s'adapter à la fenêtre du navigateur sans déformation */
+        }
+    </style>
+
+
 </head>
 <body>
     <div class="container">

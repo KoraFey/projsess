@@ -262,16 +262,44 @@ if ($response) {
                      <div id="menu" style="display: none;">
                     <!-- Insérez le contenu du menu ici -->
                     <h4>Menu</h4>
-                    <ul id="menu-items">
-                        <li data-name="Pizza Margherita" data-price="10">Pizza Margherita - $22.45</li>
+<ul id="menu-items">
+    <li>
+        <strong>Pizzas:</strong>
+        <ul>
+            <li data-name="Pizza Margherita" data-price="10">Pizza Margherita - $22.45</li>
                         <li data-name="Pizza Pepperoni" data-price="12">Pizza Pepperoni - $27.99</li>
                         <li data-name="Pizza Vegetariana" data-price="11">Pizza Vegetariana - $25.79</li>
                         <li data-name="Pizza Margherita" data-price="10">Pizza Frommage - $20.99</li>
                         <li data-name="Pizza Margherita" data-price="10">Pizza Mixte - $30.22</li>
+            <!-- Ajoutez d'autres tailles de pizza si nécessaire -->
+        </ul>
+    </li>
+    <li>
+        <strong>Boissons:</strong>
+        <ul>
+            <li data-name="Coca Cola" data-price="2">Coca Cola - $2.00</li>
+            <li data-name="Pepsi" data-price="2">Pepsi - $2.00</li>
+            <li data-name="Sprite" data-price="2">Sprite - $2.00</li>
+            <li data-name="Fanta" data-price="2">Fanta - $2.00</li>
+            <!-- Ajoutez d'autres boissons si nécessaire -->
+        </ul>
+    </li>
+    <li>
+        <strong>Frites:</strong>
+        <ul>
+    <li data-name="Frites Medium" data-price="5">Frites (Medium) - $5.00</li>
+    <li data-name="Frites Large" data-price="8">Frites (Large) - $8.00</li>
+    </ul>
+    </li>
+    <li>
+        
+        <strong>Ailes de poulet:</strong>
+        <ul>
 
-                    
-                        <!-- Ajoutez d'autres éléments de menu ici si nécessaire -->
-                    </ul>
+    <li data-name="Boîte d'ailes de poulet Petite" data-price="12">Boîte d'ailes de poulet (Petite) - $12.00</li>
+    <li data-name="Boîte d'ailes de poulet Familiale" data-price="20">Boîte d'ailes de poulet (Familiale) - $20.00</li>
+    <!-- Ajoutez d'autres articles du menu si nécessaire -->
+</ul>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#panierModal">
   Voir le panier
 </button>
@@ -304,75 +332,18 @@ if ($response) {
         </div>
         <div class="col-12 .col-lg-12">
             <!-- Restaurant 2 -->
-            <div class="restaurant">
-                <h3>TACOS MEXICAIN</h3>
-                <!-- Carrousel pour le restaurant 2 -->
-                <div id="carousel2" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="images/tacos.jpeg" class=".col-md-12" alt="Restaurant 2 Image 1">
-
-                            <div class="commander-text">
-                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/tacos2.jpeg" class=".col-md-12" alt="Restaurant 2 Image 2">
-
-                            <div class="commander-text">
-                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
-                            </div>
-
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/tacos3.jpeg" class=".col-md-12" alt="Restaurant 2 Image 2">
-
-                            <div class="commander-text">
-                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
-                            </div>
-                        </div>
-                        <!-- Ajoutez d'autres images pour le restaurant 2 si nécessaire -->
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-                <p>
-                    Contactez-nous pour une livraison à domicile ou pour une commande pour emporter. Notre équipe se fera un plaisir de vous servir !
-                    Adresse : 1234, Rue de la Piazza, Montréal, QC H2X 1K5.</p>
-                    
-                    
-            </div>
+            
         </div>
         
     </div>
 </div>
 
 
-   <!-- <div class="row">
-        <div class="col-md-6">
-            <div class="restaurant" id="restaurant1">
-                <h3>PIZZA ITALIENNE</h3>
-                <img src="images/pizza.jpeg" alt="Restaurant 1" onclick="afficherMenu('restaurant1')">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="restaurant" id="restaurant2">
-                <h3>Restaurant 2</h3>
-                <img src="./images/restaurant2_1.jpg" alt="Restaurant 2" onclick="afficherMenu('restaurant2')">
-            </div>
-        </div>
-    </div>
-</div>--->
+ 
 
 <!-- Conteneur pour le menu du restaurant -->
 <div id="menuContainer_restaurant1" class="container menuContainer"></div>
-<div id="menuContainer_restaurant2" class="container menuContainer"></div>
+
 
 <div id="menuContainer" class="container">
     <!-- Le contenu du menu du restaurant sera inséré ici -->

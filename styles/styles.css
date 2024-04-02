@@ -470,3 +470,21 @@ footer {
     .carousel-img-container:hover .commander-text {
         opacity: 1;
     }
+
+
+
+    /* styles.css */
+
+.body-page_paiement {
+    background-image: url('images/money.jpeg');
+    /* Répétez l'image sur l'ensemble de la page */
+    background-repeat: repeat;
+    /* Centrez l'image horizontalement et verticalement */
+    background-position: center center;
+    /* Fixez l'image dans sa position, de sorte qu'elle ne se déplace pas lors du défilement */
+    background-attachment: fixed;
+    /* Taille de l'image de fond */
+    background-size: cover; /* Pour couvrir toute la surface */
+    /* background-size: contain; */ /* Pour s'adapter à la fenêtre du navigateur sans déformation */
+}
+
