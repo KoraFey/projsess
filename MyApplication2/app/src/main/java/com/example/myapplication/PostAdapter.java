@@ -49,7 +49,25 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final RadioButton like = view.findViewById(R.id.like);
             final RadioButton dislike = view.findViewById(R.id.dislike);
             final Button      comments = view.findViewById(R.id.comments);
+            comments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ///dont know what to do rn
+                }
+            });
+
+            username.setText(post.getUser());
+            time.setText(post.getTime());
+            caption.setText(post.getCaption());
+            if(post.getLike()){
+                like.setChecked(true);
+            }
+            else{
+                dislike.setChecked(true);
+            }
         }
+
+
         return view;
     }
 
