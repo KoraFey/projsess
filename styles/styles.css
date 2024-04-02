@@ -442,3 +442,31 @@ footer {
 #retourButton:hover {
     background-color: #bd2130;
 }
+
+
+
+    .carousel-img-container {
+        position: relative;
+    }
+
+    .image-opacity {
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-img-container:hover .image-opacity {
+        opacity: 0.7;
+    }
+
+    .commander-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        color: white;
+    }
+
+    .carousel-img-container:hover .commander-text {
+        opacity: 1;
+    }

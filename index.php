@@ -60,6 +60,7 @@ if ($response) {
     <title>All in One</title>
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="stylesheet" href="./styles/normalize.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
     <script>
@@ -211,8 +212,153 @@ if ($response) {
         <div id="conteneurGroup">
         </div>
 
-        <div id="conteneurFood">
+       <div id="conteneurFood" class="container">
+       <div class="container">
+    <div class="row">
+        <div class="col-12 .col-lg-12">
+            <!-- Restaurant 1 -->
+            <div class="restaurant">
+                <h3>PIZZA BELLA NAPOLI</h3>
+                <!-- Carrousel pour le restaurant 1 -->
+                <div id="carousel1" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/pizza.jpeg" class=".col-md-12" alt="Restaurant 1 Image 1" >
+                            
+
+                            <div class="commander-text">
+                               <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/pizza 2.jpeg" class=".col-md-12" alt="Restaurant 1 Image 2">
+
+                            <div class="commander-text">
+                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+                        </div>
+                         <div class="carousel-item">
+                            <img src="images/pizza 3.jpeg" class=".col-md-12" alt="Restaurant 1 Image 2">
+
+                            <div class="commander-text">
+                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+                            
+                        </div>
+                        <!-- Ajoutez d'autres images pour le restaurant 1 si nécessaire -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel1" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel1" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <p>
+                    Contactez-nous pour une livraison à domicile ou pour une commande pour emporter. Notre équipe se fera un plaisir de vous servir !
+                    Adresse : 1234, Rue de la Piazza, Montréal, QC H2X 1K5.</p>
+                     <div id="menu" style="display: none;">
+                    <!-- Insérez le contenu du menu ici -->
+                    <h4>Menu</h4>
+                    <ul id="menu-items">
+                        <li data-name="Pizza Margherita" data-price="10">Pizza Margherita - $22.45</li>
+                        <li data-name="Pizza Pepperoni" data-price="12">Pizza Pepperoni - $27.99</li>
+                        <li data-name="Pizza Vegetariana" data-price="11">Pizza Vegetariana - $25.79</li>
+                        <li data-name="Pizza Margherita" data-price="10">Pizza Frommage - $20.99</li>
+                        <li data-name="Pizza Margherita" data-price="10">Pizza Mixte - $30.22</li>
+
+                        <!-- Ajoutez d'autres éléments de menu ici si nécessaire -->
+                    
+                        <!-- Ajoutez d'autres éléments de menu ici si nécessaire -->
+                    </ul>
+
+                </div>
+                <div id="panier">
+                    <h4>Panier</h4>
+                    <ul id="panier-items"></ul>
+                    <p id="total">Total: $0</p>
+                    <button onclick="viderPanier()">Vider le panier</button>
+                    <button onclick="payer()">Payer</button>
+                </div>
+                
+            </div>
         </div>
+        <div class="col-12 .col-lg-12">
+            <!-- Restaurant 2 -->
+            <div class="restaurant">
+                <h3>TACOS MEXICAIN</h3>
+                <!-- Carrousel pour le restaurant 2 -->
+                <div id="carousel2" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/tacos.jpeg" class=".col-md-12" alt="Restaurant 2 Image 1">
+
+                            <div class="commander-text">
+                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/tacos2.jpeg" class=".col-md-12" alt="Restaurant 2 Image 2">
+
+                            <div class="commander-text">
+                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/tacos3.jpeg" class=".col-md-12" alt="Restaurant 2 Image 2">
+
+                            <div class="commander-text">
+                                <button class="btn btn-primary" onclick="toggleMenu()">Commander</button>
+                            </div>
+                        </div>
+                        <!-- Ajoutez d'autres images pour le restaurant 2 si nécessaire -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <p>
+                    Contactez-nous pour une livraison à domicile ou pour une commande pour emporter. Notre équipe se fera un plaisir de vous servir !
+                    Adresse : 1234, Rue de la Piazza, Montréal, QC H2X 1K5.</p>
+                    
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+   <!-- <div class="row">
+        <div class="col-md-6">
+            <div class="restaurant" id="restaurant1">
+                <h3>PIZZA ITALIENNE</h3>
+                <img src="images/pizza.jpeg" alt="Restaurant 1" onclick="afficherMenu('restaurant1')">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="restaurant" id="restaurant2">
+                <h3>Restaurant 2</h3>
+                <img src="./images/restaurant2_1.jpg" alt="Restaurant 2" onclick="afficherMenu('restaurant2')">
+            </div>
+        </div>
+    </div>
+</div>--->
+
+<!-- Conteneur pour le menu du restaurant -->
+<div id="menuContainer_restaurant1" class="container menuContainer"></div>
+<div id="menuContainer_restaurant2" class="container menuContainer"></div>
+
+<div id="menuContainer" class="container">
+    <!-- Le contenu du menu du restaurant sera inséré ici -->
+</div>
     
 
         <div class="profile-info" id="profileInfo">
@@ -264,7 +410,25 @@ if ($response) {
                 </form>
             </div>
         </div>
-
+   <!---payment--->     
+<div id="modal-paiement" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fermerModal()">&times;</span>
+        <h2>Informations de paiement</h2>
+        <p>Insérez ici les informations de paiement, telles que les méthodes de paiement acceptées, les instructions de paiement, etc.</p>
+        <!-- Ajoutez les informations de paiement nécessaires ici -->
+        <form id="formulaire-paiement">
+            <label for="numero-carte">Numéro de carte:</label>
+            <input type="text" id="numero-carte" name="numero-carte" placeholder="1234 5678 9012 3456" required>
+            <label for="titulaire-carte">Titulaire de la carte:</label>
+            <input type="text" id="titulaire-carte" name="titulaire-carte" placeholder="John Doe" required>
+            <label for="date-expiration">Date d'expiration:</label>
+            <input type="text" id="date-expiration" name="date-expiration" placeholder="MM/AA" required>
+            <!-- Ajoutez d'autres champs de paiement ici si nécessaire -->
+            <button type="submit">Payer</button>
+        </form>
+    </div>
+</div>
 
     </main>
 
@@ -272,6 +436,103 @@ if ($response) {
         <p>© All in One</p>
     </footer>
     <script src="./styles/script.js?reload=1"></script> <!-- Fichier JavaScript pour les fonctionnalités -->
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Sélectionnez toutes les divs avec la classe "commander-text"
+    const commanderTexts = document.querySelectorAll('.commander-text');
+
+    // Ajoutez un écouteur d'événements pour chaque div
+    commanderTexts.forEach(commanderText => {
+        // Au survol de la div, affichez le texte "Commander"
+        commanderText.addEventListener('mouseenter', () => {
+            commanderText.style.opacity = '1';
+        });
+        // Lorsque la souris quitte la div, masquez le texte "Commander"
+        commanderText.addEventListener('mouseleave', () => {
+            commanderText.style.opacity = '0';
+        });
+    });
+</script>
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("menu");
+        if (menu.style.display === "none") {
+            menu.style.display = "block";
+        } else {
+            menu.style.display = "none";
+        }
+    }
+</script>
+<script>
+    var panierItems = []; // Liste des articles sélectionnés
+    var total = 0; // Total du panier
+
+    function toggleMenu() {
+        var menu = document.getElementById("menu");
+        if (menu.style.display === "none") {
+            menu.style.display = "block";
+        } else {
+            menu.style.display = "none";
+        }
+    }
+
+    function ajouterAuPanier(element) {
+        var nom = element.dataset.name;
+        var prix = parseFloat(element.dataset.price);
+        panierItems.push({ nom: nom, prix: prix });
+        total += prix;
+        afficherPanier();
+    }
+
+    function afficherPanier() {
+        var panierItemsList = document.getElementById("panier-items");
+        panierItemsList.innerHTML = "";
+        panierItems.forEach(function(item) {
+            var li = document.createElement("li");
+            li.textContent = item.nom + " - $" + item.prix;
+            panierItemsList.appendChild(li);
+        });
+        document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
+    }
+
+    function viderPanier() {
+        panierItems = [];
+        total = 0;
+        afficherPanier();
+    }
     
+
+    window.onload = function() {
+        var menuItems = document.querySelectorAll("#menu-items li");
+        menuItems.forEach(function(item) {
+            item.addEventListener("click", function() {
+                ajouterAuPanier(item);
+            });
+        });
+    };
+</script>
+<script>
+    //payment
+function payer() {
+    var modalPaiement = document.getElementById("modal-paiement");
+    modalPaiement.style.display = "block";
+}
+
+function fermerModal() {
+    var modalPaiement = document.getElementById("modal-paiement");
+    modalPaiement.style.display = "none";
+
+    document.getElementById("formulaire-paiement").addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Ici, vous pouvez ajouter la logique pour traiter les informations de paiement
+    alert("Paiement effectué avec succès !");
+    fermerModal();
+});
+}
+</script>
 </body>
 </html>
