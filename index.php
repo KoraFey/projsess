@@ -151,7 +151,7 @@ if ($response) {
             <li><a href="#" class="unhighlighted" id="conteneurMarketLink" onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
-            <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Chatroom</a></li>
+            <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Profile</a></li>
         </ul>
     </nav>
 

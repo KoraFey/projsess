@@ -3,6 +3,7 @@ let conteneurProfile = document.getElementById("conteneurProfile");
 let conteneurMarket = document.getElementById("conteneurMarket");
 let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
+//let conteneurChatRoom = document.getElementById("conteneurChatRoom");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
 let openGifs = false;
