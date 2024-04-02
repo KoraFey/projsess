@@ -81,6 +81,8 @@ if ($response) {
             <input type="button" id="rechercheButton" value="Search"> 
         </div>
 
+        <div class="btnFonctions">
+        </div>
 
         <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
