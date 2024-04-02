@@ -3,7 +3,14 @@ $gPublic = true;
 require_once __DIR__."/../config.php";
 
 
-
+try{
+    $gUserId = authentifier();
+} catch(Exception $e){
+    $response = [];
+    http_response_code(401);
+    $response['error'] = "Non autorisé";
+    echo json_encode($response);
+}
 
 //faut checker cs la
 // if(!isset($_SERVER["CONTENT_TYPE"]) || $_SERVER["CONTENT_TYPE"]!='application/json'){

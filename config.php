@@ -21,8 +21,8 @@ function authentifier(){
      //On vérifie d'abord si on a une session qui comporte la variable user_id,
      //auquel cas on sait que l'authentification a eu lieu par session et on retourne
      //la valeur
-    if(isset($_SESSION["user_id"])){
-        return $_SESSION["user_id"];
+    if(isset($_SESSION["usager"])){
+        return $_SESSION["usager"];
     }
      //Sinon, on continue avec le Token
     //On récupère toutes les entêtes de la requête
@@ -87,7 +87,7 @@ try{
 
 
 // Vérification si l'utilisateur est connecté, sinon redirection vers la page de connexion
-if ((isset($webAccess) && $webAccess==true) && (!isset($gPublic) || !$gPublic) &&  !$gUserId) {
+if ((isset($webAccess) && $webAccess==true) && (!isset($gPublic) || !$gPublic) &&  ($gUserId==0) ) {
         header("Location: login.php");
         exit;
 } 

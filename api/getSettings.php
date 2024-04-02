@@ -2,6 +2,17 @@
 $gPublic = true;
 require_once __DIR__."/../config.php";
 
+
+
+try{
+    $gUserId = authentifier();
+} catch(Exception $e){
+    $response = [];
+    http_response_code(401);
+    $response['error'] = "Non autorisé";
+    echo json_encode($response);
+}
+
 if(isset($id) && filter_var($id, FILTER_VALIDATE_INT)){
     $stmt = $pdo->prepare("SELECT * FROM `settings` WHERE `user_id`=:id");
     $stmt->bindParam(":id", $id);
