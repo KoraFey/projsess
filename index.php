@@ -83,7 +83,7 @@ if ($response) {
 
         <div class="btnFonctions">
         </div>
-
+        
         <div class="settings-container">
         <div class="settings-toggle" onclick="toggleSettings()">
             <img src="images/parametres.png" alt="Paramètres" class="parametres">
@@ -154,6 +154,7 @@ if ($response) {
             <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
             <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Profile</a></li>
+            <li><a href="#" class="unhighlighted" id="chatRoomLink" onclick="displayConteneur('conteneurChatRoom')">Chatroom</a></li>
         </ul>
     </nav>
 
@@ -166,6 +167,10 @@ if ($response) {
     </nav>
 
     <main>
+        <div id="conteneurChatRoom">
+            <h1>ChatRoom</h1>
+            
+        </div>        
         <div id="conteneurFeed">
             <article>
             <h3>Charlie Vu</h3>
