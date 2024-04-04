@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.TextAttribute;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,11 +25,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -187,6 +190,14 @@ public class MAIN extends AppCompatActivity {
 
                             ChatDisplayAdapter adaptateur = new ChatDisplayAdapter(MAIN.this, R.layout.chat_display, list);
                             scrollView.setAdapter(adaptateur);
+                            scrollView.setClickable(true);
+                            scrollView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Toast toast = Toast.makeText(MAIN.this,list[position].getName(),Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            });
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -222,6 +233,7 @@ public class MAIN extends AppCompatActivity {
 
         Button add = popUp.findViewById(R.id.addMember);
         Button create = popUp.findViewById(R.id.createCh);
+        EditText titre = popUp.findViewById(R.id.titreChat);
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +241,7 @@ public class MAIN extends AppCompatActivity {
 
                 lay=popUp.findViewById(R.id.layout_list);
                 int t = lay.getChildCount();
-                ArrayList<String> list = new ArrayList<String>();
+                JSONArray array = new JSONArray();
                 boolean empty=false;
                 for(int i =0;i < lay.getChildCount();i++){
                      View member =  lay.getChildAt(i);
@@ -239,27 +251,83 @@ public class MAIN extends AppCompatActivity {
                          empty=true;
                      }
                      else{
-                         list.add(memberName.getText().toString());
+                         array.put(memberName.getText().toString());
                      }
-
-
-                    //list[i] = member.getText().toString();
+                }
+                if(titre.getText().length()==0){
+                    empty=true;
                 }
                 if(empty){
-                    Toast toast = Toast.makeText(MAIN.this,"les username sont mal remplis",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(MAIN.this,"les username ou le titre sont mal remplis",Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 else{
-                    String json = new Gson().toJson(list);
+//                    ObjectMapper mapper= new ObjectMapper();
+//                    String json = null;
+//                    try {
+//                        json = mapper.writeValueAsString(list);
+//                    } catch (JsonProcessingException e) {
+//                        throw new RuntimeException(e);
+//                    }
 
                     JSONObject obj = new JSONObject();
+
                     try {
-                        obj.put( "users",json);
+                        obj.put("titre", titre.getText().toString());
+                        obj.put("users",array);
+                        obj.put("owner",id);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
+                    OkHttpClient client;
+                    client = new OkHttpClient();
+                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                    RequestBody corpsRequete = RequestBody.create(String.valueOf(obj), JSON);
 
-                    popupWindow.dismiss();
+                    Request requete = new Request.Builder()
+                            .url(API_URL + "/api/createChat")
+                            .header("Authorization", "Bearer "+token)
+                            .post(corpsRequete)
+                            .build();
+
+                    new Thread (new Runnable() {
+                        Response response;
+                        @Override
+                        public void run() {
+                            try {
+                                response = client.newCall(requete).execute();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            ResponseBody responseBody = response.body();
+                            String s;
+                            try {
+                                s = responseBody.string();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            MAIN.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(!(s.equals("\"good\""))){
+                                        Toast toast = Toast.makeText(MAIN.this,"les username sont invalide", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+                                    else{
+                                        popupWindow.dismiss();
+                                    }
+
+
+
+
+                                }
+                            });
+
+                        }
+                    }).start();
+
+
 
 
                 }

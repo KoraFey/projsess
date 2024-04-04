@@ -20,6 +20,14 @@
             android:text="Create Chat Room"
             android:textSize="24sp" />
 
+        <EditText
+            android:id="@+id/titreChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="nom de la chat room"
+            android:inputType="text" />
+
         <TextView
             android:id="@+id/ListTitle"
             android:layout_width="wrap_content"

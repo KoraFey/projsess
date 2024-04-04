@@ -21,6 +21,7 @@ get('/api/posts', '/api/post/getPosts.php');
 post('/api/users', '/api/newUserMobile.php');
 post('/api/logins', '/api/loginMobile.php');
 post('/api/auth', './api/auth.php');
+post('/api/createChat', '/api/createChat.php');
 
 get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
 
@@ -33,3 +34,5 @@ put('/api/setSettings/$id', '/api/setSettings.php');
 
 //route introuvable
 any('/404','404.php');
+
+
