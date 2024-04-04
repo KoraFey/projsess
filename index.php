@@ -168,8 +168,24 @@ if ($response) {
 
     <main>
         <div id="conteneurChatRoom">
-            <h1>ChatRoom</h1>
-            
+            <!--<h3>ChatRoom</h3>-->
+            <div class="chat-container">
+                <div class="chat-messages">
+                    <div class="message__outer">
+                        <!--<div class="message__avatar"></div>-->
+                        <div class="message__inner">
+                        <!--<div class="message__bubble"></div>-->
+                        <!--<div class="message__actions"></div>-->
+                        <!--<div class="message__spacer"></div>-->
+                        </div>
+                    <!--<div class="message__status"></div>-->
+                    </div>
+                </div>
+                <div class="boiteInput">
+                    <input type="text" id="messageInput" placeholder="Entrez votre message..." />
+                    <button id="envoyerMessageBtn">Envoyer</button>
+                </div>
+            </div>
         </div>        
         <div id="conteneurFeed">
             <article>

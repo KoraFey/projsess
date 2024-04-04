@@ -597,3 +597,65 @@ document
     // Ajoutez ici le code pour gérer le clic sur le lien de changement de mot de passe
     console.log("Lien Changer Mot de Passe cliqué");
   });
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+  // Récupérer le champ de saisie du message
+let champMessage = document.getElementById("messageInput");
+
+// Ajouter un écouteur d'événements pour la touche "Entrée"
+champMessage.addEventListener("keypress", function(e) {
+    // Vérifier si la touche "Entrée" a été pressée
+    if (e.key === "Enter") {
+        // Récupérer le contenu du champ de saisie du message
+        let contenuMessage = champMessage.value;
+
+        // Envoyer le message (vous devrez implémenter cette fonction)
+        envoyerMessage(contenuMessage);
+
+        // Effacer le champ de saisie après l'envoi du message
+        champMessage.value = "";
+
+        // Empêcher le comportement par défaut du bouton "Entrée" qui est de sauter à la ligne
+        e.preventDefault();
+    }
+});
+
+// Fonction pour envoyer le message (à implémenter)
+function envoyerMessage(contenuMessage) {
+    // Ici, vous pouvez ajouter la logique pour envoyer le message à votre serveur
+    // Par exemple, vous pouvez utiliser des requêtes AJAX pour envoyer le message à votre serveur
+    // et mettre à jour l'interface utilisateur avec le message envoyé
+    console.log("Message envoyé : " + contenuMessage);
+}
+document.addEventListener("DOMContentLoaded", function() {
+  // Récupérer le champ de saisie du message et le bouton d'envoi
+  let champMessage = document.getElementById("messageInput");
+  let boutonEnvoyer = document.getElementById("envoyerMessageBtn");
+
+  // Ajouter un écouteur d'événements pour les clics sur le bouton d'envoi
+  boutonEnvoyer.addEventListener("click", function() {
+      envoyerMessage(champMessage.value);
+      champMessage.value = ""; // Effacer le champ de saisie après l'envoi du message
+  });
+
+  // Ajouter un écouteur d'événements pour les touches pressées dans le champ de saisie du message
+  champMessage.addEventListener("keydown", function(e) {
+      // Vérifier si la touche "Entrée" a été pressée
+      if (e.key === "Enter") {
+          // Empêcher le comportement par défaut qui est d'envoyer le message
+          e.preventDefault();
+          envoyerMessage(champMessage.value);
+          champMessage.value = ""; // Effacer le champ de saisie après l'envoi du message
+      }
+  });
+
+  // Fonction pour envoyer le message (à implémenter)
+  function envoyerMessage(contenuMessage) {
+      // Ici, vous pouvez ajouter la logique pour envoyer le message à votre serveur
+      // Par exemple, vous pouvez utiliser des requêtes AJAX pour envoyer le message à votre serveur
+      // et mettre à jour l'interface utilisateur avec le message envoyé
+      console.log("Message envoyé : " + contenuMessage);
+  }
+});
