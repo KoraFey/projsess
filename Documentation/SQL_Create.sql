@@ -1,19 +1,16 @@
--- Supprimer la table Chat_Room_User
-DROP TABLE Chat_Room_User;
+-- drop les tables sil existent deja
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 
--- Supprimer la table Chat_Room
-DROP TABLE Chat_Room;
+DROP TABLE IF EXISTS publication_tags;
+DROP TABLE IF EXISTS publication_images;
+DROP TABLE IF EXISTS publication_commentaire;
 
--- Supprimer la table Block_List
-DROP TABLE Block_List;
-
--- Supprimer la table settings
-DROP TABLE settings;
-
--- Supprimer la table users
-DROP TABLE users;
-
-
+DROP TABLE IF EXISTS Publication;
+DROP TABLE IF EXISTS Chat_Room_User;
+DROP TABLE IF EXISTS Chat_Room;
+DROP TABLE IF EXISTS Block_List;
+DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS users;
 
 -- create table user
 CREATE TABLE users (
@@ -23,7 +20,6 @@ CREATE TABLE users (
     url_pfp VARCHAR(255),
     type_usager ENUM('regulier', 'admin') NOT NULL DEFAULT 'regulier'
 );
-
 
 -- creation de la table settings
 CREATE TABLE settings(
@@ -35,7 +31,6 @@ CREATE TABLE settings(
     ON DELETE CASCADE
 );
 
-
 -- table block list
 CREATE TABLE Block_List(
     id int PRIMARY KEY,
@@ -44,7 +39,6 @@ CREATE TABLE Block_List(
 
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (blocked_id) REFERENCES users(id) ON DELETE CASCADE
-
 );
 
 -- table des chat room
@@ -62,12 +56,10 @@ CREATE TABLE Chat_Room_User(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (chat_room_id) REFERENCES Chat_Room(id) ON DELETE CASCADE
 );
-*/
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 CREATE TABLE `logs` (
   `user_id` int(11) NOT NULL,
@@ -76,15 +68,40 @@ CREATE TABLE `logs` (
   `time` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `logs`
---
 ALTER TABLE `logs`
   ADD KEY `user_id` (`user_id`),
   ADD KEY `chatroom_id` (`chatroom_id`);
 
---
+-- pour les posts
+CREATE TABLE Publication (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    description VARCHAR(1000),
+    type VARCHAR(20) CHECK (type IN ('actualite', 'annonce')),
+    prix DECIMAL(10, 2),
+    date_publication DATE,
+    likes INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE publication_tags (
+    id_publication INT,
+    user_id INT,
+    PRIMARY KEY (id_publication, user_id),
+    FOREIGN KEY (id_publication) REFERENCES Publication(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE publication_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_publication INT,
+    url VARCHAR(255),
+    FOREIGN KEY (id_publication) REFERENCES Publication(id)
+);
+
+CREATE TABLE publication_commentaire (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_publication INT,
+    commentaire VARCHAR(255),
+    FOREIGN KEY (id_publication) REFERENCES Publication(id)
+);
