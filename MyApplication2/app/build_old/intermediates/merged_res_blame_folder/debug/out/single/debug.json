@@ -1,0 +1,174 @@
+[
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_pop_settings.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\pop_settings.xml"
+    },
+    {
+        "merged": "com.example.myapplication.app-merged_res-28:/layout_mainlayout.xml.flat",
+        "source": "com.example.myapplication.app-main-30:/layout/mainlayout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_send.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_send.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_post_layout.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\post_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_info.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_info.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_chat_display.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\chat_display.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_dislike_icone.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\dislike_icone.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_profile.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\profile.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_rounded_corner.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\rounded_corner.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_market_layout.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\market_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_liked.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_liked.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_mainlayout.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\mainlayout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_background_content_top.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\background_content_top.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_like_icone.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\like_icone.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_activity_chat_room.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\activity_chat_room.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_create_login.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\create_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_lic_ike.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\lic_ike.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_create_chat_layout.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\create_chat_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_popup.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\popup.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_pop_chat.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\pop_chat.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_dislike.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_dislike.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_new_member_row.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\new_member_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_login.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\login.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_chat_room_layout.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\chat_room_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\layout_message.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\layout\\message.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\drawable_background_chat.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\drawable\\background_chat.xml"
+    },
+    {
+        "merged": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-merged_res-28:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\Alexis Roy\\.gradle\\daemon\\8.2\\com.example.myapplication.app-main-30:\\xml\\data_extraction_rules.xml"
+    }
+]

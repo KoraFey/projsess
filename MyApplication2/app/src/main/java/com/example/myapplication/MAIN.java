@@ -17,12 +17,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +49,8 @@ public class MAIN extends AppCompatActivity {
     private Button  chat,market,profile,set,newChat;
     private String id;
 
+    private ListView scrollView;
+
     private LinearLayout layout;
 
     private LinearLayout lay;
@@ -60,8 +67,11 @@ public class MAIN extends AppCompatActivity {
         market=findViewById(R.id.market);
         set=findViewById(R.id.settings);
         newChat = findViewById(R.id.createchat);
-
+        scrollView = findViewById(R.id.list);
         layout=findViewById(R.id.linear);
+
+
+
 
 
 
@@ -122,7 +132,12 @@ public class MAIN extends AppCompatActivity {
         }).start();
 
 
-
+    chat.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            LoadChatRooms();
+        }
+    });
     newChat.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -136,6 +151,56 @@ public class MAIN extends AppCompatActivity {
         }
     });
     }
+
+
+    private void LoadChatRooms(){
+        OkHttpClient client;
+        client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
+        Request requete = new Request.Builder()
+                .url(API_URL + "/api/chatrooms/"+id)
+                .header("Authorization", "Bearer "+token)
+                .build();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Response response = null;
+                try {
+                    response = client.newCall(requete).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                ResponseBody responseBody = response.body();
+                MAIN.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ChatRoomDisplay[]  list;
+                        ChatRoomDisplay test = new ChatRoomDisplay();
+                        ObjectMapper mapper = new ObjectMapper();
+                        String jsonId;
+                        try {
+                            jsonId=responseBody.string();
+                           list= mapper.readValue(jsonId, ChatRoomDisplay[].class);
+
+
+                            ChatDisplayAdapter adaptateur = new ChatDisplayAdapter(MAIN.this, R.layout.chat_display, list);
+                            scrollView.setAdapter(adaptateur);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+
+
+                    }
+                });
+
+            }
+        }).start();
+    }
+
 
 
 
@@ -186,6 +251,7 @@ public class MAIN extends AppCompatActivity {
                 }
                 else{
                     String json = new Gson().toJson(list);
+
                     JSONObject obj = new JSONObject();
                     try {
                         obj.put( "users",json);
@@ -194,6 +260,8 @@ public class MAIN extends AppCompatActivity {
                     }
 
                     popupWindow.dismiss();
+
+
                 }
 
 
