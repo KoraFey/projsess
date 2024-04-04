@@ -11,8 +11,60 @@ body {
 
 /* div pour ajouter un article */
 
+
+.publication-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-container p {
+    max-width: 500px; 
+}
+
+.carousel-item img.postImage {
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 500px;
+    min-height: 500px;
+    
+    object-fit: cover;
+
+}
+
+.tags-users {
+    opacity: 50%;
+}
+
+#urlList li {
+    cursor: pointer;
+}
+
+
+.image-like {
+    width: 40px;
+    height: 40px;
+}
+
+.publication-container {
+    border: 2px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+}
+
+.publication-container input[type='text'] {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding-left: 10px;
+}
+
+#newUrls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
 #divAjouter {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -23,7 +75,6 @@ body {
     border-radius: 10px;
     color: white;
     font-family: 'Trebuchet MS', sans-serif;
-    z-index: 9999;
 }
 
 #formAjout label {
@@ -75,8 +126,8 @@ body {
 #formAjout {
     position: relative;
     margin: 0 auto;
-    top: 7rem;
-    max-width: 600px;
+    top: 3rem;
+    max-width: 50%;
 }
 
 /* fin */

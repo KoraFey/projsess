@@ -9,7 +9,7 @@ $settingJson = json_encode($settings);
 
 $loggedUserId = $_SESSION["usager"];
 
-$stmt = $pdo->prepare('SELECT username FROM users WHERE id != ?');
+$stmt = $pdo->prepare('SELECT * FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
 $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
@@ -51,6 +51,26 @@ if ($response) {
     $gifsJson = json_encode(['error' => 'Failed to fetch GIFs']);
 }
 
+// fetch tous les details en liens avec les posts
+$stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls
+                       FROM Publication p
+                       LEFT JOIN publication_tags pt ON p.id = pt.id_publication
+                       LEFT JOIN publication_images pi ON p.id = pi.id_publication
+                       GROUP BY p.id;
+                       ');
+$stmt->execute();
+$publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$listePublications = json_encode($publications);
+
+// fetch tous les users, incluant celui deja connecte
+$stmt = $pdo->prepare('SELECT * FROM users');
+$stmt->execute();
+$allUsers = $stmt->fetchAll();
+$allUsersJson = json_encode($allUsers);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +88,10 @@ if ($response) {
       let setting = <?= $settingJson ?>;
       let usersList = <?= $usersJson ?>;
       let gifsList = <?= $gifsJson ?>;
-      console.log(gifsList);
+      let listePosts = <?= $listePublications ?>;
+      let allUsersList = <?= $allUsersJson ?>;
+
+      console.log(listePosts);
     </script>
 </head>
 <body>

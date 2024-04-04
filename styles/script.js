@@ -7,7 +7,11 @@ let conteneurChatRoom = document.getElementById("conteneurChatRoom");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
 let openGifs = false;
+const postApiUrl = "/api/post/";
+const postApiLikes = "/api/postLike/";
 
+let listeArticle = [];
+let postType = 'actualite';
 let darkModeCheckbox = document.getElementById("dark-mode");
 let conteneurPrincipal = [
   conteneurFeed,
@@ -19,7 +23,189 @@ let conteneurPrincipal = [
   profileInfo
 ];
 
-function genererFormulaireAjout(modifier, type) {
+document.addEventListener("DOMContentLoaded", function () {
+
+  function afficherPublications(publications) {
+    const conteneurFeed = document.getElementById('conteneurFeed');
+    conteneurFeed.innerHTML = ''; 
+
+    publications.forEach(publication => {
+        if (publication.type === 'actualite') {
+            const publicationContainer = document.createElement('div');
+            publicationContainer.classList.add('publication-container');
+
+            const infoContainer = document.createElement('div');
+            infoContainer.classList.add('info-container');
+    
+            const h3 = document.createElement('h3');
+            const p = document.createElement('p');
+
+            const user = allUsersList.find(user => user.id === publication.user_id);
+            h3.textContent = user.username; 
+            const userPost = user.username; 
+            p.textContent = publication.description + ' ~ ' + publication.date_publication;
+    
+            const tagsContainer = document.createElement('span');
+            tagsContainer.classList.add('tags-users');
+            
+            if (publication.tag_users != null) {
+                const tagsUsers = publication.tag_users.split(',').map(tag => {
+                    const tagUser = allUsersList.find(user => user.id === parseInt(tag));
+                    const tagSpan = document.createElement('span');
+                    tagSpan.classList.add('tag-user');
+                    tagSpan.textContent = tagUser.username;
+                    return tagSpan;
+                });
+                
+                const estAvec = document.createElement('span');
+                estAvec.textContent = ' est avec: ';
+                tagsContainer.appendChild(estAvec);
+                
+                tagsUsers.forEach((tag, index) => {
+                    tagsContainer.appendChild(tag);
+                    if (index < tagsUsers.length - 1) {
+                        const vigurle = document.createElement('span');
+                        vigurle.textContent = ', ';
+                        tagsContainer.appendChild(vigurle);
+                    }
+                });
+            }
+            
+            infoContainer.appendChild(h3);
+            infoContainer.appendChild(tagsContainer);          
+            infoContainer.appendChild(p);
+    
+            const carouselContainer = document.createElement('div');
+            const carouselInner = document.createElement('div');
+
+            carouselContainer.classList.add('carousel', 'slide');
+            carouselContainer.setAttribute('data-bs-ride', 'carousel');
+            carouselContainer.id = `publicationCarousel${publication.id}`;
+            carouselInner.classList.add('carousel-inner');
+
+            const imgLike = document.createElement('img');
+            imgLike.src = '../images/heart.png';
+            imgLike.alt = 'like';
+            imgLike.classList.add('image-like'); 
+
+            const imageUrls = publication.image_urls.split(',');
+            imageUrls.forEach((url, index) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('carousel-item');
+                if (index === 0) 
+                    carouselItem.classList.add('active');
+                
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'post';
+                img.classList.add('d-block', 'w-100', 'postImage'); 
+
+                img.addEventListener('dblclick', function() {
+                      imgLike.src = '../images/hearted.png'; 
+                      incrementLikes(publication.id);
+                });
+
+                carouselItem.appendChild(img);
+                carouselInner.appendChild(carouselItem);
+            });
+            carouselContainer.appendChild(carouselInner);
+    
+            const carouselAvant = document.createElement('button');
+            const carouselApres = document.createElement('button');
+
+            carouselAvant.classList.add('carousel-control-prev');
+            carouselAvant.type = 'button';
+            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+            carouselAvant.setAttribute('data-bs-slide', 'prev');
+            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+    
+            carouselApres.classList.add('carousel-control-next');
+            carouselApres.type = 'button';
+            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+            carouselApres.setAttribute('data-bs-slide', 'next');
+            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+    
+            carouselContainer.appendChild(carouselAvant);
+            carouselContainer.appendChild(carouselApres);
+    
+            publicationContainer.appendChild(infoContainer);
+            publicationContainer.appendChild(carouselContainer);
+            
+            imgLike.addEventListener('click', function() {
+              if (imgLike.src.includes('hearted.png')) {
+                  imgLike.src = '../images/heart.png'; 
+                  decrementLikes(publication.id);
+              } else {
+                  imgLike.src = '../images/hearted.png'; 
+                  incrementLikes(publication.id);
+              }
+            });
+
+            const nbLikes = document.createElement('p');
+            nbLikes.id = 'nbLikes' + publication.id;
+            if(publication.likes != null && publication.likes != 1 && publication.likes != 0)
+              nbLikes.textContent = publication.likes + " likes";
+            else if(publication.likes == 1)
+              nbLikes.textContent = "1 like";
+            else 
+              nbLikes.textContent = "0 like";
+
+            publicationContainer.appendChild(imgLike);
+            publicationContainer.appendChild(nbLikes);
+
+
+            const inputComment = document.createElement('input');
+            inputComment.type = 'text';
+            inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
+            publicationContainer.appendChild(inputComment);
+            
+            conteneurFeed.appendChild(publicationContainer);
+
+        }
+    });
+}
+
+function incrementLikes(publicationid) {
+  console.log(publicationid);
+  fetch(postApiLikes, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ publication_id: publicationid })
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      let nbLikes = document.getElementById('nbLikes' + data.publication_id)
+
+      if(data.likes.likes != null && data.likes.likes != 1 && data.likes.likes != 0)
+        nbLikes.textContent = data.likes.likes + " likes"
+      else if(data.likes.likes == 1)
+        nbLikes.textContent = "1 like";
+      else 
+        nbLikes.textContent = "0 like";
+  })
+  .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+  });
+}
+
+
+function decrementLikes(publication_id) {
+ 
+}
+
+afficherPublications(listePosts);
+
+
+});
+
+function genererFormulaireAjout(modifier) {
   let divAjouter = document.createElement('div');
   divAjouter.id = 'divAjouter';
 
@@ -27,13 +213,13 @@ function genererFormulaireAjout(modifier, type) {
   formAjout.id = 'formAjout';
 
   const fields = [
-    { label: 'URL image:', type: 'text', id: 'newUrl' },
+    { label: 'URL images:', type: 'text', id: 'newUrls', multiple: true },
     { label: 'Description:', type: 'textarea', id: 'newDesc' },
     { label: 'Type:', type: 'select', options: ['Actualité', 'Annonce'], id: 'newType' },
     { label: 'Tag:', type: 'select-multiple', options: usersList.map(user => user.username), id: 'newTags' }
   ];
 
-  if (type == 'annonce') {
+  if (postType == 'annonce') {
     fields[3] = { label: 'Prix:', type: 'number', id: 'newPrice' };
   }
 
@@ -45,8 +231,54 @@ function genererFormulaireAjout(modifier, type) {
     let input;
     switch (field.type) {
       case 'text':
-        input = document.createElement('input');
-        input.type = 'text';
+        if (field.id === 'newUrls') {
+          input = document.createElement('div');
+          const urlInput = document.createElement('input');
+          let postMax = 0;
+      
+          urlInput.type = 'text';
+          urlInput.id = 'newUrl';
+          input.appendChild(urlInput);
+          const addButton = document.createElement('button');
+          addButton.textContent = 'Add URL';
+          addButton.type = 'button';
+          addButton.addEventListener('click', function() {
+              const url = urlInput.value;
+              if (url.trim() !== '') {
+                  const urlList = document.getElementById('urlList');
+                  const image = new Image();
+                  image.src = url;
+                  image.style.maxHeight = '100px'; 
+                  image.style.marginRight = '10px'; 
+                  image.style.cursor = 'pointer';
+      
+                  image.addEventListener('click', function() {
+                      this.parentNode.removeChild(this);
+                      postMax--;
+                      urlInput.disabled = false;
+                      addButton.disabled = false;
+                      urlInput.value = '';
+                  });
+      
+                  urlList.appendChild(image);
+                  urlInput.value = '';
+                  urlList.scrollTop = urlList.scrollHeight;
+                  postMax++;
+                  if (postMax === 10) {
+                      urlInput.disabled = true;
+                      addButton.disabled = true;
+                      urlInput.value = '10 images au max !';
+                  }
+              }
+          });
+          input.appendChild(addButton);
+          const urlList = document.createElement('div'); 
+          urlList.id = 'urlList';
+          urlList.style.maxHeight = '120px';
+          urlList.style.overflow = 'auto';
+          formAjout.appendChild(urlList);
+      }
+      
         break;
       case 'textarea':
         input = document.createElement('textarea');
@@ -60,7 +292,7 @@ function genererFormulaireAjout(modifier, type) {
           input.appendChild(optionElement);
         });
 
-        if(type == 'annonce')
+        if(postType == 'annonce')
           input.value = field.options[1];
         else
           input.value = field.options[0];
@@ -69,10 +301,12 @@ function genererFormulaireAjout(modifier, type) {
           input.addEventListener('change', function () {
             let selectedValue = this.value;
             if (selectedValue === 'Actualité') {
-              replaceForm('actualite');
+              postType = 'actualite';
+              replaceForm();
 
             } else if (selectedValue === 'Annonce') {
-              replaceForm('annonce');
+              postType = 'annonce';
+              replaceForm();
             }
           });
         }
@@ -121,18 +355,18 @@ function genererFormulaireAjout(modifier, type) {
   divButton.id = 'divButtons';
 
   let buttonForm = document.createElement('button');
-  buttonForm.type = 'submit'
+  buttonForm.type = 'submit';
   if (!modifier) {
-    buttonForm.id = 'ajouter'
+    buttonForm.id = 'ajouter';
     buttonForm.textContent = 'Ajouter';
   } else {
-    buttonForm.id = 'modifier'
+    buttonForm.id = 'modifier';
     buttonForm.textContent = 'Modifier';
   }
 
   let buttonCancel = document.createElement('button');
-  buttonCancel.id = 'annulerForm'
-  buttonForm.type = 'none'
+  buttonCancel.type = 'button';
+  buttonCancel.id = 'annulerForm';
   buttonCancel.textContent = 'Annuler';
 
   divButton.appendChild(buttonForm);
@@ -144,14 +378,11 @@ function genererFormulaireAjout(modifier, type) {
   document.querySelector('main').appendChild(divAjouter);
 }
 
-
-function replaceForm(type) {
+function replaceForm() {
   let formAjout = document.getElementById('divAjouter');
   formAjout.remove();
 
-  genererFormulaireAjout(null, type);
-  document.getElementById('divAjouter').style.display = 'block';
-
+  btnAjouterPost.click();
 }
 
 let btnAjouterPost = document.createElement('button');
@@ -162,64 +393,102 @@ btnAjouterPost.setAttribute('id', 'ajouterPost');
 let sectionBtnFonctions = document.querySelector('.btnFonctions');
 sectionBtnFonctions.appendChild(btnAjouterPost);
 
-btnAjouterPost.addEventListener('click', function () {
-  genererFormulaireAjout(null, 'actualite');
-
+btnAjouterPost.addEventListener('click', function (event) {
+  event.preventDefault(); 
+  genererFormulaireAjout(null, postType);
   document.getElementById('divAjouter').style.display = 'block';
 
-  document.getElementById('annulerForm').addEventListener('click', function (event) {
+  document.getElementById('annulerForm').addEventListener('click', function () {
     let formAjout = document.getElementById('divAjouter');
     formAjout.remove();
   });
 
   document.getElementById('formAjout').addEventListener('submit', function (event) {
-    event.preventDefault();
+      event.preventDefault();
 
-    let titre = document.getElementById('newTitre').value;
-    let urlImage = document.getElementById('newUrl').value;
-    let type = document.getElementById('newType').value;
-    let desc = document.getElementById('newDesc').value;
-
-    let nouveauPost = {
-      id: -1,
-      titre: titre,
-      urlImage: urlImage,
-      type: type,
-      desc: desc
-    };
-
-    listeArticle.push(nouveauPost);
-
-
-    // POST ARTICLE
-    const newPost = { id: -1, titre: titre, url_image: urlImage, type: type, description: desc };
-    fetch(postApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newPost)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('La requête a échoué, code: ' + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        
-      })
-      .catch(error => {
-       
+      const images = document.querySelectorAll('#urlList img');
+      let srcList = [];
+      images.forEach(image => {
+          srcList.push(image.src);
       });
 
+      
+      let type = document.getElementById('newType').value == 'Actualité' ? 'actualite':'annonce' ;
+      let desc = document.getElementById('newDesc').value;
+      let prix = document.getElementById('newTags').value;
 
 
-    let formAjout = document.getElementById('divAjouter');
-    formAjout.remove();
+      let selectElement = document.getElementById('newTags');
+
+      let selectedValues = [];
+
+      for (let i = 0; i < selectElement.options.length; i++) {
+         if (selectElement.options[i].selected) {
+             selectedValues.push(selectElement.options[i].value);
+          }
+      }   
+
+      let taggedUserIds = [];
+
+      usersList.forEach(user => {
+          if (selectedValues.includes(user.username)) {
+              taggedUserIds.push(user.id);
+           }
+      });
+
+      
+      let nouveauPost = {
+          id: -1,
+          urlImage: srcList,
+          desc: desc,
+          type: type,
+          prix: selectedValues
+      };
+
+      console.log(srcList)
+
+      console.log(type)
+
+      console.log(desc)
+
+      console.log(taggedUserIds)
+
+      listeArticle.push(nouveauPost);
+
+      // POST ARTICLE
+      const newPost = {
+        url_image: srcList,
+        description: desc,
+        id_type: type,
+        tags: taggedUserIds,
+        prix: null
+      };
+      fetch(postApiUrl, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newPost)
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('La requête a échoué, code: ' + response.status);
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log(data.url_iamge);
+          })
+          .catch(error => {
+              alert("Erreur a l'ajout du jeu: " + error);
+              console.error('Erreur lors de la requête:', error);
+          });
+
+      let formAjout = document.getElementById('divAjouter');
+      formAjout.remove();
   });
-
 });
+
 
 
 function displayConteneur(conteneur) {

@@ -21,12 +21,19 @@ get('/api/posts', '/api/post/getPosts.php');
 post('/api/users', '/api/newUserMobile.php');
 post('/api/logins', '/api/loginMobile.php');
 post('/api/auth', './api/auth.php');
+post('/api/post', '/api/postArticle.php');
+post('/api/postLike', '/api/postLike.php');
 post('/api/createChat', '/api/createChat.php');
 
+
+
+get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
 get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
 
 put('/api/posts/$id', '/api/post/putPost.php');
 delete('/api/posts/$id', '/api/post/deletePost.php');
+
+
 
 
 put('/api/setSettings/$id', '/api/setSettings.php');
