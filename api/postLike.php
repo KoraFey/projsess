@@ -10,13 +10,27 @@ try {
         throw new Exception("Publication ID est vide !");
     }
 
-    if (!isset($body->delete_ou_insert) || empty($body->delete_ou_insert)) {
-        throw new Exception("Insert ou delete ?");
+    if (!isset($body->delete_ou_insert_comment) || empty($body->delete_ou_insert_comment)) {
+        throw new Exception("Insert, delete, comment ?");
     }
 
+    if ($body->delete_ou_insert_comment == "comment"){
+        $stmt = $pdo->prepare("INSERT INTO `publication_commentaire` (`id_publication`, `user_id`, `commentaire`) VALUES (:id_publication, :user_id, :comment)");
+        $stmt->bindValue(":id_publication", $body->publication_id);
+        $stmt->bindValue(":user_id", $_SESSION['usager']);
+        $stmt->bindValue(":comment", $body->comment);
+        $stmt->execute();
+
+        $stmt = $pdo->prepare("SELECT * FROM `publication_commentaire`");
+        $stmt->execute();
+        $comments = $stmt->fetchAll();
+
+        $response = ["comments" => $comments, "publication_id" => $body->publication_id];
+
+    } else {
     $likeCount = 0;
     
-    if ($body->delete_ou_insert == "insert"){
+    if ($body->delete_ou_insert_comment == "insert"){
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM `publication_likes` WHERE `id_publication` = :id_publication AND `user_id` = :user_id");
         $stmt->bindValue(":id_publication", $body->publication_id);
         $stmt->bindValue(":user_id", $_SESSION['usager']);
@@ -25,13 +39,13 @@ try {
     }
     
     if ($likeCount == 0) {
-        if ($body->delete_ou_insert == "insert"){
+        if ($body->delete_ou_insert_comment == "insert"){
                 $stmt = $pdo->prepare("INSERT INTO `publication_likes` (`id_publication`, `user_id`) VALUES (:id_publication, :user_id)");
                 $stmt->bindValue(":id_publication", $body->publication_id);
                 $stmt->bindValue(":user_id", $_SESSION['usager']);
                 $stmt->execute();
             
-        } else {
+        } else if ($body->delete_ou_insert_comment == "delete"){
                 $stmt = $pdo->prepare("DELETE FROM `publication_likes` WHERE `id_publication` = :id_publication AND `user_id` = :user_id");
                 $stmt->bindValue(":id_publication", $body->publication_id);
                 $stmt->bindValue(":user_id", $_SESSION['usager']);
@@ -46,8 +60,9 @@ try {
     $stmt->execute();
     $likes = $stmt->fetchColumn();
     
-    
     $response = ["likes" => $likes, "publication_id" => $body->publication_id];
+    }
+
 } catch (Exception $e) {
     http_response_code(500);
     $response = ["error" => "Erreur lors de l'insertion en BD: " . $e->getMessage()];

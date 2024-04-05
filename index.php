@@ -75,6 +75,10 @@ $stmt->execute();
 $allLikes = $stmt->fetchAll();
 $allLikesJson = json_encode($allLikes);
 
+$stmt = $pdo->prepare("SELECT * FROM `publication_commentaire`");
+$stmt->execute();
+$allComments = $stmt->fetchAll();
+$allCommentsJson = json_encode($allComments);
 
 ?>
 
@@ -97,8 +101,10 @@ $allLikesJson = json_encode($allLikes);
       let allUsersList = <?= $allUsersJson ?>;
       let userActuel = <?= $loggedUserId ?>;
       let allLikesList = <?= $allLikesJson ?>;
+      let allCommentsList = <?= $allCommentsJson ?>;
 
-      console.log(allLikesList);
+
+      console.log(allCommentsList);
     </script>
 </head>
 <body>
@@ -184,7 +190,7 @@ $allLikesJson = json_encode($allLikes);
             <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
             <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Profile</a></li>
-            <li><a href="#" class="unhighlighted" id="chatRoomLink" onclick="displayConteneur('conteneurChatRoom')">Chatroom</a></li>
+            <li><a href="#" class="unhighlighted" id="conteneurChatRoomLink" onclick="displayConteneur('conteneurChatRoom')">Chatroom</a></li>
         </ul>
     </nav>
 
@@ -214,6 +220,8 @@ $allLikesJson = json_encode($allLikes);
                 <div class="boiteInput">
                     <input type="text" id="messageInput" placeholder="Entrez votre message..." />
                     <button id="envoyerMessageBtn">Envoyer</button>
+                    <button id="openGifBtn">Select GIF</button>
+
                 </div>
             </div>
         </div>        

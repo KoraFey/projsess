@@ -9,6 +9,21 @@ body {
     
 }
 
+.commentDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.commentDiv input[type='text']{
+    min-width: 85%;
+}
+
+.commentDiv button{
+    min-width: 14%;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
 /* div pour ajouter un article */
 
 
@@ -39,6 +54,11 @@ body {
     cursor: pointer;
 }
 
+
+#divInteractions {
+    display: flex;
+    gap: 6px;
+}
 
 .image-like {
     width: 40px;
@@ -169,7 +189,7 @@ body {
 }
 
 .chat-container {
-    background-color: rgb(164, 12, 240);
+    background-color: rgb(51, 12, 70);
     flex: 1;
     position: relative;
     width: 100%;

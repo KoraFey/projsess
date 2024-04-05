@@ -23,8 +23,7 @@ let conteneurPrincipal = [
   profileInfo
 ];
 
-document.addEventListener("DOMContentLoaded", function () {
-
+document.addEventListener("DOMContentLoaded", function () {  
   function afficherPublications(publications) {
     const conteneurFeed = document.getElementById('conteneurFeed');
     conteneurFeed.innerHTML = ''; 
@@ -163,14 +162,58 @@ document.addEventListener("DOMContentLoaded", function () {
             else 
               nbLikes.textContent = "0 like";
 
-            publicationContainer.appendChild(imgLike);
+            const divInteractions = document.createElement("div");
+            divInteractions.id = "divInteractions";
+
+            const imgCmmt = document.createElement('img');
+            imgCmmt.src = '../images/chat.png';
+            imgCmmt.alt = 'comment';
+            imgCmmt.classList.add('image-like'); 
+
+            divInteractions.appendChild(imgLike);
+            divInteractions.appendChild(imgCmmt);
+            publicationContainer.appendChild(divInteractions);
             publicationContainer.appendChild(nbLikes);
 
+            const divComments = document.createElement("div");
+            divComments.id = "divComments" + publication.id;
+            divComments.style.display = 'none';
+
+            imgCmmt.addEventListener('click', function() {
+                if(document.getElementById(divComments.id).style.display == 'block')
+                  document.getElementById(divComments.id).style.display = 'none';
+                else
+                  document.getElementById(divComments.id).style.display = 'block';
+            });
+
+            divComments.style.maxHeight = '150px';
+            divComments.style.overflow = 'auto';
+            publicationContainer.appendChild(divComments);
+
+            const inputDiv = document.createElement('div');
+            inputDiv.classList.add("commentDiv");
 
             const inputComment = document.createElement('input');
+            inputComment.id = "id_inputComment"+publication.id;
             inputComment.type = 'text';
             inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
-            publicationContainer.appendChild(inputComment);
+
+            const commentButton = document.createElement('button');
+            commentButton.type = "button";
+            commentButton.textContent = "Send";
+            commentButton.addEventListener('click', function() {
+              if(inputComment.value != ""  && inputComment.value != null)
+                commenterPost(publication.id);
+
+              if(document.getElementById(divComments.id).style.display == 'block')
+                document.getElementById(divComments.id).style.display = 'none';
+              else
+                document.getElementById(divComments.id).style.display = 'block';
+            });
+
+            inputDiv.appendChild(inputComment);
+            inputDiv.appendChild(commentButton);
+            publicationContainer.appendChild(inputDiv);
             
             conteneurFeed.appendChild(publicationContainer);
 
@@ -184,7 +227,7 @@ function incrementLikes(publicationid) {
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ publication_id: publicationid, delete_ou_insert: "insert" })
+      body: JSON.stringify({ publication_id: publicationid, delete_ou_insert_comment: "insert" })
   })
   .then(response => {
       if (!response.ok) {
@@ -215,7 +258,7 @@ function decrementLikes(publicationid) {
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ publication_id: publicationid , delete_ou_insert: "delete" })
+    body: JSON.stringify({ publication_id: publicationid , delete_ou_insert_comment: "delete" })
 })
 .then(response => {
     if (!response.ok) {
@@ -238,8 +281,57 @@ function decrementLikes(publicationid) {
 });
 }
 
-afficherPublications(listePosts);
+function commenterPost(publicationid) {
+  const inputComment = document.getElementById("id_inputComment"+publicationid).value;
+  fetch(postApiLikes, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ publication_id: publicationid , delete_ou_insert_comment: "comment" , comment: inputComment})
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+  populateComments(data.comments);
+})
+.catch(error => {
+    console.error('POST like erreure :', error);
+});
+}
 
+function populateComments(comments){
+  comments.forEach(post => {
+    let id_post = post.id_publication;
+    let divComment = document.getElementById("divComments"+id_post);
+    divComment.innerHTML = "";
+  });
+
+  comments.forEach(post => {
+    let id_post = post.id_publication;
+    let id_user;
+    let commentaire = post.commentaire;
+
+    let divComment = document.getElementById("divComments"+id_post);
+    let comment = document.createElement("p");
+
+    allUsersList.forEach(user => {
+      if(post.user_id === user.id){
+        id_user = user.username;
+      }
+    });
+
+    comment.textContent = id_user + ": " + commentaire;
+    divComment.appendChild(comment);
+  });
+}
+
+afficherPublications(listePosts);
+populateComments(allCommentsList);
 
 });
 
@@ -535,6 +627,7 @@ function displayConteneur(conteneur) {
           conteneurPrincipal[i].id === conteneur ? "flex" : "none";
 
       let highlightedLien;
+
       if (conteneurPrincipal[i].id == conteneur) {
           highlightedLien = document.getElementById(`${conteneur}Link`);
           highlightedLien.classList.add("highlighted");

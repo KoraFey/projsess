@@ -4,6 +4,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 DROP TABLE IF EXISTS publication_tags;
 DROP TABLE IF EXISTS publication_images;
 DROP TABLE IF EXISTS publication_commentaire;
+DROP TABLE IF EXISTS publication_likes;
 
 DROP TABLE IF EXISTS Publication;
 DROP TABLE IF EXISTS Chat_Room_User;
@@ -101,8 +102,11 @@ CREATE TABLE publication_images (
 CREATE TABLE publication_commentaire (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_publication INT,
+    user_id INT,
     commentaire VARCHAR(255),
-    FOREIGN KEY (id_publication) REFERENCES Publication(id)
+    FOREIGN KEY (id_publication) REFERENCES Publication(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+
 );
 
 CREATE TABLE publication_likes (
