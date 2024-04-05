@@ -931,8 +931,9 @@ function toggleDarkMode() {
   let settings = document.getElementById("settingsMenu");
   let header = document.querySelector("header");
   let footer = document.querySelector("footer");
-  let chatMessages = document.getElementById("chatMessages");
+  let chatcontainer = document.getElementById("chat-container");
 
+  console.log(chatcontainer);
 
   let elements = [body, main];
   let elementsNav = [navConvo, navLien];
@@ -947,7 +948,7 @@ function toggleDarkMode() {
     settings.style.backgroundColor = "rgb(59, 59, 59)";
     header.style.backgroundColor = "rgb(51, 0, 95)";
     footer.style.backgroundColor = "rgb(58, 0, 79)";
-    chatMessages.style.backgroundColor = "rgb(49, 43, 52)";
+    chatcontainer.style.backgroundColor = "rgb(49, 43, 52)";
   } else {
     setting["dark_mode"] = 0;
     for (let i = 0; i < elements.length; i++)
@@ -958,7 +959,7 @@ function toggleDarkMode() {
     settings.style.backgroundColor = "white";
     header.style.backgroundColor = "rgb(109, 165, 255)";
     footer.style.backgroundColor = "rgb(86, 145, 234)";
-    chatMessages.style.backgroundColor = "white";
+    chatcontainer.style.backgroundColor = "white";
 
   }
 

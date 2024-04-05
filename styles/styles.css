@@ -194,7 +194,6 @@ body {
 }
 
 .chat-container {
-    background-color: rgb(51, 12, 70);
     flex: 1;
     position: relative;
     width: 100%;
@@ -532,6 +531,12 @@ footer {
 }
 
 /* Style de la section d'informations du profil */
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .profile-image img {
     width: 100px;
     height: 100px;

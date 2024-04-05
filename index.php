@@ -350,7 +350,7 @@ $allCommentsJson = json_encode($allComments);
                                             <li data-name="Boîte d'ailes de poulet Petite" data-price="12">Boîte d'ailes
                                                 de poulet (Petite) - $12.00</li>
                                             <li data-name="Boîte d'ailes de poulet Familiale" data-price="20">Boîte
-                                                d'ailes de poulet (Familiale) - $20.00</li>
+                  profileInfo                             d'ailes de poulet (Familiale) - $20.00</li>
                                             <!-- Ajoutez d'autres articles du menu si nécessaire -->
                                         </ul>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -441,7 +441,7 @@ $allCommentsJson = json_encode($allComments);
                     <p><strong>Prénom :</strong> <span id="prenomProfile">Doe</span></p>
                 </div>
             </div>
-            <div class="chat-container">
+            <div id="chat-container" class="chat-container">
 
 
 
