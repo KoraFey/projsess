@@ -43,7 +43,17 @@ try {
         }
     }
 
-    $insertion = ["id" => $postId, "url_image" => $body->url_image[0], "description" => $body->description, "id_type" => $body->id_type, "prix" => $body->prix];
+    // fetch tous les details en liens avec les posts
+    $stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls
+    FROM Publication p
+    LEFT JOIN publication_tags pt ON p.id = pt.id_publication
+    LEFT JOIN publication_images pi ON p.id = pi.id_publication
+    GROUP BY p.id;
+    ');
+    $stmt->execute();
+    $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $insertion = ["id" => $postId, "url_image" => $body->url_image[0], "description" => $body->description, "id_type" => $body->id_type, "prix" => $body->prix, "listePosts" => $publications];
 
     echo json_encode($insertion);
 } catch (Exception $e) {

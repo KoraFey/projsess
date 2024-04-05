@@ -3,7 +3,6 @@ let conteneurProfile = document.getElementById("conteneurProfile");
 let conteneurMarket = document.getElementById("conteneurMarket");
 let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
-let conteneurChatRoom = document.getElementById("conteneurChatRoom");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
 let openGifs = false;
@@ -19,7 +18,6 @@ let conteneurPrincipal = [
   conteneurMarket,
   conteneurGroup,
   conteneurFood,
-  conteneurChatRoom,
   profileInfo
 ];
 
@@ -28,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const conteneurFeed = document.getElementById('conteneurFeed');
     conteneurFeed.innerHTML = ''; 
 
+    const conteneurMarket = document.getElementById('conteneurMarket');
+    conteneurMarket.innerHTML = ''; 
+
+    publications.reverse();
     publications.forEach(publication => {
         if (publication.type === 'actualite') {
             const publicationContainer = document.createElement('div');
@@ -216,10 +218,168 @@ document.addEventListener("DOMContentLoaded", function () {
             publicationContainer.appendChild(inputDiv);
             
             conteneurFeed.appendChild(publicationContainer);
+        } else if(publication.type === 'annonce'){
+            const annonceContainer = document.createElement('div');
+            annonceContainer.classList.add('annonce-container');
 
+            const infoContainer = document.createElement('div');
+            infoContainer.classList.add('info-container');
+    
+            const h3 = document.createElement('h3');
+            const p = document.createElement('p');
+
+            const user = allUsersList.find(user => user.id === publication.user_id);
+            h3.textContent = user.username; 
+            const userPost = user.username; 
+            p.textContent = publication.description + ' ~ ' + publication.date_publication;
+
+            infoContainer.appendChild(h3);
+            infoContainer.appendChild(p);
+    
+            const carouselContainer = document.createElement('div');
+            const carouselInner = document.createElement('div');
+
+            carouselContainer.classList.add('carousel', 'slide');
+            carouselContainer.setAttribute('data-bs-ride', 'carousel');
+            carouselContainer.id = `publicationCarousel${publication.id}`;
+            carouselInner.classList.add('carousel-inner');
+
+            const imgLike = document.createElement('img');
+            imgLike.src = '../images/heart.png';
+            imgLike.alt = 'like';
+            imgLike.classList.add('image-like'); 
+
+            const imageUrls = publication.image_urls.split(',');
+            imageUrls.forEach((url, index) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('carousel-item');
+                if (index === 0) 
+                    carouselItem.classList.add('active');
+                
+                const img = document.createElement('img');
+                img.classList.add('d-block', 'w-100', 'postImage'); 
+                img.src = url;
+                img.alt = 'post';
+
+                img.addEventListener('dblclick', function() {
+                      imgLike.src = '../images/hearted.png'; 
+                      incrementLikes(publication.id);
+                });
+
+                carouselItem.appendChild(img);
+                carouselInner.appendChild(carouselItem);
+            });
+            carouselContainer.appendChild(carouselInner);
+    
+            const carouselAvant = document.createElement('button');
+            const carouselApres = document.createElement('button');
+
+            carouselAvant.classList.add('carousel-control-prev');
+            carouselAvant.type = 'button';
+            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+            carouselAvant.setAttribute('data-bs-slide', 'prev');
+            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+    
+            carouselApres.classList.add('carousel-control-next');
+            carouselApres.type = 'button';
+            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+            carouselApres.setAttribute('data-bs-slide', 'next');
+            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+    
+            carouselContainer.appendChild(carouselAvant);
+            carouselContainer.appendChild(carouselApres);
+    
+            annonceContainer.appendChild(infoContainer);
+            annonceContainer.appendChild(carouselContainer);
+            
+            conteneurMarket.appendChild(annonceContainer);
         }
+
     });
 }
+
+btnAjouterPost.addEventListener('click', function (event) {
+  event.preventDefault(); 
+  genererFormulaireAjout(null, postType);
+  document.getElementById('divAjouter').style.display = 'block';
+
+  document.getElementById('annulerForm').addEventListener('click', function () {
+    let formAjout = document.getElementById('divAjouter');
+    formAjout.remove();
+  });
+
+  document.getElementById('formAjout').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const images = document.querySelectorAll('#urlList img');
+      let srcList = [];
+      images.forEach(image => {
+          srcList.push(image.src);
+      });
+      
+
+      let type = document.getElementById('newType').value == 'Actualité' ? 'actualite':'annonce' ;
+      let desc = document.getElementById('newDesc').value;
+
+
+      let selectElement = document.getElementById('newTags');
+
+      let taggedUserIds = [];
+      let selectedValues = [];
+
+      if(type == 'actualite') {
+      for (let i = 0; i < selectElement.options.length; i++) {
+         if (selectElement.options[i].selected) {
+             selectedValues.push(selectElement.options[i].value);
+          }
+      }   
+      
+      usersList.forEach(user => {
+          if (selectedValues.includes(user.username)) {
+              taggedUserIds.push(user.id);
+           }
+      });
+      } else {
+        let prix = document.getElementById('newPrice').value;
+        console.log(prix)
+      }
+
+      const newPost = {
+        url_image: srcList,
+        description: desc,
+        id_type: type,
+        tags: taggedUserIds,
+        prix: null
+      };
+
+      fetch(postApiUrl, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newPost)
+      })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('La requête a échoué, code: ' + response.status);
+              }
+              return response.json();
+          })
+          .then(data => {
+            listePosts = data.listePosts;
+            console.log(listePosts);
+            afficherPublications(listePosts);
+          })
+          .catch(error => {
+              alert("Erreur a l'ajout du jeu: " + error);
+              console.error('Erreur lors de la requête:', error);
+          });
+
+      let formAjout = document.getElementById('divAjouter');
+      formAjout.remove();
+  });
+});
+
 
 function incrementLikes(publicationid) {
   fetch(postApiLikes, {
@@ -522,103 +682,6 @@ btnAjouterPost.setAttribute('id', 'ajouterPost');
 
 let sectionBtnFonctions = document.querySelector('.btnFonctions');
 sectionBtnFonctions.appendChild(btnAjouterPost);
-
-btnAjouterPost.addEventListener('click', function (event) {
-  event.preventDefault(); 
-  genererFormulaireAjout(null, postType);
-  document.getElementById('divAjouter').style.display = 'block';
-
-  document.getElementById('annulerForm').addEventListener('click', function () {
-    let formAjout = document.getElementById('divAjouter');
-    formAjout.remove();
-  });
-
-  document.getElementById('formAjout').addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      const images = document.querySelectorAll('#urlList img');
-      let srcList = [];
-      images.forEach(image => {
-          srcList.push(image.src);
-      });
-
-      
-      let type = document.getElementById('newType').value == 'Actualité' ? 'actualite':'annonce' ;
-      let desc = document.getElementById('newDesc').value;
-      let prix = document.getElementById('newTags').value;
-
-
-      let selectElement = document.getElementById('newTags');
-
-      let selectedValues = [];
-
-      for (let i = 0; i < selectElement.options.length; i++) {
-         if (selectElement.options[i].selected) {
-             selectedValues.push(selectElement.options[i].value);
-          }
-      }   
-
-      let taggedUserIds = [];
-
-      usersList.forEach(user => {
-          if (selectedValues.includes(user.username)) {
-              taggedUserIds.push(user.id);
-           }
-      });
-
-      
-      let nouveauPost = {
-          id: -1,
-          urlImage: srcList,
-          desc: desc,
-          type: type,
-          prix: selectedValues
-      };
-
-      console.log(srcList)
-
-      console.log(type)
-
-      console.log(desc)
-
-      console.log(taggedUserIds)
-
-      listeArticle.push(nouveauPost);
-
-      // POST ARTICLE
-      const newPost = {
-        url_image: srcList,
-        description: desc,
-        id_type: type,
-        tags: taggedUserIds,
-        prix: null
-      };
-      fetch(postApiUrl, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(newPost)
-      })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('La requête a échoué, code: ' + response.status);
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log(data.url_iamge);
-          })
-          .catch(error => {
-              alert("Erreur a l'ajout du jeu: " + error);
-              console.error('Erreur lors de la requête:', error);
-          });
-
-      let formAjout = document.getElementById('divAjouter');
-      formAjout.remove();
-  });
-});
-
 
 
 function displayConteneur(conteneur) {

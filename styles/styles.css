@@ -24,6 +24,11 @@ body {
     border-radius: 20px;
 }
 
+.annonce-container {
+    display: grid;
+}
+
+
 /* div pour ajouter un article */
 
 
@@ -527,12 +532,6 @@ footer {
 }
 
 /* Style de la section d'informations du profil */
-.profile-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .profile-image img {
     width: 100px;
     height: 100px;
