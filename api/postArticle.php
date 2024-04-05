@@ -43,13 +43,18 @@ try {
         }
     }
 
-    // fetch tous les details en liens avec les posts
+    // fetch en details tous les posts des users (exluant les users blocker)
     $stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls
     FROM Publication p
     LEFT JOIN publication_tags pt ON p.id = pt.id_publication
     LEFT JOIN publication_images pi ON p.id = pi.id_publication
-    GROUP BY p.id;
-    ');
+    WHERE NOT EXISTS (
+    SELECT 1 FROM Block_List bl 
+    WHERE bl.user_id = :currentUserId 
+    AND bl.blocked_id = p.user_id
+    )
+    GROUP BY p.id');
+    $stmt->bindValue(':currentUserId', $_SESSION["usager"]);
     $stmt->execute();
     $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

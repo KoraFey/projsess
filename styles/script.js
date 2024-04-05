@@ -23,6 +23,8 @@ let conteneurPrincipal = [
 
 document.addEventListener("DOMContentLoaded", function () {  
   function afficherPublications(publications) {
+    console.log(publications);
+    if(publications != null && publications.length != 0){
     const conteneurFeed = document.getElementById('conteneurFeed');
     conteneurFeed.innerHTML = ''; 
 
@@ -296,6 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+    populateComments(allCommentsList);
+  }
 }
 
 btnAjouterPost.addEventListener('click', function (event) {
@@ -491,8 +495,6 @@ function populateComments(comments){
 }
 
 afficherPublications(listePosts);
-populateComments(allCommentsList);
-
 });
 
 function genererFormulaireAjout(modifier) {
@@ -933,7 +935,6 @@ function toggleDarkMode() {
   let footer = document.querySelector("footer");
   let chatcontainer = document.getElementById("chat-container");
 
-  console.log(chatcontainer);
 
   let elements = [body, main];
   let elementsNav = [navConvo, navLien];

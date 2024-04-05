@@ -51,17 +51,23 @@ if ($response) {
     $gifsJson = json_encode(['error' => 'Failed to fetch GIFs']);
 }
 
-// fetch tous les details en liens avec les posts
+// fetch en details tous les posts des users (exluant les users blocker)
 $stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls
                        FROM Publication p
                        LEFT JOIN publication_tags pt ON p.id = pt.id_publication
                        LEFT JOIN publication_images pi ON p.id = pi.id_publication
-                       GROUP BY p.id;
-                       ');
+                       WHERE NOT EXISTS (
+                           SELECT 1 FROM Block_List bl 
+                           WHERE bl.user_id = :currentUserId 
+                           AND bl.blocked_id = p.user_id
+                       )
+                       GROUP BY p.id');
+$stmt->bindValue(':currentUserId', $loggedUserId);
 $stmt->execute();
 $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $listePublications = json_encode($publications);
+
 
 // fetch tous les users, incluant celui deja connecte
 $stmt = $pdo->prepare('SELECT * FROM users');
@@ -209,10 +215,11 @@ $allCommentsJson = json_encode($allComments);
     <main>  
         <div id="conteneurFeed">
             <article>
-                <h3>Charlie Vu</h3>
-                <p>Bonjour, ceci est mon premier post</p>
+                <h3>All in One</h3>
+                <p>Bonjour, vous avez atteint la fin de votre fil d'actualité.</p>
                 <img src="./images/download.jpeg" alt="post">
             </article>
+            <!--
             <article>
                 <h3>Charlie Vu</h3>
                 <p>mon deuxieme post</p>
@@ -223,6 +230,7 @@ $allCommentsJson = json_encode($allComments);
                 <p>mon troisieme post</p>
                 <img src="./images/download.jpeg" alt="post">
             </article>
+                       -->
         </div>
 
         <div id="conteneurProfile">
