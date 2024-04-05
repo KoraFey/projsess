@@ -9,7 +9,7 @@ $settingJson = json_encode($settings);
 
 $loggedUserId = $_SESSION["usager"];
 
-$stmt = $pdo->prepare('SELECT * FROM users WHERE id != ?');
+$stmt = $pdo->prepare('SELECT username FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
 $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
@@ -51,35 +51,6 @@ if ($response) {
     $gifsJson = json_encode(['error' => 'Failed to fetch GIFs']);
 }
 
-// fetch tous les details en liens avec les posts
-$stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls
-                       FROM Publication p
-                       LEFT JOIN publication_tags pt ON p.id = pt.id_publication
-                       LEFT JOIN publication_images pi ON p.id = pi.id_publication
-                       GROUP BY p.id;
-                       ');
-$stmt->execute();
-$publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$listePublications = json_encode($publications);
-
-// fetch tous les users, incluant celui deja connecte
-$stmt = $pdo->prepare('SELECT * FROM users');
-$stmt->execute();
-$allUsers = $stmt->fetchAll();
-$allUsersJson = json_encode($allUsers);
-
-// fetch tous les likes pour chaque post
-$stmt = $pdo->prepare('SELECT * FROM publication_likes');
-$stmt->execute();
-$allLikes = $stmt->fetchAll();
-$allLikesJson = json_encode($allLikes);
-
-$stmt = $pdo->prepare("SELECT * FROM `publication_commentaire`");
-$stmt->execute();
-$allComments = $stmt->fetchAll();
-$allCommentsJson = json_encode($allComments);
-
 ?>
 
 <!DOCTYPE html>
@@ -97,14 +68,7 @@ $allCommentsJson = json_encode($allComments);
       let setting = <?= $settingJson ?>;
       let usersList = <?= $usersJson ?>;
       let gifsList = <?= $gifsJson ?>;
-      let listePosts = <?= $listePublications ?>;
-      let allUsersList = <?= $allUsersJson ?>;
-      let userActuel = <?= $loggedUserId ?>;
-      let allLikesList = <?= $allLikesJson ?>;
-      let allCommentsList = <?= $allCommentsJson ?>;
-
-
-      console.log(allCommentsList);
+      console.log(gifsList);
     </script>
 </head>
 <body>
@@ -190,7 +154,7 @@ $allCommentsJson = json_encode($allComments);
             <li><a href="#" class="unhighlighted" id="conteneurGroupLink" onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink" onclick="displayConteneur('conteneurFood')">Food</a></li>
             <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Profile</a></li>
-            <li><a href="#" class="unhighlighted" id="conteneurChatRoomLink" onclick="displayConteneur('conteneurChatRoom')">Chatroom</a></li>
+            <li><a href="#" class="unhighlighted" id="chatRoomLink" onclick="displayConteneur('conteneurChatRoom')">Chatroom</a></li>
         </ul>
     </nav>
 
@@ -220,8 +184,6 @@ $allCommentsJson = json_encode($allComments);
                 <div class="boiteInput">
                     <input type="text" id="messageInput" placeholder="Entrez votre message..." />
                     <button id="envoyerMessageBtn">Envoyer</button>
-                    <button id="openGifBtn">Select GIF</button>
-
                 </div>
             </div>
         </div>        
