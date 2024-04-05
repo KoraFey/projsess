@@ -96,9 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     carouselItem.classList.add('active');
                 
                 const img = document.createElement('img');
+                img.classList.add('d-block', 'w-100', 'postImage'); 
                 img.src = url;
                 img.alt = 'post';
-                img.classList.add('d-block', 'w-100', 'postImage'); 
 
                 img.addEventListener('dblclick', function() {
                       imgLike.src = '../images/hearted.png'; 
@@ -131,6 +131,8 @@ document.addEventListener("DOMContentLoaded", function () {
             publicationContainer.appendChild(infoContainer);
             publicationContainer.appendChild(carouselContainer);
             
+
+
             imgLike.addEventListener('click', function() {
               if (imgLike.src.includes('hearted.png')) {
                   imgLike.src = '../images/heart.png'; 
@@ -143,9 +145,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const nbLikes = document.createElement('p');
             nbLikes.id = 'nbLikes' + publication.id;
-            if(publication.likes != null && publication.likes != 1 && publication.likes != 0)
-              nbLikes.textContent = publication.likes + " likes";
-            else if(publication.likes == 1)
+
+            let likesCount = 0;
+            allLikesList.forEach((like) => {
+              if (like.id_publication == publication.id) {
+                likesCount++;
+                if(like.user_id == userActuel){
+                  imgLike.src = '../images/hearted.png'; 
+                }
+              }
+            });
+            
+            if(likesCount != null && likesCount != 1 && likesCount != 0)
+              nbLikes.textContent = likesCount + " likes";
+            else if(likesCount == 1)
               nbLikes.textContent = "1 like";
             else 
               nbLikes.textContent = "0 like";
@@ -166,38 +179,63 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 function incrementLikes(publicationid) {
-  console.log(publicationid);
   fetch(postApiLikes, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ publication_id: publicationid })
+      body: JSON.stringify({ publication_id: publicationid, delete_ou_insert: "insert" })
   })
   .then(response => {
       if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('response was not ok');
       }
       return response.json();
   })
   .then(data => {
       let nbLikes = document.getElementById('nbLikes' + data.publication_id)
 
-      if(data.likes.likes != null && data.likes.likes != 1 && data.likes.likes != 0)
-        nbLikes.textContent = data.likes.likes + " likes"
-      else if(data.likes.likes == 1)
+      console.log(data.likes)
+      if(data.likes != null && data.likes != 1 && data.likes != 0)
+        nbLikes.textContent = data.likes + " likes"
+      else if(data.likes == 1)
         nbLikes.textContent = "1 like";
       else 
         nbLikes.textContent = "0 like";
   })
   .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
+      console.error('POST like erreure :', error);
   });
 }
 
 
-function decrementLikes(publication_id) {
- 
+function decrementLikes(publicationid) {
+  fetch(postApiLikes, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ publication_id: publicationid , delete_ou_insert: "delete" })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    let nbLikes = document.getElementById('nbLikes' + data.publication_id)
+
+    if(data.likes != null && data.likes != 1 && data.likes != 0)
+      nbLikes.textContent = data.likes + " likes"
+    else if(data.likes == 1)
+      nbLikes.textContent = "1 like";
+    else 
+      nbLikes.textContent = "0 like";
+})
+.catch(error => {
+    console.error('POST like erreure :', error);
+});
 }
 
 afficherPublications(listePosts);

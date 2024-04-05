@@ -80,7 +80,6 @@ CREATE TABLE Publication (
     type VARCHAR(20) CHECK (type IN ('actualite', 'annonce')),
     prix DECIMAL(10, 2),
     date_publication DATE,
-    likes INT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -104,4 +103,12 @@ CREATE TABLE publication_commentaire (
     id_publication INT,
     commentaire VARCHAR(255),
     FOREIGN KEY (id_publication) REFERENCES Publication(id)
+);
+
+CREATE TABLE publication_likes (
+    id_publication INT,
+    user_id INT,
+    PRIMARY KEY (id_publication, user_id),
+    FOREIGN KEY (id_publication) REFERENCES Publication(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );

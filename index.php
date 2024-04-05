@@ -69,6 +69,11 @@ $stmt->execute();
 $allUsers = $stmt->fetchAll();
 $allUsersJson = json_encode($allUsers);
 
+// fetch tous les likes pour chaque post
+$stmt = $pdo->prepare('SELECT * FROM publication_likes');
+$stmt->execute();
+$allLikes = $stmt->fetchAll();
+$allLikesJson = json_encode($allLikes);
 
 
 ?>
@@ -90,8 +95,10 @@ $allUsersJson = json_encode($allUsers);
       let gifsList = <?= $gifsJson ?>;
       let listePosts = <?= $listePublications ?>;
       let allUsersList = <?= $allUsersJson ?>;
+      let userActuel = <?= $loggedUserId ?>;
+      let allLikesList = <?= $allLikesJson ?>;
 
-      console.log(listePosts);
+      console.log(allLikesList);
     </script>
 </head>
 <body>
