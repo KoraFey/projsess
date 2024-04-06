@@ -188,14 +188,17 @@ public class MAIN extends AppCompatActivity {
                            list= mapper.readValue(jsonId, ChatRoomDisplay[].class);
 
 
-                            ChatDisplayAdapter adaptateur = new ChatDisplayAdapter(MAIN.this, R.layout.chat_display, list);
-                            scrollView.setAdapter(adaptateur);
+                            ChatDisplayAdapter adaptater = new ChatDisplayAdapter(MAIN.this, R.layout.chat_display, list);
+                            scrollView.setAdapter(adaptater);
                             scrollView.setClickable(true);
                             scrollView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Toast toast = Toast.makeText(MAIN.this,list[position].getName(),Toast.LENGTH_SHORT);
-                                    toast.show();
+                                    Intent intent = new Intent(MAIN.this,ChatRoom.class);
+                                    intent.putExtra("chatid", list[position].getId());
+                                    intent.putExtra("user_id" , id);
+                                    intent.putExtra("name",list[position].getName());
+                                    startActivity(intent);
                                 }
                             });
                         } catch (IOException e) {

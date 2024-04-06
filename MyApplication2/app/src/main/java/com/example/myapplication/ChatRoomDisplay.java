@@ -4,15 +4,17 @@ public class ChatRoomDisplay {
     private String name,url_icone;
 
     private int owner_id;
+    private int id;
 
     public ChatRoomDisplay(){
 
     }
 
-    public ChatRoomDisplay(String name,int owner_id,String url_icone){
+    public ChatRoomDisplay(String name,int owner_id,String url_icone,int id){
         this.name=name;
         this.owner_id= owner_id;
         this.url_icone=url_icone;
+        this.id=id;
     }
 
 
@@ -34,5 +36,13 @@ public class ChatRoomDisplay {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

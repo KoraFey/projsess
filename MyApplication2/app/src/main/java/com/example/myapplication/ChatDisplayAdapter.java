@@ -37,6 +37,7 @@ public class ChatDisplayAdapter extends ArrayAdapter<ChatRoomDisplay> {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view=layoutInflater.inflate(this.ressource,parent,false);
         }
+
         final ChatRoomDisplay display = this.list[position];
 
         if(display != null){
