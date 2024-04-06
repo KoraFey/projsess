@@ -25,6 +25,7 @@ try {
 
     $postId = $pdo->lastInsertId();
 
+
     if (isset($body->url_image) && is_array($body->url_image)) {
         foreach ($body->url_image as $image) {
             $stmt = $pdo->prepare("INSERT INTO `publication_images` (`id_publication`, `url`) VALUES (:id_publication, :url)");
@@ -34,6 +35,7 @@ try {
         }
     }
 
+    if($body->id_type == 'actualite'){
     if (isset($body->tags) && is_array($body->tags)) {
         foreach ($body->tags as $tag) {
             $stmt = $pdo->prepare("INSERT INTO `publication_tags` (`id_publication`, `user_id`) VALUES (:id_post, :id_tag)");
@@ -42,6 +44,7 @@ try {
             $stmt->execute();
         }
     }
+}
 
     // fetch en details tous les posts des users (exluant les users blocker)
     $stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_users, GROUP_CONCAT(pi.url) AS image_urls

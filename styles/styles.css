@@ -9,6 +9,40 @@ body {
     
 }
 
+
+/* display de base des conteneurs principaux */
+
+#conteneurFeed,
+#conteneurProfile,
+#conteneurGroup,
+#conteneurFood,
+#profileInfo {
+    display: flex;
+}
+
+#conteneurMarket {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 15px;
+}
+
+#conteneurMarket .annonce-container {
+    justify-self: center;
+    align-items: center;
+}
+
+
+.annonce-container{
+    width: 250px;
+    height: auto;
+}
+
+.prix-user{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .commentDiv {
     display: flex;
     justify-content: space-between;
@@ -24,9 +58,6 @@ body {
     border-radius: 20px;
 }
 
-.annonce-container {
-    display: grid;
-}
 
 
 /* div pour ajouter un article */
@@ -46,6 +77,17 @@ body {
     max-height: 500px;
     min-width: 500px;
     min-height: 500px;
+    
+    object-fit: cover;
+
+}
+
+
+.carousel-item img.postImage-annonce {
+    max-width: 250px;
+    max-height: 250px;
+    min-width: 250px;
+    min-height: 250px;
     
     object-fit: cover;
 
@@ -408,17 +450,6 @@ header img {
     height: 400px; 
     object-fit: cover;
 }
-
-#conteneurMarket {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 35px; 
-
-    justify-content: center; 
-    align-items: center;    
-}
-
-
 
 
 /* TEMPLATE */

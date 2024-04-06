@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const user = allUsersList.find(user => user.id === publication.user_id);
             h3.textContent = user.username; 
             const userPost = user.username; 
-            p.textContent = publication.description + ' ~ ' + publication.date_publication;
+            p.textContent = publication.description + ' | ' + publication.date_publication;
     
             const tagsContainer = document.createElement('span');
             tagsContainer.classList.add('tags-users');
@@ -226,16 +226,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const infoContainer = document.createElement('div');
             infoContainer.classList.add('info-container');
+
+            const prixEtUser = document.createElement('div');
+            prixEtUser.classList.add('prix-user');
     
-            const h3 = document.createElement('h3');
+            const h4 = document.createElement('h4');
             const p = document.createElement('p');
+            p.style.maxHeight = '120px';
+            p.style.overflowY = 'auto'; 
+
 
             const user = allUsersList.find(user => user.id === publication.user_id);
-            h3.textContent = user.username; 
+            h4.textContent = user.username; 
+            /*
             const userPost = user.username; 
-            p.textContent = publication.description + ' ~ ' + publication.date_publication;
+            */
+            p.textContent = publication.description + ' | ' + publication.date_publication;
 
-            infoContainer.appendChild(h3);
+            const price = document.createElement('h3');
+            price.textContent = "$ "+publication.prix * 100/100
+
+            prixEtUser.appendChild(price);
+            prixEtUser.appendChild(h4);
+            infoContainer.appendChild(prixEtUser);
             infoContainer.appendChild(p);
     
             const carouselContainer = document.createElement('div');
@@ -259,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     carouselItem.classList.add('active');
                 
                 const img = document.createElement('img');
-                img.classList.add('d-block', 'w-100', 'postImage'); 
+                img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
                 img.src = url;
                 img.alt = 'post';
 
@@ -290,10 +303,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
             carouselContainer.appendChild(carouselAvant);
             carouselContainer.appendChild(carouselApres);
-    
-            annonceContainer.appendChild(infoContainer);
+
             annonceContainer.appendChild(carouselContainer);
-            
+            annonceContainer.appendChild(infoContainer);
+
             conteneurMarket.appendChild(annonceContainer);
         }
 
@@ -330,6 +343,7 @@ btnAjouterPost.addEventListener('click', function (event) {
 
       let taggedUserIds = [];
       let selectedValues = [];
+      let newPost;
 
       if(type == 'actualite') {
       for (let i = 0; i < selectElement.options.length; i++) {
@@ -343,18 +357,27 @@ btnAjouterPost.addEventListener('click', function (event) {
               taggedUserIds.push(user.id);
            }
       });
-      } else {
-        let prix = document.getElementById('newPrice').value;
-        console.log(prix)
-      }
 
-      const newPost = {
+      newPost = {
         url_image: srcList,
         description: desc,
         id_type: type,
         tags: taggedUserIds,
         prix: null
       };
+
+      } else {
+        let prix = document.getElementById('newPrice').value;
+        console.log(prix);
+
+        newPost = {
+          url_image: srcList,
+          description: desc,
+          id_type: type,
+          tags: null,
+          prix: prix
+        };
+      }
 
       fetch(postApiUrl, {
           method: 'POST',
@@ -688,8 +711,11 @@ sectionBtnFonctions.appendChild(btnAjouterPost);
 
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
-      conteneurPrincipal[i].style.display =
-          conteneurPrincipal[i].id === conteneur ? "flex" : "none";
+    if(conteneurPrincipal[i].id !== "conteneurMarket"){
+      conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === conteneur ? "flex" : "none";
+    } else {
+      conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === conteneur ? "grid" : "none";
+    }
 
       let highlightedLien;
 
@@ -759,8 +785,7 @@ btn.addEventListener('click', function() {
 
 document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
-    conteneurPrincipal[i].style.display =
-      conteneurPrincipal[i].id === "conteneurFeed" ? "flex" : "none";
+    conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === "conteneurFeed" ? "flex" : "none";
   }
 
   if (setting["dark_mode"] == 1) {
