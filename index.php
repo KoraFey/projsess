@@ -1,6 +1,6 @@
 <?php
 $webAccess = true;
-require_once __DIR__.'/config.php';
+require_once __DIR__ . '/config.php';
 $stmt = $pdo->prepare('SELECT * FROM settings WHERE user_id = ? ');
 $stmt->execute([$_SESSION["usager"]]);
 $settings = $stmt->fetch();
@@ -18,6 +18,22 @@ $usersJson = json_encode($users);
 $stmt = $pdo->prepare('SELECT id FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
 $userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+function fetchMessages($chatroomId)
+{
+    global $pdo;
+    $query = "SELECT * FROM logs WHERE chatroom_id = ? ORDER BY time_of_sending DESC";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$chatroomId]);
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+function insertMessage($userId, $chatroomId, $message)
+{
+    global $pdo;
+    $query = "INSERT INTO logs (user_id, chatroom_id, message, time_of_sending) VALUES (?, ?, ?, NOW())";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$userId, $chatroomId, $message]);
+}
 
 foreach ($userIds as $userId) {
     $stmt = $pdo->prepare('SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ? AND chat_room_id IN (SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ?)');
@@ -90,6 +106,7 @@ $allCommentsJson = json_encode($allComments);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,19 +117,20 @@ $allCommentsJson = json_encode($allComments);
 
 
     <script>
-      let setting = <?= $settingJson ?>;
-      let usersList = <?= $usersJson ?>;
-      let gifsList = <?= $gifsJson ?>;
-      let listePosts = <?= $listePublications ?>;
-      let allUsersList = <?= $allUsersJson ?>;
-      let userActuel = <?= $loggedUserId ?>;
-      let allLikesList = <?= $allLikesJson ?>;
-      let allCommentsList = <?= $allCommentsJson ?>;
+        let setting = <?= $settingJson ?>;
+        let usersList = <?= $usersJson ?>;
+        let gifsList = <?= $gifsJson ?>;
+        let listePosts = <?= $listePublications ?>;
+        let allUsersList = <?= $allUsersJson ?>;
+        let userActuel = <?= $loggedUserId ?>;
+        let allLikesList = <?= $allLikesJson ?>;
+        let allCommentsList = <?= $allCommentsJson ?>;
 
 
-      console.log(listePosts);
+        console.log(listePosts);
     </script>
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -200,7 +218,8 @@ $allCommentsJson = json_encode($allComments);
                     onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink"
                     onclick="displayConteneur('conteneurFood')">Food</a></li>
-            <li><a href="#" class="unhighlighted" id="profileInfoLink" onclick="displayConteneur('profileInfo')">Chatroom</a></li>
+            <li><a href="#" class="unhighlighted" id="profileInfoLink"
+                    onclick="displayConteneur('profileInfo')">Chatroom</a></li>
         </ul>
     </nav>
 
@@ -212,7 +231,7 @@ $allCommentsJson = json_encode($allComments);
         </ul>
     </nav>
 
-    <main>  
+    <main>
         <div id="conteneurFeed">
             <article>
                 <h3>All in One</h3>
@@ -358,7 +377,7 @@ $allCommentsJson = json_encode($allComments);
                                             <li data-name="Boîte d'ailes de poulet Petite" data-price="12">Boîte d'ailes
                                                 de poulet (Petite) - $12.00</li>
                                             <li data-name="Boîte d'ailes de poulet Familiale" data-price="20">Boîte
-                  profileInfo                             d'ailes de poulet (Familiale) - $20.00</li>
+                                                profileInfo d'ailes de poulet (Familiale) - $20.00</li>
                                             <!-- Ajoutez d'autres articles du menu si nécessaire -->
                                         </ul>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -443,7 +462,7 @@ $allCommentsJson = json_encode($allComments);
         <div id="profileInfo" class="profile-info">
             <div class="profile-image">
                 <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
-            
+
                 <div class="profile-details">
                     <p><strong>Nom :</strong> <span id="nomProfile">John</span></p>
                     <p><strong>Prénom :</strong> <span id="prenomProfile">Doe</span></p>
@@ -453,30 +472,52 @@ $allCommentsJson = json_encode($allComments);
 
 
 
-            
+
                 <button onClick="toggleCreation();">creer chat</button>
-                <div class = "cree chat" id = "hide create">
+                <div class="cree chat" id="hide create">
                     <form>
                         <div id="div chat">
                             <input type="text" id="1">
                         </div>
-                        
+
                         <button onclick="ajoutChamps();">new user</button>
-                        <button >cree</button>
+                        <button>cree</button>
                     </form>
                 </div>
 
                 <!-- surely ca peiut etre mieu fait-->
                 <script>
                     const creation = document.getElementById("hide create");
-                        creation.style.display = "none";
+                    creation.style.display = "none";
                 </script>
 
 
 
                 <div class="chat-messages" id="chatMessages">
-                <!-- Les messages de la conversation seront affichés ici -->
+                    <!-- Messages will be dynamically added here using JavaScript -->
                 </div>
+
+                <script>
+                    // JavaScript code to fetch messages from the backend and display them
+                    function fetchMessages() {
+                        const chatRoomId = '<?= $chatRoomId ?>'; // Assuming you pass the chat room ID from PHP
+                        fetch('fetch_messages.php?chatRoomId=' + chatRoomId)
+                            .then(response => response.json())
+                            .then(messages => {
+                                const chatMessagesDiv = document.getElementById('chatMessages');
+                                chatMessagesDiv.innerHTML = ''; // Clear previous messages
+                                messages.forEach(message => {
+                                    const messageDiv = document.createElement('div');
+                                    messageDiv.textContent = message.content; // Assuming 'content' is the message content field
+                                    chatMessagesDiv.appendChild(messageDiv);
+                                });
+                            })
+                            .catch(error => console.error('Error fetching messages:', error));
+                    }
+
+                    // Call fetchMessages() to initially load messages
+                    fetchMessages();
+                </script>
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
                     <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
@@ -485,7 +526,7 @@ $allCommentsJson = json_encode($allComments);
                     <div id="gifModal" style="display: none;">
                         <div id="gifContainer"></div>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
