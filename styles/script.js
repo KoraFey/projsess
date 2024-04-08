@@ -6,9 +6,11 @@ let conteneurFood = document.getElementById("conteneurFood");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
 let openGifs = false;
+let amisList;
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
 const send_message = "/api/send_message/";
+let chatroomList;
 let listeArticle = [];
 let postType = 'actualite';
 let darkModeCheckbox = document.getElementById("dark-mode");
@@ -844,13 +846,16 @@ document.addEventListener("DOMContentLoaded", function () {
     displayConteneur('conteneurProfile');
   });
 
-  let amisList = document.querySelector('.amis');
+  amisList = document.querySelector('.amis');
   amisList.innerHTML = '';
+  
+  getChatRoom();
+  
+  
 
   usersList.forEach(user => {
     let listItem = document.createElement('li');
     let anchor = document.createElement('a');
-
     anchor.setAttribute('href', '#');
     anchor.textContent = user.username;
     
@@ -869,9 +874,10 @@ let liens = document.querySelectorAll('.amis a');
 liens.forEach(function(lien) {
   lien.addEventListener('click', function(event) {
         event.preventDefault(); 
-
+//add fetch for chatroom using getChatRoomUser
+//add fetch for the messages of the chatroom
         lienProfile = this.textContent;
-        
+        getChatRoom();
         displayConteneur('profileInfo');
 
         lienProfile = null;
@@ -907,6 +913,7 @@ function toggleCreation() {
 }
 
 function toggleDarkMode() {
+  console.log(usersList);
   let body = document.body;
   let main = document.querySelector("main");
   let navConvo = document.querySelector("nav.convo");
@@ -1095,4 +1102,43 @@ function sendMessage() {
   });
 }
 
+function getChatRoom() {
 
+  fetch('/api/chatrooms/'+ userActuel, {
+       method: "GET" })
+      .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur HTTP: " + response.statusText);
+      }
+      return response.json();
+})
+.then((data) => {
+  if (data.error)
+    throw new Error("Erreur reçue du serveur: " + data.error);
+
+  console.log(data);
+  chatroomList = data;
+  linkChat();
+})
+.catch((error) =>
+  console.error(
+    "Il y'a eu une erreur lors de l'obtention des données:" +
+      error.message
+  )
+);
+}
+function linkChat(){
+    chatroomList.forEach(chatroom =>{
+    let listChat = document.createElement('li');
+    let anchorChat = document.createElement('a');
+    anchorChat.setAttribute('href','#');
+    anchorChat.textContent = chatroom.name;
+    let imageChat = document.createElement('img');
+    imageChat.setAttribute('src', './images/chat.png');
+console.log(chatroom);
+    listChat.appendChild(imageChat);
+    listChat.appendChild(anchorChat);
+
+    amisList.appendChild(listChat);
+  });
+}
