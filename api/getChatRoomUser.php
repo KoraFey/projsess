@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/../config.php";
-try {
+require_once __DIR__."/../config.php";
+try{
     $gUserId = authentifier();
 } catch (Exception $e) {
     $response = [];

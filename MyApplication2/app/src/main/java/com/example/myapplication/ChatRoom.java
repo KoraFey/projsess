@@ -145,6 +145,16 @@ public class ChatRoom extends AppCompatActivity {
                 .header("Authorization", "Bearer "+token)
                 .post(body)
                 .build();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response res =client.newCall(requete).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
 
