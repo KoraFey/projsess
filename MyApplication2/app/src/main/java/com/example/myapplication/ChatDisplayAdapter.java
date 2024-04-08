@@ -42,12 +42,9 @@ public class ChatDisplayAdapter extends ArrayAdapter<ChatRoomDisplay> {
 
         if(display != null){
             TextView titre = view.findViewById(R.id.displaytitre);
-            TextView nbMember = view.findViewById(R.id.nbmembers);
             ImageView icone = view.findViewById(R.id.imageChatRoom);
 
             titre.setText(display.getName());
-            String m =display.getOwner_id() + "users";
-            nbMember.setText(m);
 
 
         }

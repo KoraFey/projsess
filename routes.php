@@ -24,11 +24,12 @@ post('/api/auth', './api/auth.php');
 post('/api/post', '/api/postArticle.php');
 post('/api/postLike', '/api/postLike.php');
 post('/api/createChat', '/api/createChat.php');
-
+post('/api/modifyUser/$id','/api/modifyUser.php');
 
 
 get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
 get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
+get('/api/messages/$id', '/api/getMessages.php');
 
 put('/api/posts/$id', '/api/post/putPost.php');
 delete('/api/posts/$id', '/api/post/deletePost.php');

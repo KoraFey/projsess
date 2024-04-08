@@ -34,6 +34,7 @@ try{
             $response['message'] = "Authentification réussie";
             $response['token'] = $jwt;
             $response["id"]= $user["id"];
+            $response["username"] = $user["username"];
             http_response_code(200);
             echo json_encode($response);
         }

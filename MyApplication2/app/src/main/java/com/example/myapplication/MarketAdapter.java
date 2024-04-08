@@ -40,7 +40,7 @@ public class MarketAdapter extends ArrayAdapter<Market> {
         final Market post = this.list.get(position);
         if(post!=null){
             TextView username = view.findViewById(R.id.username);
-            TextView time = view.findViewById(R.id.time);
+            TextView time = view.findViewById(R.id.sendUser);
             TextView description = view.findViewById(R.id.description);
             TextView titre = view.findViewById(R.id.titleMarket);
             Button notif = view.findViewById(R.id.notify);
