@@ -25,6 +25,7 @@ post('/api/post', '/api/postArticle.php');
 post('/api/postLike', '/api/postLike.php');
 post('/api/createChat', '/api/createChat.php');
 post('/api/modifyUser/$id','/api/modifyUser.php');
+post('/api/postMessages','/api/newMessages.php');
 
 get('/api/getChatRoomUser/$id', '/api/getChatRoomUser.php');
 

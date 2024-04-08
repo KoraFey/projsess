@@ -141,7 +141,7 @@ public class ChatRoom extends AppCompatActivity {
         RequestBody body = RequestBody.create(String.valueOf(obj),JSON);
 
         Request requete = new Request.Builder()
-                .url(API_URL + "/api/messages/"+chatId)
+                .url(API_URL + "/api/postMessages")
                 .header("Authorization", "Bearer "+token)
                 .post(body)
                 .build();
