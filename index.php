@@ -22,7 +22,7 @@ $userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 function fetchMessages($chatroomId)
 {
     global $pdo;
-    $query = "SELECT * FROM logs WHERE chatroom_id = ? ORDER BY time_of_sending DESC";
+    $query = "SELECT * FROM logs WHERE chatroom_id = ? ORDER BY time DESC";
     $statement = $pdo->prepare($query);
     $statement->execute([$chatroomId]);
     return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -30,7 +30,7 @@ function fetchMessages($chatroomId)
 function insertMessage($userId, $chatroomId, $message)
 {
     global $pdo;
-    $query = "INSERT INTO logs (user_id, chatroom_id, message, time_of_sending) VALUES (?, ?, ?, NOW())";
+    $query = "INSERT INTO logs (user_id, chatroom_id, message, time) VALUES (?, ?, ?, NOW())";
     $statement = $pdo->prepare($query);
     $statement->execute([$userId, $chatroomId, $message]);
 }
@@ -498,27 +498,7 @@ $allCommentsJson = json_encode($allComments);
                     <!-- Messages will be dynamically added here using JavaScript -->
                 </div>
 
-                <script>
-                    // JavaScript code to fetch messages from the backend and display them
-                    function fetchMessages() {
-                        const chatRoomId = '<?= (int)$chatRoomId ?>'; // Assuming you pass the chat room ID from PHP
-                        fetch('fetch_messages.php?chatRoomId=' + chatRoomId)
-                            .then(response => response.json())
-                            .then(messages => {
-                                const chatMessagesDiv = document.getElementById('chatMessages');
-                                chatMessagesDiv.innerHTML = ''; // Clear previous messages
-                                messages.forEach(message => {
-                                    const messageDiv = document.createElement('div');
-                                    messageDiv.textContent = message.content; // Assuming 'content' is the message content field
-                                    chatMessagesDiv.appendChild(messageDiv);
-                                });
-                            })
-                            .catch(error => console.error('Error fetching messages:', error));
-                    }
-
-                    // Call fetchMessages() to initially load messages
-                    fetchMessages();
-                </script>
+              
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
                     <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
@@ -575,6 +555,7 @@ $allCommentsJson = json_encode($allComments);
 
         function toggleMenu() {
             var menu = document.getElementById("menu");
+            
             if (menu.style.display === "none") {
                 menu.style.display = "block";
             } else {
