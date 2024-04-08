@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.API_URL;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -50,7 +51,7 @@ public class MAIN extends AppCompatActivity {
     private TextView title;
     private EditText searchUser;
     private Button  chat,market,profile,set,newChat;
-    private String id;
+
 
     private ListView scrollView;
 
@@ -58,7 +59,7 @@ public class MAIN extends AppCompatActivity {
 
     private LinearLayout lay;
     private JSONObject settings;
-    private String token;
+    private String token,id,username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class MAIN extends AppCompatActivity {
 
         token = getIntent().getStringExtra("token");
         id = getIntent().getStringExtra("userId");
+        username = getIntent().getStringExtra("username");
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(API_URL + "/api/getSettings/"+id)
@@ -153,6 +155,18 @@ public class MAIN extends AppCompatActivity {
             CreatePopUpSettings();
         }
     });
+
+    profile.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MAIN.this,Profile.class);
+            intent.putExtra("token",token);
+            intent.putExtra("id",id);
+            intent.putExtra("username",username);
+
+            startActivityForResult(intent,1);
+        }
+    });
     }
 
 
@@ -195,8 +209,9 @@ public class MAIN extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Intent intent = new Intent(MAIN.this,ChatRoom.class);
-                                    intent.putExtra("chatid", list[position].getId());
-                                    intent.putExtra("user_id" , id);
+                                    intent.putExtra("chat_id",String.valueOf( list[position].getId()));
+                                    intent.putExtra("token",MAIN.this.token);
+                                    intent.putExtra("user_id" , MAIN.this.id);
                                     intent.putExtra("name",list[position].getName());
                                     startActivity(intent);
                                 }
@@ -476,6 +491,23 @@ public class MAIN extends AppCompatActivity {
         });
         lay.addView(memberView);
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(resultCode){
+            case RESULT_OK:
+                Toast toast = Toast.makeText(MAIN.this,"you cancelled",Toast.LENGTH_SHORT);
+                toast.show();
+                break;
+            case 2:
+                toast = Toast.makeText(MAIN.this,"profile updated",Toast.LENGTH_SHORT);
+                toast.show();
+
+        }
+    }
+
 
 
 

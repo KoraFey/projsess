@@ -109,6 +109,8 @@ public class Login extends AppCompatActivity {
                                             try {
                                                 intent.putExtra("userId",object.getString("id"));
                                                 intent.putExtra("token",object.getString("token"));
+                                                intent.putExtra("username",object.getString("username"));
+
                                             } catch (JSONException e) {
                                                 throw new RuntimeException(e);
                                             }
