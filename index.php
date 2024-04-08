@@ -114,7 +114,7 @@ $allCommentsJson = json_encode($allComments);
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="stylesheet" href="./styles/normalize.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    
 
     <script>
         let setting = <?= $settingJson ?>;
@@ -479,7 +479,8 @@ $allCommentsJson = json_encode($allComments);
                         <div id="div chat">
                             <input type="text" id="1">
                         </div>
-
+                        <div id="userData" data-user-id="<?= $loggedUserId ?>"></div>
+                        <div id="chatRoomData" data-chat-room-id="<?= $chatRoomId ?>"></div>
                         <button onclick="ajoutChamps();">new user</button>
                         <button>cree</button>
                     </form>
@@ -500,7 +501,7 @@ $allCommentsJson = json_encode($allComments);
                 <script>
                     // JavaScript code to fetch messages from the backend and display them
                     function fetchMessages() {
-                        const chatRoomId = '<?= $chatRoomId ?>'; // Assuming you pass the chat room ID from PHP
+                        const chatRoomId = '<?= (int)$chatRoomId ?>'; // Assuming you pass the chat room ID from PHP
                         fetch('fetch_messages.php?chatRoomId=' + chatRoomId)
                             .then(response => response.json())
                             .then(messages => {

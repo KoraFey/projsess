@@ -8,7 +8,7 @@ let lienProfile;
 let openGifs = false;
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
-
+const send_message = "/api/send_message/";
 let listeArticle = [];
 let postType = 'actualite';
 let darkModeCheckbox = document.getElementById("dark-mode");
@@ -881,51 +881,7 @@ liens.forEach(function(lien) {
 
 const chatMessages = document.getElementById('chatMessages');
 
-// Fonction pour envoyer un message
-function sendMessage() {
-    // Récupérer le contenu du message depuis l'input
-    const messageInput = document.getElementById("messageInput");
-    const messageContent = messageInput.value.trim();
 
-    // Vérifier si le message n'est pas vide
-    if (messageContent !== "") {
-        // Créer un nouvel élément paragraphe pour afficher le message
-        const messageElement = document.createElement("p");
-        messageElement.textContent = messageContent;
-
-        // Ajouter la classe CSS pour styliser le message (facultatif)
-        messageElement.classList.add("message");
-
-        // Ajouter le message à la zone de chat
-        chatMessages.appendChild(messageElement);
-
-        // Effacer le contenu de l'input après l'envoi du message
-        messageInput.value = "";
-
-        // Faire défiler la zone de chat jusqu'au bas pour afficher le nouveau message
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    
-    //fetch les messages pour logs et envoi
-    fetch('/chatroom.php',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', //(a changer?)
-      },
-      body: JSON.stringify({ content: messageContent }),
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-      //si erreur a envoyer
-    })
-    .catch(error => {
-      console.error('Error sending message:', error.message);
-      // si erreur d'envoi
-    });
-    
-  }
-}
 
 
 function toggleSettings() {
@@ -1111,41 +1067,32 @@ champMessage.addEventListener("keypress", function(e) {
         e.preventDefault();
     }
 });
+function sendMessage() {
+  const messageInput = document.getElementById('messageInput').value;
+  const chatRoomId = document.getElementById('chatRoomData').dataset.chatRoomId; // Retrieve chat room ID from data attribute
+  const userId = document.getElementById('userData').dataset.userId; // Assuming you have stored the user ID in a similar way
 
-// Fonction pour envoyer le message (à implémenter)
-function envoyerMessage(contenuMessage) {
-    // Ici, vous pouvez ajouter la logique pour envoyer le message à votre serveur
-    // Par exemple, vous pouvez utiliser des requêtes AJAX pour envoyer le message à votre serveur
-    // et mettre à jour l'interface utilisateur avec le message envoyé
-    console.log("Message envoyé : " + contenuMessage);
+  // Send message to server
+  fetch(send_message, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          userId: userId,
+          chatRoomId: chatRoomId,
+          message: messageInput,
+      }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Handle success (if needed)
+      console.log('Message sent successfully:', data);
+  })
+  .catch(error => {
+      // Handle error (if needed)
+      console.error('Error sending message:', error);
+  });
 }
-document.addEventListener("DOMContentLoaded", function() {
-  // Récupérer le champ de saisie du message et le bouton d'envoi
-  let champMessage = document.getElementById("messageInput");
-  let boutonEnvoyer = document.getElementById("envoyerMessageBtn");
 
-  // Ajouter un écouteur d'événements pour les clics sur le bouton d'envoi
-  boutonEnvoyer.addEventListener("click", function() {
-      envoyerMessage(champMessage.value);
-      champMessage.value = ""; // Effacer le champ de saisie après l'envoi du message
-  });
 
-  // Ajouter un écouteur d'événements pour les touches pressées dans le champ de saisie du message
-  champMessage.addEventListener("keydown", function(e) {
-      // Vérifier si la touche "Entrée" a été pressée
-      if (e.key === "Enter") {
-          // Empêcher le comportement par défaut qui est d'envoyer le message
-          e.preventDefault();
-          envoyerMessage(champMessage.value);
-          champMessage.value = ""; // Effacer le champ de saisie après l'envoi du message
-      }
-  });
-
-  // Fonction pour envoyer le message (à implémenter)
-  function envoyerMessage(contenuMessage) {
-      // Ici, vous pouvez ajouter la logique pour envoyer le message à votre serveur
-      // Par exemple, vous pouvez utiliser des requêtes AJAX pour envoyer le message à votre serveur
-      // et mettre à jour l'interface utilisateur avec le message envoyé
-      console.log("Message envoyé : " + contenuMessage);
-  }
-});
