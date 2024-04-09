@@ -811,6 +811,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayResultats(users) {
       rechercheResultats.innerHTML = '';
   
+      const conteneurProfile = document.getElementById('conteneurProfile');
+      conteneurProfile.innerHTML = '';
+
       users.forEach(user => {
           const li = document.createElement('li');
           li.textContent = user.username;
@@ -820,24 +823,51 @@ document.addEventListener("DOMContentLoaded", function () {
               rechercheInput.value = user.username;
               rechercheResultats.innerHTML = ''; 
           });
+
+          let profile = document.createElement('article')
+          let boutons = document.createElement('div')
+          boutons.classList.add('profile-boutons')
+
+          let message = document.createElement('button')
+          let block = document.createElement('button')
+          message.type = 'button';
+          block.type = 'button';
+
+          message.textContent = 'Messager';
+          block.textContent = 'Blocker';
+
+          boutons.appendChild(message);
+          boutons.appendChild(block);
+
+          profile.classList.add('profile-searched')
+          let nom = document.createElement('h3')
+          nom.textContent = user.username;
+
+          profile.appendChild(nom);
+          profile.appendChild(boutons);
+          conteneurProfile.appendChild(profile);
+
       });
   
       searchResultatsWindow.style.display = 'block';
   }
   
   rechercheInput.addEventListener('input', () => {
-      const user = rechercheInput.value.trim();
-  
-      console.log("INPUT");
-  
+      const user = rechercheInput.value.trim();  
       if (user === '') {
           rechercheResultats.innerHTML = '';
           searchResultatsWindow.style.display = 'none';
+
+          const conteneurProfile = document.getElementById('conteneurProfile');
+          conteneurProfile.innerHTML = '';
+
           return;
       }
   
       const users = filterUsers(user);
       displayResultats(users);
+
+      displayConteneur('conteneurProfile')
   });
   
   rechercheInput.addEventListener('keydown', (event) => {
@@ -989,7 +1019,6 @@ function fetchGIFs() {
           gifImage.alt = gif.title;
           gifImage.style.cursor = 'pointer';
           gifImage.addEventListener('click', () => {
-              sendGIFToChat(gif.images.fixed_height.url);
               modal.style.display = "none";
           });
           gifContainer.appendChild(gifImage);

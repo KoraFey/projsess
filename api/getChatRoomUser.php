@@ -16,11 +16,7 @@ if (isset($id) && filter_var($id, FILTER_VALIDATE_INT)) {
     $stmt->execute();
 
     $chatRooms = $stmt->fetchAll();
-
-    $stmt = $pdo->prepare("SELECT COUNT(*) as nb_personnes FROM Chat_Room_User");
-    $stmt->execute();
-
-
+    
     echo json_encode($chatRooms);
 } else {
     $settings = ["error" => "Identifiant invalide"];
