@@ -705,6 +705,8 @@ function replaceForm() {
 
 let btnAjouterPost = document.createElement('button');
 btnAjouterPost.textContent = 'Publier';
+
+
 btnAjouterPost.setAttribute('class', 'btnAjouter');
 btnAjouterPost.setAttribute('id', 'ajouterPost');
 
@@ -1113,7 +1115,6 @@ function getChatRoom() {
   if (data.error)
     throw new Error("Erreur reçue du serveur: " + data.error);
 
-  console.log(data);
   chatroomList = data;
   linkChat();
 })
@@ -1128,6 +1129,7 @@ function linkChat(){
     
     chatroomList.forEach(chatroom =>{
       
+      if(chatroom.nb_personnes > 2) {
     let listChat = document.createElement('li');
     let anchorChat = document.createElement('a');
     anchorChat.setAttribute('href','#');
@@ -1137,11 +1139,13 @@ function linkChat(){
       currentChat = chatroom.id;
     }
     imageChat.setAttribute('src', './images/chat.png');
+    console.log(chatroom);
 
     listChat.appendChild(imageChat);
     listChat.appendChild(anchorChat);
 
     amisList.appendChild(listChat);
+  }
     
   });
 }

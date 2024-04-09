@@ -562,13 +562,18 @@ $allCommentsJson = json_encode($allComments);
             }
         }
 
-        function ajouterAuPanier(element) {
-            var nom = element.dataset.name;
-            var prix = parseFloat(element.dataset.price);
-            panierItems.push({ nom: nom, prix: prix });
-            total += prix;
-            afficherPanier();
-        }
+       function ajouterAuPanier(element) {
+    var nom = element.getAttribute('data-name');
+    var prix = parseFloat(element.getAttribute('data-price'));
+    if(nom && !isNaN(prix)) { // S'assure que nom n'est pas undefined et prix est un nombre
+        panierItems.push({ nom: nom, prix: prix });
+        total += prix;
+        afficherPanier();
+    } else {
+        console.error("Données d'article incorrectes", element);
+    }
+}
+
 
         function afficherPanier() {
             var panierItemsList = document.getElementById("panier-items");
