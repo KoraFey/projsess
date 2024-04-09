@@ -50,6 +50,7 @@ require_once __DIR__.'/config.php';
                             </div>
 
                     <div class="card-body">
+                        
                         <form id="formulaire-paiement">
                             <div class="mb-3">
                                 <label for="numero-carte" class="form-label">Numéro de carte:</label>
