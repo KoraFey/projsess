@@ -479,14 +479,13 @@ $allCommentsJson = json_encode($allComments);
                         <div id="div chat">
                             <input type="text" id="1">
                         </div>
-                        <div id="userData" data-user-id="<?= $loggedUserId ?>"></div>
-                        <div id="chatRoomData" data-chat-room-id="<?= $chatRoomId ?>"></div>
+                      
                         <button onclick="ajoutChamps();">new user</button>
                         <button>cree</button>
                     </form>
                 </div>
 
-                <!-- surely ca peiut etre mieu fait-->
+                <!-- surely ca peut etre mieu fait-->
                 <script>
                     const creation = document.getElementById("hide create");
                     creation.style.display = "none";
@@ -501,7 +500,7 @@ $allCommentsJson = json_encode($allComments);
               
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
-                    <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
+                    <button id="sendMessageButton">Envoyer</button>
                     <button id="openGifBtn">Select GIF</button>
 
                     <div id="gifModal" style="display: none;">

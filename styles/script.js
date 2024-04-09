@@ -7,9 +7,10 @@ let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
 let openGifs = false;
 let amisList;
+let currentChat;
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
-const send_message = "/api/send_message/";
+const send_message = "/api/postMessages/";
 let chatroomList;
 let listeArticle = [];
 let postType = 'actualite';
@@ -804,7 +805,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function filterUsers(userValue) {
       return usersList.filter(user => user.username.toLowerCase().includes(userValue.toLowerCase()));
   }
-  
+
   function displayResultats(users) {
       rechercheResultats.innerHTML = '';
   
@@ -851,8 +852,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
   getChatRoom();
   
-  
-
   usersList.forEach(user => {
     let listItem = document.createElement('li');
     let anchor = document.createElement('a');
@@ -877,7 +876,7 @@ liens.forEach(function(lien) {
 //add fetch for chatroom using getChatRoomUser
 //add fetch for the messages of the chatroom
         lienProfile = this.textContent;
-        getChatRoom();
+        
         displayConteneur('profileInfo');
 
         lienProfile = null;
@@ -1075,10 +1074,8 @@ champMessage.addEventListener("keypress", function(e) {
     }
 });
 function sendMessage() {
-  const messageInput = document.getElementById('messageInput').value;
-  const chatRoomId = document.getElementById('chatRoomData').dataset.chatRoomId; // Retrieve chat room ID from data attribute
-  const userId = document.getElementById('userData').dataset.userId; // Assuming you have stored the user ID in a similar way
-
+console.log(document.getElementById('messageInput').value);
+console.log(userActuel);
   // Send message to server
   fetch(send_message, {
       method: 'POST',
@@ -1086,9 +1083,9 @@ function sendMessage() {
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId: userId,
-          chatRoomId: chatRoomId,
-          message: messageInput,
+          user_id: userActuel,
+          chatroom_id: currentChat,
+          message: document.getElementById('messageInput').value
       }),
   })
   .then(response => response.json())
@@ -1128,17 +1125,23 @@ function getChatRoom() {
 );
 }
 function linkChat(){
+    
     chatroomList.forEach(chatroom =>{
+      
     let listChat = document.createElement('li');
     let anchorChat = document.createElement('a');
     anchorChat.setAttribute('href','#');
     anchorChat.textContent = chatroom.name;
     let imageChat = document.createElement('img');
+    anchorChat.onclick = function(){
+      currentChat = chatroom.id;
+    }
     imageChat.setAttribute('src', './images/chat.png');
-console.log(chatroom);
+
     listChat.appendChild(imageChat);
     listChat.appendChild(anchorChat);
 
     amisList.appendChild(listChat);
+    
   });
 }
