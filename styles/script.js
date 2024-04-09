@@ -1116,7 +1116,6 @@ function getChatRoom() {
   if (data.error)
     throw new Error("Erreur reçue du serveur: " + data.error);
 
-  console.log(data);
   chatroomList = data;
   linkChat();
 })
@@ -1129,16 +1128,18 @@ function getChatRoom() {
 }
 function linkChat(){
     chatroomList.forEach(chatroom =>{
+      if(chatroom.nb_personnes > 2) {
     let listChat = document.createElement('li');
     let anchorChat = document.createElement('a');
     anchorChat.setAttribute('href','#');
     anchorChat.textContent = chatroom.name;
     let imageChat = document.createElement('img');
     imageChat.setAttribute('src', './images/chat.png');
-console.log(chatroom);
+    console.log(chatroom);
     listChat.appendChild(imageChat);
     listChat.appendChild(anchorChat);
 
     amisList.appendChild(listChat);
+  }
   });
 }
