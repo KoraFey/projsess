@@ -9,6 +9,30 @@ body {
     
 }
 
+#conteneurProfile {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#conteneurProfile article {
+    display: flex;
+    justify-content: space-between;    
+    align-items: center;
+}
+
+.profile-searched {
+    position: relative;
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid black;
+
+}
+
+.profile-boutons button{
+    gap: 20px;
+    margin: 20px;
+}
 
 /* display de base des conteneurs principaux */
 
