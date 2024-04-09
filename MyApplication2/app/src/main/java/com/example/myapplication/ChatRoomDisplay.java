@@ -6,6 +6,8 @@ public class ChatRoomDisplay {
     private int owner_id;
     private int id;
 
+    private int nb_personnes;
+
     public ChatRoomDisplay(){
 
     }
@@ -44,5 +46,13 @@ public class ChatRoomDisplay {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getNb_personnes() {
+        return nb_personnes;
+    }
+
+    public void setNb_personnes(int nb_personnes) {
+        this.nb_personnes = nb_personnes;
     }
 }

@@ -49,9 +49,11 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class MAIN extends AppCompatActivity {
+
+    private boolean chatroomDisplay ;
     private TextView title;
     private EditText searchUser;
-    private Button  chat,market,profile,newChat;
+    private Button  chat,market,profile,newChat, search;
     private ImageButton set;
 
     private ListView scrollView;
@@ -74,7 +76,8 @@ public class MAIN extends AppCompatActivity {
         newChat = findViewById(R.id.createchat);
         scrollView = findViewById(R.id.list);
         layout=findViewById(R.id.linear);
-
+        chatroomDisplay=false;
+        search = findViewById(R.id.searchButton);
 
 
 
@@ -140,11 +143,24 @@ public class MAIN extends AppCompatActivity {
             }
         }).start();
 
+    search.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(searchUser.getText().equals("")){
+                LoadChatRooms(false);
+            }
+            else{
+                LoadChatRooms(true);
+            }
+        }
+    });
+
 
     chat.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            LoadChatRooms();
+            chatroomDisplay=true;
+            LoadChatRooms(false);
         }
     });
     newChat.setOnClickListener(new View.OnClickListener() {
@@ -174,16 +190,24 @@ public class MAIN extends AppCompatActivity {
     }
 
 
-    private void LoadChatRooms(){
+    private void LoadChatRooms(boolean user){
         OkHttpClient client;
         client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-
-        Request requete = new Request.Builder()
-                .url(API_URL + "/api/chatrooms/"+id)
-                .header("Authorization", "Bearer "+token)
-                .build();
+        Request requete;
+        if(user) {
+            String name = searchUser.getText().toString();
+            requete = new Request.Builder()
+                    .url(API_URL + "/api/getChatRoomUserWith/" + id+ "/" + name)
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+        }
+        else{
+            requete = new Request.Builder()
+                    .url(API_URL + "/api/chatrooms/" + id)
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

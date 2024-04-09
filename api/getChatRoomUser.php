@@ -16,7 +16,12 @@ if (isset($id) && filter_var($id, FILTER_VALIDATE_INT)) {
     $stmt->execute();
 
     $chatRooms = $stmt->fetchAll();
+<<<<<<< Updated upstream
     
+=======
+
+
+>>>>>>> Stashed changes
     echo json_encode($chatRooms);
 } else {
     $settings = ["error" => "Identifiant invalide"];

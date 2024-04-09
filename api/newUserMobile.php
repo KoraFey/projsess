@@ -6,14 +6,14 @@ require_once __DIR__."/../config.php";
 //     exit;
 // }
 
-try{
-    $gUserId = authentifier();
-} catch(Exception $e){
-    $response = [];
-    http_response_code(401);
-    $response['error'] = "Non autorisé";
-    echo json_encode($response);
-}
+// try{
+//     $gUserId = authentifier();
+// } catch(Exception $e){
+//     $response = [];
+//     http_response_code(401);
+//     $response['error'] = "Non autorisé";
+//     echo json_encode($response);
+// }
 
 
 //Obtenir le corps de la requête
@@ -26,7 +26,7 @@ $body = json_decode(file_get_contents("php://input"));
         http_response_code(400);
         exit;
     } else {
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $passwordHash = password_hash($body->password, PASSWORD_DEFAULT);
 
         try{
             $stmt = $pdo->prepare("INSERT INTO `users` (`username`, `password`) VALUES (:user, :password)");
@@ -38,7 +38,7 @@ $body = json_decode(file_get_contents("php://input"));
                 $stmt->execute([$tempId]);
             }
 
-            $insertion = ["id"=>$pdo->lastInsertId(), "username"=>$body->username, "password"=>$body->password];
+            $insertion = ["id"=>$tempId, "username"=>$body->username, "password"=>$body->password];
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($insertion);
 
