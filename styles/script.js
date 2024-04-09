@@ -705,7 +705,7 @@ function replaceForm() {
 let btnAjouterPost = document.createElement('button');
 btnAjouterPost.textContent = 'Publier';
 
-btnAjouterPost.classList.add('btn btn-success mt-2 .align-top');
+
 btnAjouterPost.setAttribute('class', 'btnAjouter');
 btnAjouterPost.setAttribute('id', 'ajouterPost');
 

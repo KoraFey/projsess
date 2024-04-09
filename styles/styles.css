@@ -676,3 +676,8 @@ footer {
     background-size: cover; /* Pour couvrir toute la surface */
     /* background-size: contain; */ /* Pour s'adapter à la fenêtre du navigateur sans déformation */
 }
+
+.menu-items li{
+    cursor: pointer;
+    
+}
