@@ -63,10 +63,11 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 CREATE TABLE `logs` (
+  `log_id` int(11) AUTO_INCREMENT PRIMARY KEY,   
   `user_id` int(11) NOT NULL,
   `chatroom_id` int(11) NOT NULL,
-  `message` text NOT NULL,
-  `time` date NOT NULL DEFAULT current_timestamp()
+  `message` VARCHAR(100) NOT NULL,
+  `time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `logs`
