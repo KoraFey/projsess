@@ -12,6 +12,7 @@ const getMessage = "/api/messages/";
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
 const send_message = "/api/postMessages/";
+const postApiBlocker = "/api/blockUser/";
 let chatroomList;
 let listeArticle = [];
 let postType = 'actualite';
@@ -831,11 +832,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
           let message = document.createElement('button')
           let block = document.createElement('button')
+
+          block.addEventListener
           message.type = 'button';
           block.type = 'button';
 
           message.textContent = 'Messager';
           block.textContent = 'Blocker';
+
+          block.addEventListener('click', function (event) {
+            console.log(user.id);
+            event.preventDefault(); 
+            fetch(postApiBlocker, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ blocked_id: user.id})
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+
+          })
+          .catch(error => {
+              console.error('POST like erreure :', error);
+          });
+
+          });
 
           boutons.appendChild(message);
           boutons.appendChild(block);
@@ -877,7 +905,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
   rechercheButton.addEventListener('click', (event) => {
-    displayConteneur('conteneurProfile');
+    const user = rechercheInput.value.trim();  
+      if (user === '') {
+          rechercheResultats.innerHTML = '';
+          searchResultatsWindow.style.display = 'none';
+
+          const conteneurProfile = document.getElementById('conteneurProfile');
+          conteneurProfile.innerHTML = '';
+      }
+      const users = filterUsers(user);
+      displayResultats(users);
+
+      displayConteneur('conteneurProfile');
   });
 
   amisList = document.querySelector('.amis');
