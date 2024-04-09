@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 public class Message1 {
     private String message,username,time;
+
+    boolean sent;
     public Message1(){
 
     }
@@ -35,6 +37,14 @@ public class Message1 {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public void setSent(boolean sent){
+        this.sent=sent;
+    }
+
+    public boolean isSent() {
+        return sent;
     }
 }
 

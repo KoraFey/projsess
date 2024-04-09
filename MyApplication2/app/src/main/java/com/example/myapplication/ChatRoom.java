@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -36,7 +37,7 @@ public class ChatRoom extends AppCompatActivity {
     private OkHttpClient client;
     MediaType JSON ;
 
-    private String token,id,chatId;
+    private String token,id,chatId, username;
 
 
     @Override
@@ -48,10 +49,11 @@ public class ChatRoom extends AppCompatActivity {
         retour = findViewById(R.id.buttonretour);
         send = findViewById(R.id.sendMessage);
         scrollView = findViewById(R.id.messages);
-
+        scrollView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         id = getIntent().getStringExtra("user_id");
         token = getIntent().getStringExtra("token");
         titre.setText(getIntent().getStringExtra("name"));
+        username =  getIntent().getStringExtra("username");
         chatId=getIntent().getStringExtra("chat_id");
         JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -61,11 +63,19 @@ public class ChatRoom extends AppCompatActivity {
 
 
 
-        loadMessage();
+        loadMessage(true);
+        final int delay = 1000 * 15;
 
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                loadMessage(false);
+                handler.postDelayed(this, 1000 * 1);
+            }
+        };
 
-
-
+        handler.postDelayed(runnable, delay);
 
 
 
@@ -86,7 +96,7 @@ public class ChatRoom extends AppCompatActivity {
     }
 
 
-    private void loadMessage(){
+    private void loadMessage(boolean send){
         client = new OkHttpClient();
 
 
@@ -116,7 +126,16 @@ public class ChatRoom extends AppCompatActivity {
                         try {
                             String json = body.string();
                             list = mapper.readValue(json,Message1[].class);
+                            for(int i =0;i<list.length;i++){
+                                if(list[i].getUsername().equals(username)){
+                                    list[i].setSent(true);
+                                }
+                                else{
+                                    list[i].setSent(false);
+                                }
+                            }
                             messageAdapter adapter = new messageAdapter(ChatRoom.this,R.layout.message ,list );
+
                             scrollView.setAdapter(adapter);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -125,6 +144,9 @@ public class ChatRoom extends AppCompatActivity {
                 });
             }
         }).start();
+        if(send){
+            scrollView.setStackFromBottom(true);
+        }
     }
 
 
@@ -146,24 +168,35 @@ public class ChatRoom extends AppCompatActivity {
                 .post(body)
                 .build();
         new Thread(new Runnable() {
+            Response res;
             @Override
             public void run() {
                 try {
-                    Response res =client.newCall(requete).execute();
+                    res =client.newCall(requete).execute();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+                }
+                ChatRoom.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+                switch(res.code()){
+                    case 200:
+                        input.setText("");
+                        loadMessage(true);
+
+
+                        break;
+                    case 500:
+                        Toast toast=Toast.makeText(ChatRoom.this,"erreur serveur",Toast.LENGTH_SHORT);
+                        break;
                 }
             }
         }).start();
     }
 
 
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            loadMessage();
-            handler.postDelayed(this, 1000 * 1);
-        }
-    };
+
 }

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,8 +51,8 @@ import okhttp3.ResponseBody;
 public class MAIN extends AppCompatActivity {
     private TextView title;
     private EditText searchUser;
-    private Button  chat,market,profile,set,newChat;
-
+    private Button  chat,market,profile,newChat;
+    private ImageButton set;
 
     private ListView scrollView;
 
@@ -73,6 +74,9 @@ public class MAIN extends AppCompatActivity {
         newChat = findViewById(R.id.createchat);
         scrollView = findViewById(R.id.list);
         layout=findViewById(R.id.linear);
+
+
+
 
 
 
@@ -213,6 +217,7 @@ public class MAIN extends AppCompatActivity {
                                     intent.putExtra("token",MAIN.this.token);
                                     intent.putExtra("user_id" , MAIN.this.id);
                                     intent.putExtra("name",list[position].getName());
+                                    intent.putExtra("username",username);
                                     startActivity(intent);
                                 }
                             });
@@ -384,7 +389,7 @@ public class MAIN extends AppCompatActivity {
         layout.post(new Runnable() {
             @Override
             public void run() {
-                popupWindow.showAtLocation(layout, Gravity.BOTTOM,0,0);
+                popupWindow.showAtLocation(layout, Gravity.TOP,0,0);
             }
         });
         Switch dark = popUp.findViewById(R.id.dark_mode);

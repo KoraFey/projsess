@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 public class messageAdapter extends ArrayAdapter<Message1> {
+
+    private final int VIEW_TYPE_LAYOUT_ONE = 0;
+    private final int VIEW_TYPE_LAYOUT_TWO = 1;
     private Message1[] list;
 
     private Context context;
@@ -35,13 +38,19 @@ public class messageAdapter extends ArrayAdapter<Message1> {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View getView(int position, View convertView, ViewGroup parent) {
+        final Message1 message = list[position];
         View view = convertView;
         if (view == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(this.ressource, parent, false);
+            if(list[position].isSent()) {
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = layoutInflater.inflate(R.layout.message, parent, false);
+            }
+            else{
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = layoutInflater.inflate(R.layout.message2, parent, false);
+            }
         }
 
-        final Message1 message = list[position];
 
         if(message != null){
             TextView content = view.findViewById(R.id.message);
@@ -54,6 +63,25 @@ public class messageAdapter extends ArrayAdapter<Message1> {
 
         }
         return view;
+
+    }
+
+
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if(list[position].isSent()){
+            return VIEW_TYPE_LAYOUT_ONE;
+        }
+        else{
+            return VIEW_TYPE_LAYOUT_TWO;
+        }
 
     }
 }
