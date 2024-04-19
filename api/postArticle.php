@@ -1,6 +1,15 @@
 <?php
 require_once __DIR__ . "/../config.php";
 
+try{
+    $gUserId = authentifier();
+} catch(Exception $e){
+    $response = [];
+    http_response_code(401);
+    $response['error'] = "Non autorisé";
+    echo json_encode($response);
+}
+
 header('Content-Type: application/json; charset=utf-8');
 
 $body = json_decode(file_get_contents("php://input"));
@@ -17,7 +26,7 @@ try {
     }
 
     $stmt = $pdo->prepare("INSERT INTO `Publication` (`user_id`, `description`, `type`, `prix`, `date_publication`) VALUES (:user_id, :description, :id_type, :prix, NOW())");
-    $stmt->bindValue(":user_id", $_SESSION['usager']);
+    $stmt->bindValue(":user_id", $gUserId);
     $stmt->bindValue(":description", $body->description);
     $stmt->bindValue(":id_type", $body->id_type);
     $stmt->bindValue(":prix", $body->prix); 
@@ -57,7 +66,7 @@ try {
     AND bl.blocked_id = p.user_id
     )
     GROUP BY p.id');
-    $stmt->bindValue(':currentUserId', $_SESSION["usager"]);
+    $stmt->bindValue(':currentUserId', $gUserId);
     $stmt->execute();
     $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

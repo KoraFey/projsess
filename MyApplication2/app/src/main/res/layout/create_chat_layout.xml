@@ -32,7 +32,7 @@
             android:orientation="vertical"></LinearLayout>
 
         <Button
-            android:id="@+id/addMember"
+            android:id="@+id/addUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="add member" />

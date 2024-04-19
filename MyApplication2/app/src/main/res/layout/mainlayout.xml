@@ -39,11 +39,12 @@
 
             <EditText
                 android:id="@+id/searchMain"
-                android:layout_width="320dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="User"
                 android:inputType="text"
+                android:labelFor="@id/searchButton"
                 android:minHeight="48dp" />
 
             <Button
@@ -68,25 +69,19 @@
                 android:text="chat" />
 
             <Button
-                android:id="@+id/market"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="market" />
-
-            <Button
-                android:id="@+id/post"
+                android:id="@+id/feed"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="feed" />
 
             <Button
-                android:id="@+id/createchat"
+                android:id="@+id/market"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="create" />
+                android:text="market" />
+
         </LinearLayout>
 
         <ListView
@@ -104,6 +99,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/createchat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="new chat" />
 
         <Button
             android:id="@+id/createPost"

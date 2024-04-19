@@ -5,9 +5,14 @@ import static com.example.myapplication.MainActivity.API_URL;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -30,6 +35,8 @@ public class Profile extends AppCompatActivity {
 
     private OkHttpClient client;
 
+    private LinearLayout layout;
+
     private String id;
 
     private String token;
@@ -38,23 +45,50 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
+        layout = findViewById(R.id.profile);
+        submit = findViewById(R.id.toggleedit);
+        cancel = findViewById(R.id.profilereturn);
 
-        cancel = findViewById(R.id.buttonretour1);
-        submit = findViewById(R.id.updateProfile);
-        username = findViewById(R.id.username);
-        mpd1 = findViewById(R.id.mdp1);
-        mpd2 = findViewById(R.id.mdp2);
+
         id = getIntent().getStringExtra("id");
         token = getIntent().getStringExtra("token");
 
-        username.setText(getIntent().getStringExtra("username"));
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createPopUpEdit();
+            }
+        });
+    }
+
+
+    private void createPopUpEdit(){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUp = inflater.inflate((R.layout.profile_pop),null);
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popUp,width,height,focusable);
+
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(layout, Gravity.TOP,0,0);
+            }
+        });
+
+        Button submit = popUp.findViewById(R.id.updateProfile);
+        EditText username = popUp.findViewById(R.id.username);
+        EditText mpd1 = popUp.findViewById(R.id.mdp1);
+        EditText mpd2 = popUp.findViewById(R.id.mdp2);
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +114,7 @@ public class Profile extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                               rep = client.newCall(requete).execute();
+                                rep = client.newCall(requete).execute();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
@@ -89,8 +123,8 @@ public class Profile extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     if(rep.code()==200){
-                                        setResult(2);
-                                        finish();
+                                        Toast toast = Toast.makeText(Profile.this,"updated",Toast.LENGTH_SHORT);
+                                        toast.show();
                                     }
                                     else{
                                         Toast toast = Toast.makeText(Profile.this,"error during update",Toast.LENGTH_SHORT);
@@ -114,5 +148,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+
     }
+
 }

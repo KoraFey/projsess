@@ -16,6 +16,7 @@
         android:gravity="left"
         android:maxWidth="250dp"
         android:padding="12dp"
+        android:textColor="@color/black"
         android:text="hcabhsjedbfhesrbdfvbdsrfbjdfrghbhdbvdsfjnvxdfnkbnfdgnbgfnjkfdkjfbkxbkjfnkcbnxkfbndfghghfdnx"
         android:textSize="16sp"
         app:autoSizeTextType="uniform"

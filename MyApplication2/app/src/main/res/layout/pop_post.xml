@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/popup"
@@ -17,7 +17,8 @@
             android:id="@+id/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Chat Room"
+            android:gravity="center"
+            android:text="New Post"
             android:textSize="24sp" />
 
         <EditText
@@ -25,15 +26,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="nom de la chat room"
-            android:inputType="text" />
+            android:hint="description"
+
+            android:inputType="text"
+            android:minHeight="48dp" />
 
         <TextView
             android:id="@+id/ListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:text="Member List"
+            android:text="liste image"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -52,7 +56,14 @@
                 android:id="@+id/addUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="add user " />
+                android:text="add url" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button" />
 
             <Button
                 android:id="@+id/createNewPost"

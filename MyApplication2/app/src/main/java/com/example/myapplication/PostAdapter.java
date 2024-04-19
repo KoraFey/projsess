@@ -21,16 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
-    private List<Post> list;
+    private Post[] list;
     private Context context;
     private int viewRessourceId;
-    public PostAdapter(@NonNull Context context, int resource,@NonNull List<Post> list) {
+    public PostAdapter(@NonNull Context context, int resource,@NonNull Post[] list) {
         super(context, resource);
     }
 
     @Override
     public int getCount(){
-        return this.list.size();
+        return this.list.length;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View getView(int position, View convertView, ViewGroup parent){
@@ -39,12 +39,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view=layoutInflater.inflate(this.viewRessourceId,parent,false);
         }
-        final Post post = this.list.get(position);
+        final Post post = this.list[position];
         if(post!=null){
-            final ImageView icone = view.findViewById(R.id.icone);
-            final TextView username = view.findViewById(R.id.username);
-            final TextView time = view.findViewById(R.id.timePost);
-            final ImageView content = view.findViewById(R.id.contentPost);
+            final ImageView icone = view.findViewById(R.id.iconeUser);
+            final TextView username = view.findViewById(R.id.usernamePost);
+            final TextView time = view.findViewById(R.id.timePostp);
+            final ImageView content = view.findViewById(R.id.contentpost);
             final TextView caption = view.findViewById(R.id.description);
             final RadioButton like = view.findViewById(R.id.like);
             final RadioButton dislike = view.findViewById(R.id.dislike);
@@ -57,8 +57,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
             });
 
             username.setText(post.getUser());
-            time.setText(post.getTime());
-            caption.setText(post.getCaption());
+            time.setText(post.getDate_publication());
+            caption.setText(post.getDescription());
             if(post.getLike()){
                 like.setChecked(true);
             }

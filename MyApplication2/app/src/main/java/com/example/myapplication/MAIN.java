@@ -2,19 +2,15 @@ package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.API_URL;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.TextAttribute;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,24 +18,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -53,7 +42,7 @@ public class MAIN extends AppCompatActivity {
     private boolean chatroomDisplay ;
     private TextView title;
     private EditText searchUser;
-    private Button  chat,market,profile,newChat, search;
+    private Button  chat,market,profile,newChat, search,feed,post;
     private ImageButton set;
 
     private ListView scrollView;
@@ -78,7 +67,8 @@ public class MAIN extends AppCompatActivity {
         layout=findViewById(R.id.linear);
         chatroomDisplay=false;
         search = findViewById(R.id.searchButton);
-
+        feed = findViewById(R.id.feed);
+        post = findViewById(R.id.createPost);
 
 
 
@@ -143,14 +133,29 @@ public class MAIN extends AppCompatActivity {
             }
         }).start();
 
+
+    post.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CreatePopUpPost();
+        }
+    });
+
+    feed.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            loadPosts(true);
+        }
+    });
+
     search.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(searchUser.getText().equals("")){
-                LoadChatRooms(false);
+                loadChatRooms(false);
             }
             else{
-                LoadChatRooms(true);
+                loadChatRooms(true);
             }
         }
     });
@@ -159,8 +164,9 @@ public class MAIN extends AppCompatActivity {
     chat.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            searchUser.setText("");
             chatroomDisplay=true;
-            LoadChatRooms(false);
+            loadChatRooms(false);
         }
     });
     newChat.setOnClickListener(new View.OnClickListener() {
@@ -184,13 +190,75 @@ public class MAIN extends AppCompatActivity {
             intent.putExtra("id",id);
             intent.putExtra("username",username);
 
-            startActivityForResult(intent,1);
+            startActivity(intent);
         }
     });
     }
 
 
-    private void LoadChatRooms(boolean user){
+    private void loadPosts(boolean user){
+        OkHttpClient client;
+        client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Request requete;
+        if(user) {
+            String name = searchUser.getText().toString();
+            requete = new Request.Builder()
+                    .url(API_URL + "/api/getPostOf/"  + name)
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+        }
+        else{
+            requete = new Request.Builder()
+                    .url(API_URL + "/api/getPost/" + id)
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+        }
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Response response = null;
+                try {
+                    response = client.newCall(requete).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                ResponseBody responseBody = response.body();
+                MAIN.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Post[]  list;
+                        Post post = new Post();
+                        ObjectMapper mapper = new ObjectMapper();
+                        String jsonId;
+                        try {
+                            jsonId=responseBody.string();
+                            list= mapper.readValue(jsonId, Post[].class);
+
+
+                             PostAdapter adaptater = new PostAdapter(MAIN.this, R.layout.chat_display, list);
+                            scrollView.setAdapter(adaptater);
+
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+
+
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+
+
+    private void loadChatRooms(boolean user){
         OkHttpClient client;
         client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -278,15 +346,15 @@ public class MAIN extends AppCompatActivity {
             }
         });
 
-        Button add = popUp.findViewById(R.id.addMember);
-        Button create = popUp.findViewById(R.id.createCh);
-        EditText titre = popUp.findViewById(R.id.titreChat);
+        Button add = popUp.findViewById(R.id.addUrl);
+        Button create = popUp.findViewById(R.id.createNewPost);
+        EditText titre = popUp.findViewById(R.id.newDescription);
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                lay=popUp.findViewById(R.id.layout_list);
+                lay=popUp.findViewById(R.id.layout_listPost);
                 int t = lay.getChildCount();
                 JSONArray array = new JSONArray();
                 boolean empty=false;
@@ -388,7 +456,7 @@ public class MAIN extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lay=popUp.findViewById(R.id.layout_list);
+                lay=popUp.findViewById(R.id.layout_listPost);
 
                 addMember();
             }
@@ -522,20 +590,145 @@ public class MAIN extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(resultCode){
-            case RESULT_OK:
-                Toast toast = Toast.makeText(MAIN.this,"you cancelled",Toast.LENGTH_SHORT);
-                toast.show();
-                break;
-            case 2:
-                toast = Toast.makeText(MAIN.this,"profile updated",Toast.LENGTH_SHORT);
-                toast.show();
+    private void CreatePopUpPost(){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUp = inflater.inflate((R.layout.pop_post),null);
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popUp,width,height,focusable);
+        layout.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(layout, Gravity.BOTTOM,200,200);
+            }
+        });
 
-        }
+        Button add = popUp.findViewById(R.id.addUrl);
+        Button create = popUp.findViewById(R.id.createNewPost);
+        EditText titre = popUp.findViewById(R.id.newDescription);
+
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                lay=popUp.findViewById(R.id.layout_listPost);
+                int t = lay.getChildCount();
+                JSONArray array = new JSONArray();
+                boolean empty=false;
+                for(int i =0;i < lay.getChildCount();i++){
+                    View member =  lay.getChildAt(i);
+                    EditText memberName = member.findViewById(R.id.newMemberName);
+                    if(memberName.getText().toString().equals("")) {
+                        i=lay.getChildCount();
+                        empty=true;
+                    }
+                    else{
+                        array.put(memberName.getText().toString());
+                    }
+                }
+                if(titre.getText().length()==0){
+                    empty=true;
+                }
+                if(empty){
+                    Toast toast = Toast.makeText(MAIN.this,"les url ou la descrption sont mal remplis",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else{
+                    JSONObject obj = new JSONObject();
+
+                    try {
+                        obj.put("id_type", "actualite");
+                        obj.put("description",titre.getText().toString());
+                        obj.put("url_image",array);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    OkHttpClient client;
+                    client = new OkHttpClient();
+                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                    RequestBody corpsRequete = RequestBody.create(String.valueOf(obj), JSON);
+
+                    Request requete = new Request.Builder()
+                            .url(API_URL + "/api/post")
+                            .header("Authorization", "Bearer "+token)
+                            .post(corpsRequete)
+                            .build();
+
+                    new Thread (new Runnable() {
+                        Response response;
+                        @Override
+                        public void run() {
+                            try {
+                                response = client.newCall(requete).execute();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            ResponseBody responseBody = response.body();
+                            int s;
+                            s =response.code();
+                            MAIN.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(s == 200){
+                                        popupWindow.dismiss();
+                                    }
+
+
+
+
+
+
+                                }
+                            });
+
+                        }
+                    }).start();
+
+
+
+
+                }
+
+
+
+
+
+            }
+        });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lay=popUp.findViewById(R.id.layout_listPost);
+
+                addMember();
+            }
+        });
+
+
+
+
+
+
+
     }
+
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch(resultCode){
+//            case RESULT_OK:
+//                Toast toast = Toast.makeText(MAIN.this,"you cancelled",Toast.LENGTH_SHORT);
+//                toast.show();
+//                break;
+//            case 2:
+//                toast = Toast.makeText(MAIN.this,"profile updated",Toast.LENGTH_SHORT);
+//                toast.show();
+//
+//        }
+//    }
 
 
 

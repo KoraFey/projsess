@@ -5,90 +5,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/icone"
-        android:layout_width="32dp"
-        android:layout_height="41dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        tools:srcCompat="@tools:sample/avatars" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="41dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="37dp" />
+            <ImageView
+                android:id="@+id/iconeUser"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_info" />
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="1dp"
-        android:text="username"
-        app:layout_constraintStart_toEndOf="@+id/icone"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/timePost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="1dp"
-        android:text="12:30"
-        app:layout_constraintStart_toEndOf="@+id/icone"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+                <TextView
+                    android:id="@+id/usernamePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-    <ImageView
-        android:id="@+id/contentPost"
-        android:layout_width="370dp"
-        android:layout_height="257dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/timePost"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                <TextView
+                    android:id="@+id/timePostp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:text="caption"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/contentPost" />
+        </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/description">
+        <ImageView
+            android:id="@+id/contentpost"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <RadioButton
-            android:id="@+id/like"
+        <TextView
+            android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/like_icone" />
+            android:text="ndfjernsjnserfnjernfffffffffffffffffffskjjjjjjjjjjjjjjjjjjjjjjnvkjrsnvrnvjsrnvnrjkjevrjvkrvnrnvnrvnvnrdnvdvndnvjdrnvnrjdvnjrnvndv" />
 
-        <RadioButton
-            android:id="@+id/dislike"
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:button="@drawable/dislike_icone" />
-    </RadioGroup>
+            android:layout_height="100dp" />
 
-    <Button
-        android:id="@+id/comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="commentaire"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
+                <RadioButton
+                    android:id="@+id/like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/like_icone" />
+
+                <RadioButton
+                    android:id="@+id/dislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/dislike_icone" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="commentaire" />
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
