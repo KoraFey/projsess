@@ -26,299 +26,309 @@ let conteneurPrincipal = [
   profileInfo
 ];
 
-document.addEventListener("DOMContentLoaded", function () {  
-  function afficherPublications(publications) {
-    console.log(publications);
-    if(publications != null && publications.length != 0){
-    const conteneurFeed = document.getElementById('conteneurFeed');
-    conteneurFeed.innerHTML = ''; 
 
-    const conteneurMarket = document.getElementById('conteneurMarket');
-    conteneurMarket.innerHTML = ''; 
+function afficherPublications(publications) {
+  console.log(publications);
+  if(publications != null && publications.length != 0){
+  const conteneurFeed = document.getElementById('conteneurFeed');
+  conteneurFeed.innerHTML = ''; 
 
-    publications.reverse();
-    publications.forEach(publication => {
-        if (publication.type === 'actualite') {
-            const publicationContainer = document.createElement('div');
-            publicationContainer.classList.add('publication-container');
+  const conteneurMarket = document.getElementById('conteneurMarket');
+  conteneurMarket.innerHTML = ''; 
 
-            const infoContainer = document.createElement('div');
-            infoContainer.classList.add('info-container');
-    
-            const h3 = document.createElement('h3');
-            const p = document.createElement('p');
+  publications.reverse();
+  publications.forEach(publication => {
+      if (publication.type === 'actualite') {
+          const publicationContainer = document.createElement('div');
+          publicationContainer.classList.add('publication-container');
 
-            const user = allUsersList.find(user => user.id === publication.user_id);
-            h3.textContent = user.username; 
-            const userPost = user.username; 
-            p.textContent = publication.description + ' | ' + publication.date_publication;
-    
-            const tagsContainer = document.createElement('span');
-            tagsContainer.classList.add('tags-users');
-            
-            if (publication.tag_users != null) {
-                const tagsUsers = publication.tag_users.split(',').map(tag => {
-                    const tagUser = allUsersList.find(user => user.id === parseInt(tag));
-                    const tagSpan = document.createElement('span');
-                    tagSpan.classList.add('tag-user');
-                    tagSpan.textContent = tagUser.username;
-                    return tagSpan;
-                });
-                
-                const estAvec = document.createElement('span');
-                estAvec.textContent = ' est avec: ';
-                tagsContainer.appendChild(estAvec);
-                
-                tagsUsers.forEach((tag, index) => {
-                    tagsContainer.appendChild(tag);
-                    if (index < tagsUsers.length - 1) {
-                        const vigurle = document.createElement('span');
-                        vigurle.textContent = ', ';
-                        tagsContainer.appendChild(vigurle);
-                    }
-                });
+          const infoContainer = document.createElement('div');
+          infoContainer.classList.add('info-container');
+  
+          const h3 = document.createElement('h3');
+          const p = document.createElement('p');
+
+          const user = allUsersList.find(user => user.id === publication.user_id);
+          h3.textContent = user.username; 
+          const userPost = user.username; 
+          p.textContent = publication.description + ' | ' + publication.date_publication;
+  
+          const tagsContainer = document.createElement('span');
+          tagsContainer.classList.add('tags-users');
+          
+          if (publication.tag_users != null) {
+              const tagsUsers = publication.tag_users.split(',').map(tag => {
+                  const tagUser = allUsersList.find(user => user.id === parseInt(tag));
+                  const tagSpan = document.createElement('span');
+                  tagSpan.classList.add('tag-user');
+                  tagSpan.textContent = tagUser.username;
+                  return tagSpan;
+              });
+              
+              const estAvec = document.createElement('span');
+              estAvec.textContent = ' est avec: ';
+              tagsContainer.appendChild(estAvec);
+              
+              tagsUsers.forEach((tag, index) => {
+                  tagsContainer.appendChild(tag);
+                  if (index < tagsUsers.length - 1) {
+                      const vigurle = document.createElement('span');
+                      vigurle.textContent = ', ';
+                      tagsContainer.appendChild(vigurle);
+                  }
+              });
+          }
+          
+          infoContainer.appendChild(h3);
+          infoContainer.appendChild(tagsContainer);          
+          infoContainer.appendChild(p);
+  
+          const carouselContainer = document.createElement('div');
+          const carouselInner = document.createElement('div');
+
+          carouselContainer.classList.add('carousel', 'slide');
+          carouselContainer.setAttribute('data-bs-ride', 'carousel');
+          carouselContainer.id = `publicationCarousel${publication.id}`;
+          carouselInner.classList.add('carousel-inner');
+
+          const imgLike = document.createElement('img');
+          imgLike.src = '../images/heart.png';
+          imgLike.alt = 'like';
+          imgLike.classList.add('image-like'); 
+
+          const imageUrls = publication.image_urls.split(',');
+          imageUrls.forEach((url, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.classList.add('carousel-item');
+              if (index === 0) 
+                  carouselItem.classList.add('active');
+              
+              const img = document.createElement('img');
+              img.classList.add('d-block', 'w-100', 'postImage'); 
+              img.src = url;
+              img.alt = 'post';
+
+              img.addEventListener('dblclick', function() {
+                    imgLike.src = '../images/hearted.png'; 
+                    incrementLikes(publication.id);
+              });
+
+              carouselItem.appendChild(img);
+              carouselInner.appendChild(carouselItem);
+          });
+          carouselContainer.appendChild(carouselInner);
+  
+          const carouselAvant = document.createElement('button');
+          const carouselApres = document.createElement('button');
+
+          carouselAvant.classList.add('carousel-control-prev');
+          carouselAvant.type = 'button';
+          carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselAvant.setAttribute('data-bs-slide', 'prev');
+          carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+  
+          carouselApres.classList.add('carousel-control-next');
+          carouselApres.type = 'button';
+          carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselApres.setAttribute('data-bs-slide', 'next');
+          carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+  
+          carouselContainer.appendChild(carouselAvant);
+          carouselContainer.appendChild(carouselApres);
+  
+          publicationContainer.appendChild(infoContainer);
+          publicationContainer.appendChild(carouselContainer);
+          
+
+
+          imgLike.addEventListener('click', function() {
+            if (imgLike.src.includes('hearted.png')) {
+                imgLike.src = '../images/heart.png'; 
+                decrementLikes(publication.id);
+            } else {
+                imgLike.src = '../images/hearted.png'; 
+                incrementLikes(publication.id);
             }
-            
-            infoContainer.appendChild(h3);
-            infoContainer.appendChild(tagsContainer);          
-            infoContainer.appendChild(p);
-    
-            const carouselContainer = document.createElement('div');
-            const carouselInner = document.createElement('div');
+          });
 
-            carouselContainer.classList.add('carousel', 'slide');
-            carouselContainer.setAttribute('data-bs-ride', 'carousel');
-            carouselContainer.id = `publicationCarousel${publication.id}`;
-            carouselInner.classList.add('carousel-inner');
+          const nbLikes = document.createElement('p');
+          nbLikes.id = 'nbLikes' + publication.id;
 
-            const imgLike = document.createElement('img');
-            imgLike.src = '../images/heart.png';
-            imgLike.alt = 'like';
-            imgLike.classList.add('image-like'); 
-
-            const imageUrls = publication.image_urls.split(',');
-            imageUrls.forEach((url, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (index === 0) 
-                    carouselItem.classList.add('active');
-                
-                const img = document.createElement('img');
-                img.classList.add('d-block', 'w-100', 'postImage'); 
-                img.src = url;
-                img.alt = 'post';
-
-                img.addEventListener('dblclick', function() {
-                      imgLike.src = '../images/hearted.png'; 
-                      incrementLikes(publication.id);
-                });
-
-                carouselItem.appendChild(img);
-                carouselInner.appendChild(carouselItem);
-            });
-            carouselContainer.appendChild(carouselInner);
-    
-            const carouselAvant = document.createElement('button');
-            const carouselApres = document.createElement('button');
-
-            carouselAvant.classList.add('carousel-control-prev');
-            carouselAvant.type = 'button';
-            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselAvant.setAttribute('data-bs-slide', 'prev');
-            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
-    
-            carouselApres.classList.add('carousel-control-next');
-            carouselApres.type = 'button';
-            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselApres.setAttribute('data-bs-slide', 'next');
-            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
-    
-            carouselContainer.appendChild(carouselAvant);
-            carouselContainer.appendChild(carouselApres);
-    
-            publicationContainer.appendChild(infoContainer);
-            publicationContainer.appendChild(carouselContainer);
-            
-
-
-            imgLike.addEventListener('click', function() {
-              if (imgLike.src.includes('hearted.png')) {
-                  imgLike.src = '../images/heart.png'; 
-                  decrementLikes(publication.id);
-              } else {
-                  imgLike.src = '../images/hearted.png'; 
-                  incrementLikes(publication.id);
+          let likesCount = 0;
+          allLikesList.forEach((like) => {
+            if (like.id_publication == publication.id) {
+              likesCount++;
+              if(like.user_id == userActuel){
+                imgLike.src = '../images/hearted.png'; 
               }
-            });
+            }
+          });
+          
+          if(likesCount != null && likesCount != 1 && likesCount != 0)
+            nbLikes.textContent = likesCount + " likes";
+          else if(likesCount == 1)
+            nbLikes.textContent = "1 like";
+          else 
+            nbLikes.textContent = "0 like";
 
-            const nbLikes = document.createElement('p');
-            nbLikes.id = 'nbLikes' + publication.id;
+          const divInteractions = document.createElement("div");
+          divInteractions.id = "divInteractions";
 
-            let likesCount = 0;
-            allLikesList.forEach((like) => {
-              if (like.id_publication == publication.id) {
-                likesCount++;
-                if(like.user_id == userActuel){
-                  imgLike.src = '../images/hearted.png'; 
-                }
-              }
-            });
-            
-            if(likesCount != null && likesCount != 1 && likesCount != 0)
-              nbLikes.textContent = likesCount + " likes";
-            else if(likesCount == 1)
-              nbLikes.textContent = "1 like";
-            else 
-              nbLikes.textContent = "0 like";
+          const imgCmmt = document.createElement('img');
+          imgCmmt.src = '../images/chat.png';
+          imgCmmt.alt = 'comment';
+          imgCmmt.classList.add('image-like'); 
 
-            const divInteractions = document.createElement("div");
-            divInteractions.id = "divInteractions";
+          divInteractions.appendChild(imgLike);
+          divInteractions.appendChild(imgCmmt);
+          publicationContainer.appendChild(divInteractions);
+          publicationContainer.appendChild(nbLikes);
 
-            const imgCmmt = document.createElement('img');
-            imgCmmt.src = '../images/chat.png';
-            imgCmmt.alt = 'comment';
-            imgCmmt.classList.add('image-like'); 
+          const divComments = document.createElement("div");
+          divComments.id = "divComments" + publication.id;
+          divComments.style.display = 'none';
 
-            divInteractions.appendChild(imgLike);
-            divInteractions.appendChild(imgCmmt);
-            publicationContainer.appendChild(divInteractions);
-            publicationContainer.appendChild(nbLikes);
-
-            const divComments = document.createElement("div");
-            divComments.id = "divComments" + publication.id;
-            divComments.style.display = 'none';
-
-            imgCmmt.addEventListener('click', function() {
-                if(document.getElementById(divComments.id).style.display == 'block')
-                  document.getElementById(divComments.id).style.display = 'none';
-                else
-                  document.getElementById(divComments.id).style.display = 'block';
-            });
-
-            divComments.style.maxHeight = '150px';
-            divComments.style.overflow = 'auto';
-            publicationContainer.appendChild(divComments);
-
-            const inputDiv = document.createElement('div');
-            inputDiv.classList.add("commentDiv");
-
-            const inputComment = document.createElement('input');
-            inputComment.id = "id_inputComment"+publication.id;
-            inputComment.type = 'text';
-            inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
-
-            const commentButton = document.createElement('button');
-            commentButton.type = "button";
-            commentButton.textContent = "Send";
-            commentButton.addEventListener('click', function() {
-              if(inputComment.value != ""  && inputComment.value != null)
-                commenterPost(publication.id);
-
+          imgCmmt.addEventListener('click', function() {
               if(document.getElementById(divComments.id).style.display == 'block')
                 document.getElementById(divComments.id).style.display = 'none';
               else
                 document.getElementById(divComments.id).style.display = 'block';
-            });
+          });
 
-            inputDiv.appendChild(inputComment);
-            inputDiv.appendChild(commentButton);
-            publicationContainer.appendChild(inputDiv);
-            
-            conteneurFeed.appendChild(publicationContainer);
-        } else if(publication.type === 'annonce'){
-            const annonceContainer = document.createElement('div');
-            annonceContainer.classList.add('annonce-container');
+          divComments.style.maxHeight = '150px';
+          divComments.style.overflow = 'auto';
+          publicationContainer.appendChild(divComments);
 
-            const infoContainer = document.createElement('div');
-            infoContainer.classList.add('info-container');
+          const inputDiv = document.createElement('div');
+          inputDiv.classList.add("commentDiv");
 
-            const prixEtUser = document.createElement('div');
-            prixEtUser.classList.add('prix-user');
-    
-            const h4 = document.createElement('h4');
-            const p = document.createElement('p');
-            p.style.maxHeight = '120px';
-            p.style.overflowY = 'auto'; 
+          const inputComment = document.createElement('input');
+          inputComment.id = "id_inputComment"+publication.id;
+          inputComment.type = 'text';
+          inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
+
+          const commentButton = document.createElement('button');
+          commentButton.type = "button";
+          commentButton.textContent = "Send";
+          commentButton.addEventListener('click', function() {
+            if(inputComment.value != ""  && inputComment.value != null)
+              commenterPost(publication.id);
+
+            if(document.getElementById(divComments.id).style.display == 'block')
+              document.getElementById(divComments.id).style.display = 'none';
+            else
+              document.getElementById(divComments.id).style.display = 'block';
+          });
+
+          inputDiv.appendChild(inputComment);
+          inputDiv.appendChild(commentButton);
+          publicationContainer.appendChild(inputDiv);
+          
+          conteneurFeed.appendChild(publicationContainer);
+      } else if(publication.type === 'annonce'){
+          const annonceContainer = document.createElement('div');
+          annonceContainer.classList.add('annonce-container');
+
+          const infoContainer = document.createElement('div');
+          infoContainer.classList.add('info-container');
+
+          const prixEtUser = document.createElement('div');
+          prixEtUser.classList.add('prix-user');
+  
+          const h4 = document.createElement('h4');
+          const p = document.createElement('p');
+          p.style.maxHeight = '120px';
+          p.style.overflowY = 'auto'; 
 
 
-            const user = allUsersList.find(user => user.id === publication.user_id);
-            h4.textContent = user.username; 
-            /*
-            const userPost = user.username; 
-            */
-            p.textContent = publication.description + ' | ' + publication.date_publication;
+          const user = allUsersList.find(user => user.id === publication.user_id);
+          h4.textContent = user.username; 
+          /*
+          const userPost = user.username; 
+          */
+          p.textContent = publication.description + ' | ' + publication.date_publication;
 
-            const price = document.createElement('h3');
-            price.textContent = "$ "+publication.prix * 100/100
+          const price = document.createElement('h3');
+          price.textContent = "$ "+publication.prix * 100/100
 
-            prixEtUser.appendChild(price);
-            prixEtUser.appendChild(h4);
-            infoContainer.appendChild(prixEtUser);
-            infoContainer.appendChild(p);
-    
-            const carouselContainer = document.createElement('div');
-            const carouselInner = document.createElement('div');
+          prixEtUser.appendChild(price);
+          prixEtUser.appendChild(h4);
+          infoContainer.appendChild(prixEtUser);
+          infoContainer.appendChild(p);
+  
+          const carouselContainer = document.createElement('div');
+          const carouselInner = document.createElement('div');
 
-            carouselContainer.classList.add('carousel', 'slide');
-            carouselContainer.setAttribute('data-bs-ride', 'carousel');
-            carouselContainer.id = `publicationCarousel${publication.id}`;
-            carouselInner.classList.add('carousel-inner');
+          carouselContainer.classList.add('carousel', 'slide');
+          carouselContainer.setAttribute('data-bs-ride', 'carousel');
+          carouselContainer.id = `publicationCarousel${publication.id}`;
+          carouselInner.classList.add('carousel-inner');
 
-            const imgLike = document.createElement('img');
-            imgLike.src = '../images/heart.png';
-            imgLike.alt = 'like';
-            imgLike.classList.add('image-like'); 
+          const imgLike = document.createElement('img');
+          imgLike.src = '../images/heart.png';
+          imgLike.alt = 'like';
+          imgLike.classList.add('image-like'); 
 
-            const imageUrls = publication.image_urls.split(',');
-            imageUrls.forEach((url, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (index === 0) 
-                    carouselItem.classList.add('active');
-                
-                const img = document.createElement('img');
-                img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
-                img.src = url;
-                img.alt = 'post';
+          const imageUrls = publication.image_urls.split(',');
+          imageUrls.forEach((url, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.classList.add('carousel-item');
+              if (index === 0) 
+                  carouselItem.classList.add('active');
+              
+              const img = document.createElement('img');
+              img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
+              img.src = url;
+              img.alt = 'post';
 
-                img.addEventListener('dblclick', function() {
-                      imgLike.src = '../images/hearted.png'; 
-                      incrementLikes(publication.id);
-                });
+              img.addEventListener('dblclick', function() {
+                    imgLike.src = '../images/hearted.png'; 
+                    incrementLikes(publication.id);
+              });
 
-                carouselItem.appendChild(img);
-                carouselInner.appendChild(carouselItem);
-            });
-            carouselContainer.appendChild(carouselInner);
-    
-            const carouselAvant = document.createElement('button');
-            const carouselApres = document.createElement('button');
+              carouselItem.appendChild(img);
+              carouselInner.appendChild(carouselItem);
+          });
+          carouselContainer.appendChild(carouselInner);
+  
+          const carouselAvant = document.createElement('button');
+          const carouselApres = document.createElement('button');
 
-            carouselAvant.classList.add('carousel-control-prev');
-            carouselAvant.type = 'button';
-            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselAvant.setAttribute('data-bs-slide', 'prev');
-            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
-    
-            carouselApres.classList.add('carousel-control-next');
-            carouselApres.type = 'button';
-            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselApres.setAttribute('data-bs-slide', 'next');
-            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
-    
-            carouselContainer.appendChild(carouselAvant);
-            carouselContainer.appendChild(carouselApres);
+          carouselAvant.classList.add('carousel-control-prev');
+          carouselAvant.type = 'button';
+          carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselAvant.setAttribute('data-bs-slide', 'prev');
+          carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+  
+          carouselApres.classList.add('carousel-control-next');
+          carouselApres.type = 'button';
+          carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselApres.setAttribute('data-bs-slide', 'next');
+          carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+  
+          carouselContainer.appendChild(carouselAvant);
+          carouselContainer.appendChild(carouselApres);
 
-            annonceContainer.appendChild(carouselContainer);
-            annonceContainer.appendChild(infoContainer);
+          annonceContainer.appendChild(carouselContainer);
+          annonceContainer.appendChild(infoContainer);
 
-            conteneurMarket.appendChild(annonceContainer);
-        }
+          conteneurMarket.appendChild(annonceContainer);
+      }
 
-    });
-    populateComments(allCommentsList);
-  }
+  });
+  populateComments(allCommentsList);
+};
 }
+
+let btnAjouterPost = document.createElement('button');
+btnAjouterPost.textContent = 'Publier';
+
+
+btnAjouterPost.setAttribute('class', 'btnAjouter');
+btnAjouterPost.setAttribute('id', 'ajouterPost');
+
+let sectionBtnFonctions = document.querySelector('.btnFonctions');
+sectionBtnFonctions.appendChild(btnAjouterPost);
 
 btnAjouterPost.addEventListener('click', function (event) {
   event.preventDefault(); 
@@ -522,8 +532,10 @@ function populateComments(comments){
   });
 }
 
-afficherPublications(listePosts);
+document.addEventListener("DOMContentLoaded", function () {
+  afficherPublications(listePosts);
 });
+
 
 function genererFormulaireAjout(modifier) {
   let divAjouter = document.createElement('div');
@@ -705,17 +717,6 @@ function replaceForm() {
   btnAjouterPost.click();
 }
 
-let btnAjouterPost = document.createElement('button');
-btnAjouterPost.textContent = 'Publier';
-
-
-btnAjouterPost.setAttribute('class', 'btnAjouter');
-btnAjouterPost.setAttribute('id', 'ajouterPost');
-
-let sectionBtnFonctions = document.querySelector('.btnFonctions');
-sectionBtnFonctions.appendChild(btnAjouterPost);
-
-
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
     if(conteneurPrincipal[i].id !== "conteneurMarket"){
@@ -826,6 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
               rechercheResultats.innerHTML = ''; 
           });
 
+          
           let profile = document.createElement('article')
           let boutons = document.createElement('div')
           boutons.classList.add('profile-boutons')
@@ -838,17 +840,30 @@ document.addEventListener("DOMContentLoaded", function () {
           block.type = 'button';
 
           message.textContent = 'Messager';
-          block.textContent = 'Blocker';
+          block.textContent = 'Bloquer';
+
+          if(blockList != null){
+            blockList.forEach(userBlock => {
+              if(user.id == userBlock)
+                block.textContent = 'Debloquer';
+            })
+          }
+         
 
           block.addEventListener('click', function (event) {
-            console.log(user.id);
+            let blocker = "block";
+            if(block.textContent == 'Bloquer'){
+              blocker = "block";
+            } else if(block.textContent == 'Debloquer'){
+              blocker = "unblock";
+            }
             event.preventDefault(); 
             fetch(postApiBlocker, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ blocked_id: user.id})
+              body: JSON.stringify({blocked_id: user.id, block_unblock: blocker})
           })
           .then(response => {
               if (!response.ok) {
@@ -857,7 +872,18 @@ document.addEventListener("DOMContentLoaded", function () {
               return response.json();
           })
           .then(data => {
+            listePosts = data.listePosts;
+            allCommentsList = data.allCommentsList;
+            console.log(listePosts);
+            afficherPublications(listePosts);
 
+            console.log(block.textContent);
+            if(block.textContent == 'Bloquer'){
+              console.log("OK");
+              block.textContent = 'Debloquer';            
+            } else if(block.textContent == 'Debloquer'){
+              block.textContent = 'Bloquer'            
+            }
           })
           .catch(error => {
               console.error('POST like erreure :', error);
@@ -1108,7 +1134,6 @@ document
   .getElementById("profile-link")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // Ajoutez ici le code pour gérer le clic sur le lien du profil
     console.log("Lien Profil cliqué");
   });
 
@@ -1116,7 +1141,6 @@ document
   .getElementById("change-password-link")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // Ajoutez ici le code pour gérer le clic sur le lien de changement de mot de passe
     console.log("Lien Changer Mot de Passe cliqué");
   });
 
@@ -1146,7 +1170,6 @@ document
 function sendMessage() {
 console.log(document.getElementById('messageInput').value);
 console.log(userActuel);
-  // Send message to server
   fetch(send_message, {
       method: 'POST',
       headers: {
@@ -1160,11 +1183,9 @@ console.log(userActuel);
   })
   .then(response => response.json())
   .then(data => {
-      // Handle success (if needed)
       console.log('Message sent successfully:', data);
   })
   .catch(error => {
-      // Handle error (if needed)
       console.error('Error sending message:', error);
   });
 }
@@ -1224,13 +1245,10 @@ function linkChat(){
     
       chatMessages.innerHTML = '';
         
-      // Iterate through each message in the data array
       data.forEach(message => {
-        // Create a new HTML element to represent the message
         const messageElement = document.createElement('div');
-        messageElement.textContent = message.message; // Assuming 'content' is the message content field
+        messageElement.textContent = message.message;
             
-        // Append the message element to the chatMessages container
         chatMessages.appendChild(messageElement);
         console.log(messageElement);
       });

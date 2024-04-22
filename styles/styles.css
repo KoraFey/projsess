@@ -26,6 +26,7 @@ body {
     padding: 20px;
     margin: 20px;
     border: 1px solid black;
+
 }
 
 .profile-boutons button{
@@ -89,6 +90,7 @@ body {
 .publication-container {
     display: flex;
     flex-direction: column;
+    width: 500px
 }
 
 .info-container p {

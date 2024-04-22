@@ -26,6 +26,7 @@ post('/api/postLike', '/api/postLike.php');
 post('/api/createChat', '/api/createChat.php');
 post('/api/modifyUser/$id','/api/modifyUser.php');
 post('/api/postMessages','/api/newMessages.php');
+post('/api/blockUser','/api/blockUser.php');
 
 
 
