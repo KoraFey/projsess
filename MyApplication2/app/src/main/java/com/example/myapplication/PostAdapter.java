@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static com.example.myapplication.MainActivity.API_URL;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,19 +15,35 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PostAdapter extends ArrayAdapter<Post> {
     private Post[] list;
     private Context context;
     private int viewRessourceId;
+
     public PostAdapter(@NonNull Context context, int resource,@NonNull Post[] list) {
         super(context, resource);
+        this.list=list;
+        this.context=context;
+        this.viewRessourceId=resource;
+
     }
 
     @Override
@@ -45,7 +63,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final TextView username = view.findViewById(R.id.usernamePost);
             final TextView time = view.findViewById(R.id.timePostp);
             final ImageView content = view.findViewById(R.id.contentpost);
-            final TextView caption = view.findViewById(R.id.description);
+            final TextView caption = view.findViewById(R.id.textView6);
             final RadioButton like = view.findViewById(R.id.like);
             final RadioButton dislike = view.findViewById(R.id.dislike);
             final Button      comments = view.findViewById(R.id.comments);
@@ -56,20 +74,72 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 }
             });
 
-            username.setText(post.getUser());
+            username.setText(post.getUsername());
             time.setText(post.getDate_publication());
             caption.setText(post.getDescription());
-            if(post.getLike()){
+            if(post.getLike()==1){
                 like.setChecked(true);
             }
             else{
-                dislike.setChecked(true);
+                dislike.setChecked(false);
             }
+            //------------------------------
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(like.isChecked()){
+                        liked(true,post.getId());
+
+                    }
+                }
+            });
+
+
+
         }
 
 
         return view;
     }
+
+     private void liked(boolean like, int id){
+         OkHttpClient client;
+         client = new OkHttpClient();
+         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+         JSONObject obj = new JSONObject();
+
+         try {
+             if(like) {
+                 obj.put("like", 1);
+             }
+             else{
+                 obj.put("like", 0);
+             }
+         } catch (JSONException e) {
+             throw new RuntimeException(e);
+         }
+
+         RequestBody corpsRequete = RequestBody.create(String.valueOf(obj), JSON);
+
+
+         Request requete = new Request.Builder()
+                 .url(API_URL + "/api/like/"+"/"+id)
+                 .header("Authorization", "Bearer "+"token")
+                 .post(corpsRequete)
+                 .build();
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 Response response = null;
+                 try {
+                     response = client.newCall(requete).execute();
+                 } catch (IOException e) {
+                     throw new RuntimeException(e);
+                 }
+             }
+         }).start();
+
+     }
 
 
 

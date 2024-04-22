@@ -1,24 +1,33 @@
 <?php
 require_once __DIR__."/../config.php";
 
-
-
 try{
     $gUserId = authentifier();
-} catch(Exception $e){
+} catch (Exception $e) {
     $response = [];
     http_response_code(401);
     $response['error'] = "Non autorisé";
     echo json_encode($response);
 }
 
-if(isset($gUserId) && filter_var($gUserId, FILTER_VALIDATE_INT)){
-    $stmt = $pdo->prepare("SELECT Publication.id as id, user_id, username,url_pfp, description, type, date_publication, prix  FROM `Publication` INNER JOIN users ON user_id= users.id ");
+if (isset($gUserId) && filter_var($gUserId, FILTER_VALIDATE_INT) && isset($name)) {
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = :name");
+    $stmt->bindValue(":name", $name);
+    $stmt->execute();
+    $id2 = $stmt->fetch();
+    
+
+
+    $stmt = $pdo->prepare("SELECT Publication.id as id, user_id, username,url_pfp, description, type, date_publication, prix  FROM `Publication` INNER JOIN users ON user_id= users.id WHERE `type`= 'actualite' AND user_id =:id2");
+
+    $stmt->bindValue(":id2", $id2["id"]);
+    
     $stmt->execute();
 
     $posts = $stmt->fetchAll();
+
 } else {
-    $posts = ["error"=>"Identifiant invalide"];
+    $response = ["error" => "Identifiant invalide"];
 }
 
 $i = 0;

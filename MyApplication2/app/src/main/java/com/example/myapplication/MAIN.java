@@ -144,7 +144,7 @@ public class MAIN extends AppCompatActivity {
     feed.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            loadPosts(true);
+            loadPosts(false);
         }
     });
 
@@ -210,7 +210,7 @@ public class MAIN extends AppCompatActivity {
         }
         else{
             requete = new Request.Builder()
-                    .url(API_URL + "/api/getPost/" + id)
+                    .url(API_URL + "/api/posts")
                     .header("Authorization", "Bearer " + token)
                     .build();
         }
@@ -238,7 +238,7 @@ public class MAIN extends AppCompatActivity {
                             list= mapper.readValue(jsonId, Post[].class);
 
 
-                             PostAdapter adaptater = new PostAdapter(MAIN.this, R.layout.chat_display, list);
+                             PostAdapter adaptater = new PostAdapter(MAIN.this, R.layout.post_layout, list);
                             scrollView.setAdapter(adaptater);
 
 
@@ -731,7 +731,9 @@ public class MAIN extends AppCompatActivity {
 //    }
 
 
-
+public String getId(){
+        return id;
+}
 
 
 

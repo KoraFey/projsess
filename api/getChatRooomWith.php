@@ -27,5 +27,5 @@ if (isset($id) && filter_var($id, FILTER_VALIDATE_INT) && isset($name)) {
 
     echo json_encode($chatRooms);
 } else {
-    $settings = ["error" => "Identifiant invalide"];
+    $response = ["error" => "Identifiant invalide"];
 }
