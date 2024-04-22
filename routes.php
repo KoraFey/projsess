@@ -28,7 +28,7 @@ post('/api/modifyUser/$id','/api/modifyUser.php');
 post('/api/postMessages','/api/newMessages.php');
 post('/api/blockUser','/api/blockUser.php');
 
-
+post('/api/deletePost', 'api/deletePost.php');
 
 
 get('/api/getChatRoomUser/$id', '/api/getChatRoomUser.php');

@@ -11,6 +11,7 @@ let currentChat;
 const getMessage = "/api/messages/";
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
+const deletePost = "/api/deletePost/";
 const send_message = "/api/postMessages/";
 const postApiBlocker = "/api/blockUser/";
 let chatroomList;
@@ -45,6 +46,9 @@ function afficherPublications(publications) {
           const infoContainer = document.createElement('div');
           infoContainer.classList.add('info-container');
   
+          const titreEtBtn = document.createElement('div');
+          titreEtBtn.classList.add('container-titreEtBtn');
+
           const h3 = document.createElement('h3');
           const p = document.createElement('p');
 
@@ -53,6 +57,60 @@ function afficherPublications(publications) {
           const userPost = user.username; 
           p.textContent = publication.description + ' | ' + publication.date_publication;
   
+
+          titreEtBtn.appendChild(h3);
+
+          if(publication.user_id == userActuel){
+            const btnFonctions = document.createElement('div');
+            btnFonctions.classList.add('container-delete-modify');
+
+            //const btnModifier = document.createElement('img');
+            const btnSupprimer = document.createElement('img');
+
+            //btnModifier.src = '../images/pen.png';
+            //btnModifier.alt = 'modify';
+            //btnModifier.classList.add('image-modifier'); 
+
+            btnSupprimer.src = '../images/remove.png';
+            btnSupprimer.alt = 'delete';
+            btnSupprimer.classList.add('image-delete'); 
+
+
+            btnSupprimer.addEventListener('click', function() {
+              const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce post ?");
+          
+              if (confirmation) {
+                  fetch(deletePost, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({id_post: publication.id})
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error('response was not ok');
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                    listePosts = data.listePosts;
+                    afficherPublications(listePosts);
+                  })
+                  .catch(error => {
+                      console.error('Erreur lors de la suppression du post :', error);
+                  });
+              } else {
+                  console.log('La suppression du post a ete annulee');
+              }
+          });
+          
+
+            //btnFonctions.appendChild(btnModifier);
+            btnFonctions.appendChild(btnSupprimer);
+            titreEtBtn.appendChild(btnFonctions);
+          }
+
           const tagsContainer = document.createElement('span');
           tagsContainer.classList.add('tags-users');
           
@@ -79,7 +137,7 @@ function afficherPublications(publications) {
               });
           }
           
-          infoContainer.appendChild(h3);
+          infoContainer.appendChild(titreEtBtn);
           infoContainer.appendChild(tagsContainer);          
           infoContainer.appendChild(p);
   
@@ -169,7 +227,7 @@ function afficherPublications(publications) {
           else if(likesCount == 1)
             nbLikes.textContent = "1 like";
           else 
-            nbLikes.textContent = "0 like";
+            nbLikes.textContent = "0 like"; 
 
           const divInteractions = document.createElement("div");
           divInteractions.id = "divInteractions";
@@ -264,11 +322,6 @@ function afficherPublications(publications) {
           carouselContainer.id = `publicationCarousel${publication.id}`;
           carouselInner.classList.add('carousel-inner');
 
-          const imgLike = document.createElement('img');
-          imgLike.src = '../images/heart.png';
-          imgLike.alt = 'like';
-          imgLike.classList.add('image-like'); 
-
           const imageUrls = publication.image_urls.split(',');
           imageUrls.forEach((url, index) => {
               const carouselItem = document.createElement('div');
@@ -280,17 +333,45 @@ function afficherPublications(publications) {
               img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
               img.src = url;
               img.alt = 'post';
-
-              img.addEventListener('dblclick', function() {
-                    imgLike.src = '../images/hearted.png'; 
-                    incrementLikes(publication.id);
+              img.classList.add('carousel-img-container');
+              img.addEventListener('mouseover', () => {
+                  img.classList.add('image-opacity');
+              });
+              img.addEventListener('mouseout', () => {
+                  img.classList.remove('image-opacity');
+              });
+          
+              const interestedBtn = document.createElement('button');
+              interestedBtn.type = 'button';
+              interestedBtn.textContent = 'Intéressé';
+              interestedBtn.classList.add('btn', 'btn-success');
+          
+              const interestedText = document.createElement('div');
+              interestedText.classList.add('commander-text');
+          
+              carouselItem.addEventListener('mouseover', () => {
+                interestedText.style.opacity = '1';
+              });
+              carouselItem.addEventListener('mouseout', () => {
+                interestedText.style.opacity = '0';
               });
 
+              interestedBtn.addEventListener('click', function (event) {
+                let msg = "Je suis intéressé par votre post '" + publication.description.substring(0, 10) + "'..." ;
+                console.log(msg + "User id: " +publication.user_id);
+              });
+
+              interestedText.appendChild(interestedBtn);
+          
               carouselItem.appendChild(img);
+              carouselItem.appendChild(interestedText);
               carouselInner.appendChild(carouselItem);
           });
+          
           carouselContainer.appendChild(carouselInner);
-  
+          
+          
+          
           const carouselAvant = document.createElement('button');
           const carouselApres = document.createElement('button');
 

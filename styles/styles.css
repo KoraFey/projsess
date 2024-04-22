@@ -706,3 +706,27 @@ footer {
     cursor: pointer;
     
 }
+
+/* image bouton modifier et supprimer posts */
+
+.image-modifier{
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/pen.png');
+}
+.image-delete {
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/remove.png');
+
+}
+
+.container-titreEtBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container-delete-modify {
+    display: flex;
+    gap: 5px;
+}
