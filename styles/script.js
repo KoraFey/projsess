@@ -309,10 +309,67 @@ function afficherPublications(publications) {
           const price = document.createElement('h3');
           price.textContent = "$ "+publication.prix * 100/100
 
+
+          const titreEtBtn = document.createElement('div');
+          titreEtBtn.classList.add('container-annonceBtn');
+
+
+          if(publication.user_id == userActuel){
+            //const btnModifier = document.createElement('img');
+            const btnSupprimer = document.createElement('img');
+
+            //btnModifier.src = '../images/pen.png';
+            //btnModifier.alt = 'modify';
+            //btnModifier.classList.add('image-modifier'); 
+
+            btnSupprimer.src = '../images/remove.png';
+            btnSupprimer.alt = 'delete';
+            btnSupprimer.classList.add('annonce-delete'); 
+
+
+            btnSupprimer.addEventListener('click', function() {
+              const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce post ?");
+          
+              if (confirmation) {
+                  fetch(deletePost, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({id_post: publication.id})
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error('response was not ok');
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                    listePosts = data.listePosts;
+                    afficherPublications(listePosts);
+                  })
+                  .catch(error => {
+                      console.error('Erreur lors de la suppression du post :', error);
+                  });
+              } else {
+                  console.log('La suppression du post a ete annulee');
+              }
+          });
+          
+
+            //btnFonctions.appendChild(btnModifier);
+            titreEtBtn.appendChild(btnSupprimer);
+          }
+
+
           prixEtUser.appendChild(price);
           prixEtUser.appendChild(h4);
+          
           infoContainer.appendChild(prixEtUser);
+          infoContainer.appendChild(titreEtBtn);
+
           infoContainer.appendChild(p);
+
   
           const carouselContainer = document.createElement('div');
           const carouselInner = document.createElement('div');
@@ -684,6 +741,51 @@ function genererFormulaireAjout(modifier) {
                   }
               }
           });
+          
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.id = 'fileInput';
+          fileInput.accept = 'image/*';
+
+          fileInput.addEventListener('change', function() {
+            const selectedFile = fileInput.files[0];
+        
+            if (selectedFile) {
+                const objectURL = URL.createObjectURL(selectedFile);
+        
+                const image = new Image();
+                image.src = objectURL;
+                image.style.maxHeight = '100px'; 
+                image.style.marginRight = '10px'; 
+                image.style.cursor = 'pointer';
+        
+                image.addEventListener('click', function() {
+                    this.parentNode.removeChild(this);
+                    postMax--;
+                    urlInput.disabled = false;
+                    addButton.disabled = false;
+                    urlInput.value = '';
+                });
+        
+                urlList.appendChild(image);
+                urlList.scrollTop = urlList.scrollHeight;
+                postMax++;
+        
+                if (postMax === 10) {
+                    urlInput.disabled = true;
+                    addButton.disabled = true;
+                    urlInput.value = '10 images au max !';
+                }
+            }
+        });
+
+        
+          input.appendChild(urlInput);
+          input.appendChild(addButton);
+          input.appendChild(fileInput);
+  
+
+
           input.appendChild(addButton);
           const urlList = document.createElement('div'); 
           urlList.id = 'urlList';
@@ -976,10 +1078,22 @@ document.addEventListener("DOMContentLoaded", function () {
           boutons.appendChild(block);
 
           profile.classList.add('profile-searched')
+
+          let nomImage = document.createElement('div')
+          nomImage.classList.add('nomImage-searched');
+
+          let img = document.createElement('img')
           let nom = document.createElement('h3')
           nom.textContent = user.username;
+          if(user.url_pfp != null){
+            img.src = user.url_pfp;
+          } else {
+            img.src = "../images/user.png";
+          }
+          nomImage.appendChild(img);
+          nomImage.appendChild(nom);
 
-          profile.appendChild(nom);
+          profile.appendChild(nomImage);
           profile.appendChild(boutons);
           conteneurProfile.appendChild(profile);
 

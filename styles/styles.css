@@ -730,3 +730,31 @@ footer {
     display: flex;
     gap: 5px;
 }
+
+/* image de la personne recherchee*/
+.profile-searched img {
+    width: 75px;
+    height: 75px;
+}
+
+.nomImage-searched {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.annonce-delete {
+    position: relative;
+    right: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.container-annonceBtn {
+    position: relative;
+}
+
+.container-annonceBtn img {
+    float: right;
+}
