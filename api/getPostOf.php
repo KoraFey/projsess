@@ -18,9 +18,10 @@ if (isset($gUserId) && filter_var($gUserId, FILTER_VALIDATE_INT) && isset($name)
     
 
 
-    $stmt = $pdo->prepare("SELECT Publication.id as id, user_id, username,url_pfp, description, type, date_publication, prix  FROM `Publication` INNER JOIN users ON user_id= users.id WHERE `type`= 'actualite' AND user_id =:id2");
+    $stmt = $pdo->prepare("SELECT Publication.id as id, user_id, username,url_pfp, description, type, date_publication, prix  FROM `Publication` INNER JOIN users ON user_id= users.id WHERE `type`=:type AND user_id =:id2");
 
     $stmt->bindValue(":id2", $id2["id"]);
+    $stmt->bindValue(":type", $type);
     
     $stmt->execute();
 
@@ -46,7 +47,7 @@ foreach($posts as $post){
     else
         $posts[$i]['url'] = null;
 
-
+    if($type == 'actualite'){
     $stmt = $pdo->prepare("SELECT id_publication FROM `publication_likes` WHERE `id_publication`=:id AND user_id =:ID");
     $stmt->bindValue("id",$post['id']);
     $stmt->bindValue("ID",$gUserId);
@@ -56,10 +57,12 @@ foreach($posts as $post){
         $posts[$i]['isLiked'] = 1;
     else
         $posts[$i]['isLiked'] = 0;
-  $i++;
-
+ 
+    }
+    $i++;
 
 }
+
 
 
 if($posts){

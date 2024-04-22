@@ -37,12 +37,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
     private Post[] list;
     private Context context;
     private int viewRessourceId;
+    private MAIN main;
+    private   OkHttpClient client;
+    private MediaType JSON;
 
-    public PostAdapter(@NonNull Context context, int resource,@NonNull Post[] list) {
+    public PostAdapter(@NonNull Context context, int resource,@NonNull Post[] list, MAIN main) {
         super(context, resource);
         this.list=list;
         this.context=context;
         this.viewRessourceId=resource;
+        this.main=main;
+        JSON = MediaType.parse("application/json; charset=utf-8");
 
     }
 
@@ -67,10 +72,22 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final RadioButton like = view.findViewById(R.id.like);
             final RadioButton dislike = view.findViewById(R.id.dislike);
             final Button      comments = view.findViewById(R.id.comments);
+
+            if(post.getType().equals("annonce")){
+                comments.setText("notifier vendeur");
+
+
+            }
             comments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ///dont know what to do rn
+                    if(post.getType().equals("annonce")){
+                        Toast.makeText(context,main.getToken(),Toast.LENGTH_LONG ).show();
+                        sendMessage(String.valueOf(post.getUser_id()),post.getDescription());
+                    }
+                    else{
+                        Toast.makeText(context,"dfghj",Toast.LENGTH_LONG ).show();
+                    }
                 }
             });
 
@@ -88,7 +105,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 @Override
                 public void onClick(View v) {
                     if(like.isChecked()){
-                        liked(true,post.getId());
+                       // liked(true,post.getId());
 
                     }
                 }
@@ -103,7 +120,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
 
      private void liked(boolean like, int id){
-         OkHttpClient client;
+
          client = new OkHttpClient();
          MediaType JSON = MediaType.parse("application/json; charset=utf-8");
          JSONObject obj = new JSONObject();
@@ -140,6 +157,52 @@ public class PostAdapter extends ArrayAdapter<Post> {
          }).start();
 
      }
+
+
+    private void sendMessage(String titre, String id){
+        client = new OkHttpClient();
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put("message", "bonjour je suis interesser par votre annonce: "+titre);
+            obj.put("user_id", id);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        RequestBody body = RequestBody.create(String.valueOf(obj),JSON);
+
+        Request requete = new Request.Builder()
+                .url(API_URL + "/api/postMessagePrivate")
+                .header("Authorization", "Bearer " + main.getToken())
+                .post(body)
+                .build();
+        new Thread(new Runnable() {
+            Response res;
+            @Override
+            public void run() {
+                try {
+                    res =client.newCall(requete).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                switch(res.code()){
+                    case 200:
+                        main.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context,id,Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+
+                        break;
+                    case 500:
+                        Toast.makeText(context,"erreur serveur",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }).start();
+    }
 
 
 

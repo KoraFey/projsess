@@ -12,8 +12,8 @@ any('/page_paiement.php','page_paiement.php');
 
 get('/api/getSettings/$id', '/api/getSettings.php');
 
-get('/api/getPostOf/$name','/api/getPostOf.php');
-get('/api/posts', '/api/getPosts.php');
+get('/api/getPostOf/$name/$type','/api/getPostOf.php');
+get('/api/posts/$type', '/api/getPosts.php');
 
 
 
@@ -25,6 +25,7 @@ post('/api/post', '/api/postArticle.php');
 post('/api/postLike', '/api/postLike.php');
 post('/api/createChat', '/api/createChat.php');
 post('/api/modifyUser/$id','/api/modifyUser.php');
+post('/api/postMessagePrivate','/api/postMessagePrivate.php');
 post('/api/postMessages','/api/newMessages.php');
 post('/api/blockUser','/api/blockUser.php');
 
