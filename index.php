@@ -1,19 +1,25 @@
 <?php
 $webAccess = true;
 require_once __DIR__ . '/config.php';
+
+
+
 $stmt = $pdo->prepare('SELECT * FROM settings WHERE user_id = ? ');
 $stmt->execute([$_SESSION["usager"]]);
 $settings = $stmt->fetch();
 $settingJson = json_encode($settings);
 
-
 $loggedUserId = $_SESSION["usager"];
+
+$stmt = $pdo->prepare("SELECT credits FROM PMT WHERE user_id = ?");
+                    $stmt->execute([$loggedUserId]);
+                    $result = $stmt->fetch();
+                    $availableCredits = $result ? $result['credits'] : 0; // Update available credits
 
 $stmt = $pdo->prepare('SELECT * FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
 $users = $stmt->fetchAll();
 $usersJson = json_encode($users);
-
 
 $stmt = $pdo->prepare('SELECT id FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
@@ -447,13 +453,14 @@ $userAct = json_encode($userActual);
                                                         <h4>Panier</h4>
                                                         <ul id="panier-items"></ul>
                                                         <p id="total">Total: $0</p>
+                                                        <p id="creditsDisplay">Credits: <?= htmlspecialchars((string)$availableCredits) ?>$</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Fermer</button>
                                                         <button onclick="viderPanier()" type="button"
                                                             class="btn btn-danger">Vider le panier</button>
-                                                        <button onclick="payer()" type="button"
+                                                        <button onclick="processPayment()" id="payButton" type="button"
                                                             class="btn btn-primary">Payer</button>
                                                     </div>
                                                 </div>
@@ -650,3 +657,4 @@ $userAct = json_encode($userActual);
 </body>
 
 </html>
+

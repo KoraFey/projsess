@@ -5,6 +5,16 @@ header('Content-Type: application/json; charset=utf-8');
 
 $body = json_decode(file_get_contents("php://input"));
 
+
+try{
+    $gUserId = authentifier();
+} catch(Exception $e){
+    $response = [];
+    http_response_code(401);
+    $response['error'] = "Non autorisé";
+    echo json_encode($response);
+}
+
 try {
     if (!isset($body->blocked_id) || empty($body->blocked_id)) {
         throw new Exception("User id est manquante");

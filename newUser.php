@@ -49,6 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->execute([$chatRoomId, $userId]);
                 }
             }
+            
+            $stmt = $pdo->prepare('INSERT INTO PMT (user_id, credits) VALUES (?, ?)');
+            $stmt->execute([$tempId, 0]);
+            $chatRoomId = $pdo->lastInsertId();
 
             header("Location: /login.php");            
             exit;

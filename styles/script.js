@@ -27,6 +27,9 @@ let conteneurPrincipal = [
   conteneurFood,
   profileInfo
 ];
+let chatroomID = null;
+
+
 
 
 function afficherPublications(publications) {
@@ -1089,6 +1092,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             allCommentsList = data.allCommentsList;
             blockList = data.blockList;
+            console.log(listePosts);
+            conteneurFeed.innerHTML = "";
             afficherPublications(listePosts);
 
             if(block.textContent == 'Bloquer'){
@@ -1859,7 +1864,16 @@ function sendMessage(msg) {
   //       error.message
   //   ));
   // }      
+
+
+
   function linkChat(){
+    setInterval(function() {
+      console.log("aasdf");
+        if(chatroomID != null) {
+          afficherMessage(chatroomID);
+        }
+    }, 1000);
     chatroomList.forEach(chatroom =>{
       
       if (chatroom.nb_personnes == 2) { 
@@ -1931,68 +1945,16 @@ function sendMessage(msg) {
 
         //btnMsg-Alex57
        
+
+        
+
+
         anchorChat.onclick = function(){
-          afficherMessage();
+          console.log(chatroom.id);
+          chatroomID = chatroom.id;
         }
+        
 
-        function afficherMessage(){
-          currentChat = chatroom.id;  
-          fetch(getMessage + chatroom.id, {
-            method:"GET"})
-          
-          .then((response) => {
-            
-            if (!response.ok) {
-              throw new Error("Erreur HTTP: " + response.statusText);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            if (data.error)
-            throw new Error("Erreur reçue du serveur: " + data.error);
-      
-            chatMessages.innerHTML = '';
-          
-            console.log(data);
-            data.forEach(message => {
-              const divBase = document.createElement('div');
-              const div = document.createElement('div');
-
-              console.log(message.username + userActuel.id);
-
-              if(message.username == userActuel.username){
-              div.classList.add("messagesContainer-moi");
-              divBase.classList.add("divBaseMsg-moi");
-              } else{
-              div.classList.add("messagesContainer");
-              divBase.classList.add("divBaseMsg");
-              }
-          
-              const nom = document.createElement('h6');
-              const messageElement = document.createElement('p');
-          
-              messageElement.textContent = message.message;
-          
-              nom.textContent = message.username;
-          
-              const containerWidth = Math.max(100, message.message.length * 10); 
-          
-              div.style.width = `${containerWidth}px`;
-          
-              div.appendChild(nom);
-              div.appendChild(messageElement);
-              divBase.appendChild(div);
-              chatMessages.appendChild(divBase);
-          });
-          
-          })
-            .catch((error) =>
-            console.error(
-            "Il y'a eu une erreur lors de l'obtention des données:" +
-            error.message
-            )
-          );   
-        }
        listChat.appendChild(imageChat);
        listChat.appendChild(anchorChat);
        amisList.appendChild(listChat);
@@ -2072,3 +2034,190 @@ function sendMessage(msg) {
       }
     });
   }
+
+
+
+        function toggleMenu() {
+            var menu = document.getElementById("menu1");
+            if (menu.style.display === "none") {
+                menu.style.display = "block";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+         document.addEventListener("DOMContentLoaded", function() {
+            fetchCredits();
+
+            document.getElementById('payButton').addEventListener('click', processPayment);
+        });
+
+        
+        function fetchCredits() {
+            console.log('test.1');
+            fetch('page_paiement.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'action=fetchCredits'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('cree', data)
+                document.getElementById('creditsDisplay').textContent = `Credits: $${data.credits}`;
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        }
+
+
+        function processPayment() {
+            const total = parseFloat(document.getElementById('total').textContent.replace(/[^0-9.-]+/g,""));
+            
+            fetch('./page_paiement.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=processPayment&total=${total}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Payment successful');
+                    document.getElementById('creditsDisplay').textContent = `Credits: ${data.newCredits}`;
+                    // Reset cart or further actions
+                } else {
+                    alert('Payment failed: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+        }
+
+        var panierItems = []; // List of selected items
+        var total = 0; // Total of the cart
+
+
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "none" ? "block" : "none";
+        }
+
+        function ajouterAuPanier(element) {
+            var nom = element.getAttribute('data-name');
+            var prix = parseFloat(element.getAttribute('data-price'));
+            if (nom && !isNaN(prix)) { // Ensure name is not undefined and price is a number
+                panierItems.push({ nom: nom, prix: prix });
+                total += prix;
+                afficherPanier();
+            } else {
+                console.error("Incorrect item data", element);
+            }
+        }
+
+        function removeFromCart(index) {
+            if (index >= 0 && index < panierItems.length) {
+                total -= panierItems[index].prix; // Decrement total
+                panierItems.splice(index, 1); // Remove the item from the array
+                afficherPanier();
+            }
+        }
+
+        function afficherPanier() {
+            var panierItemsList = document.getElementById("panier-items");
+            panierItemsList.innerHTML = ""; // Clear existing entries in the cart
+            panierItems.forEach((item, index) => {
+                var li = document.createElement("li");
+                li.textContent = item.nom + " - $" + item.prix.toFixed(2);
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "Remove Item";
+                removeButton.onclick = function() { removeFromCart(index); };
+                removeButton.style.marginLeft = "10px"; // Style the button
+                removeButton.id = 'remove'
+                
+                li.appendChild(removeButton);
+                panierItemsList.appendChild(li);
+            });
+            document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
+        }
+
+        function viderPanier() {
+            panierItems = [];
+            total = 0;
+            afficherPanier();
+        }
+
+        window.onload = function() {
+            var menuItems = document.querySelectorAll("#menu-items li");
+            menuItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    ajouterAuPanier(item);
+                });
+            });
+        };
+
+
+
+
+      function afficherMessage(chatroom){
+        currentChat = chatroom;  
+        fetch(getMessage + chatroom, {
+          method:"GET"})
+        
+        .then((response) => {
+          
+          if (!response.ok) {
+            throw new Error("Erreur HTTP: " + response.statusText);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error)
+          throw new Error("Erreur reçue du serveur: " + data.error);
+    
+          chatMessages.innerHTML = '';
+        
+          console.log(data);
+          data.forEach(message => {
+            const divBase = document.createElement('div');
+            const div = document.createElement('div');
+
+            console.log(message.username + userActuel.id);
+
+            if(message.username == userActuel.username){
+            div.classList.add("messagesContainer-moi");
+            divBase.classList.add("divBaseMsg-moi");
+            } else{
+            div.classList.add("messagesContainer");
+            divBase.classList.add("divBaseMsg");
+            }
+        
+            const nom = document.createElement('h6');
+            const messageElement = document.createElement('p');
+        
+            messageElement.textContent = message.message;
+        
+            nom.textContent = message.username;
+        
+            const containerWidth = Math.max(100, message.message.length * 10); 
+        
+            div.style.width = `${containerWidth}px`;
+        
+            div.appendChild(nom);
+            div.appendChild(messageElement);
+            divBase.appendChild(div);
+            chatMessages.appendChild(divBase);
+        });
+        
+        })
+          .catch((error) =>
+          console.error(
+          "Il y'a eu une erreur lors de l'obtention des données:" +
+          error.message
+          )
+        );   
+      }

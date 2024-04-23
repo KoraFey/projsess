@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final String API_URL = "http://10.0.2.2:8000";
+    public static final String API_URL = "https://equipe302.tch099.ovh";
 
     private Button getStarted;
     @Override

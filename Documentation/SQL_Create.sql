@@ -34,7 +34,7 @@ CREATE TABLE settings(
 
 -- table block list
 CREATE TABLE Block_List(
-    id int PRIMARY KEY,
+    id int PRIMARY KEY AUTO_INCREMENT,
     user_id int NOT NULL,
     blocked_id int NOT NULL,
 
@@ -116,4 +116,11 @@ CREATE TABLE publication_likes (
     PRIMARY KEY (id_publication, user_id),
     FOREIGN KEY (id_publication) REFERENCES Publication(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+CREATE TABLE PMT (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(255) NOT NULL,
+    credits INT DEFAULT 0
 );
