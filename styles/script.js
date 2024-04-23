@@ -1935,13 +1935,6 @@ function linkChat(){
           .catch((error) =>
           console.error(
           "Il y'a eu une erreur lors de l'obtention des données:" +
-        chatMessages.appendChild(messageElement);
-        console.log(messageElement);
-      });
-    })
-    .catch((error) =>
-      console.error(
-        "Il y'a eu une erreur lors de l'obtention des données:" +
           error.message
           )
         );   
