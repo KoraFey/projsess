@@ -135,6 +135,13 @@ $stmt->execute();
 $blockedUsers = $stmt->fetchAll(PDO::FETCH_COLUMN);
 $blockList = json_encode($blockedUsers);
 
+// fetch tous les users dans les chatrooms (sauf user actuel)
+$stmt = $pdo->prepare("SELECT * FROM Chat_Room_User WHERE user_id != :user_id");
+$stmt->bindValue(":user_id", $_SESSION['usager']);
+$stmt->execute();
+$listeChatroomUsers = $stmt->fetchAll();
+$chatroomUsers = json_encode($listeChatroomUsers);
+
 ?>
 
 <!DOCTYPE html>
@@ -158,9 +165,10 @@ $blockList = json_encode($blockedUsers);
         let userActuel = <?= $loggedUserId ?>;
         let allLikesList = <?= $allLikesJson ?>;
         let allCommentsList = <?= $allCommentsJson ?>;
-        let blockList = <?= $blockList ?>
+        let blockList = <?= $blockList ?>;
+        let chatroomUsers = <?= $chatroomUsers ?>;
 
-        console.log(allCommentsList);
+        console.log(chatroomUsers);
     </script>
 </head>
 
@@ -534,7 +542,7 @@ $blockList = json_encode($blockedUsers);
               
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
-                    <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
+                    <button id="sendMessageButton">Envoyer</button>
                     <button id="openGifBtn">Select GIF</button>
 
                     <div id="gifModal" style="display: none;">
