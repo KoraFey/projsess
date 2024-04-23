@@ -1052,6 +1052,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if(user.id != userActuel.id) {
           message.textContent = 'Messager';
+          message.id = "btnMsg-"+user.username;
           block.textContent = 'Bloquer';
 
           if(blockList != null){
@@ -1805,7 +1806,6 @@ function sendMessage(msg) {
   //   ));
   // }      
   function linkChat(){
-    console.log(chatroomList);
     chatroomList.forEach(chatroom =>{
       
       if (chatroom.nb_personnes == 2) { 
@@ -1875,9 +1875,13 @@ function sendMessage(msg) {
         listChat.appendChild(anchorChat);
         amisList.appendChild(listChat);
 
-
+        //btnMsg-Alex57
        
         anchorChat.onclick = function(){
+          afficherMessage();
+        }
+
+        function afficherMessage(){
           currentChat = chatroom.id;  
           fetch(getMessage + chatroom.id, {
             method:"GET"})
