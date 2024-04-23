@@ -344,6 +344,8 @@ body {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    background-color: rgba(255, 255, 255, 0.5); 
+
 }
 #rechercheResultats li {
     padding: 10px;
@@ -881,4 +883,8 @@ footer {
     justify-content: flex-end; 
 
     padding-right: 10px;
+}
+
+.btnAjouter:hover{
+    cursor: pointer;
 }

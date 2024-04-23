@@ -415,8 +415,9 @@ function afficherPublications(publications) {
               });
 
               interestedBtn.addEventListener('click', function (event) {
-                let msg = "Je suis intéressé par votre post '" + publication.description.substring(0, 10) + "'..." ;
-                console.log(msg + "User id: " +publication.user_id);
+                let msg = "Bonjour je suis intéressé par votre post '" + publication.description.substring(0, 15) + "...'" ;
+                sendMessage(msg);
+
               });
 
               interestedText.appendChild(interestedBtn);
@@ -459,12 +460,11 @@ function afficherPublications(publications) {
 };
 }
 
-let btnAjouterPost = document.createElement('button');
-btnAjouterPost.textContent = 'Publier';
-
+let btnAjouterPost = document.createElement('img');
 
 btnAjouterPost.setAttribute('class', 'btnAjouter');
 btnAjouterPost.setAttribute('id', 'ajouterPost');
+btnAjouterPost.src = '../images/post.png';
 
 let sectionBtnFonctions = document.querySelector('.btnFonctions');
 sectionBtnFonctions.appendChild(btnAjouterPost);
@@ -1019,7 +1019,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   
   function filterUsers(userValue) {
-      return usersList.filter(user => user.username.toLowerCase().includes(userValue.toLowerCase()));
+      return allUsersList.filter(user => user.username.toLowerCase().includes(userValue.toLowerCase()));
   }
 
   function displayResultats(users) {
@@ -1050,6 +1050,7 @@ document.addEventListener("DOMContentLoaded", function () {
           message.type = 'button';
           block.type = 'button';
 
+          if(user.id != userActuel.id) {
           message.textContent = 'Messager';
           block.textContent = 'Bloquer';
 
@@ -1103,6 +1104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           boutons.appendChild(message);
           boutons.appendChild(block);
+        }
 
           profile.classList.add('profile-searched')
 
@@ -1198,6 +1200,27 @@ console.log("ALLALALAL");
 
 */
 
+const btnSendMsg = document.getElementById('sendMessageButton');
+btnSendMsg.addEventListener('click', function(event) {
+  event.preventDefault();
+  sendMessage(document.getElementById('messageInput').value);
+});
+
+
+  const searchResultats = document.getElementById("searchResultatsWindow");
+
+  function hideSearchResultats() {
+    searchResultats.style.display = "none";
+  }
+
+  document.addEventListener("click", function(event) {
+      const clickSearchResultats = searchResultats.contains(event.target);
+      if (!clickSearchResultats) {
+        hideSearchResultats();
+      }
+  });
+
+
 });
 
 
@@ -1232,6 +1255,8 @@ function afficherProfile(user) {
 
   let boutons = document.createElement('div')
   boutons.classList.add('profile-boutons')
+
+  if(user.id != userActuel.id) {
 
   let message = document.createElement('button')
   let block = document.createElement('button')
@@ -1291,6 +1316,9 @@ function afficherProfile(user) {
 
   });
 
+  boutons.appendChild(message);
+  boutons.appendChild(block);
+}
   let publicationsPersonnel = [];
 
   listePosts.forEach(post => {
@@ -1542,10 +1570,6 @@ function afficherProfile(user) {
   });
 
 
-
-  boutons.appendChild(message);
-  boutons.appendChild(block);
-
   divNomImg.appendChild(imgProfile);
   divNomImg.appendChild(nomProfile);
   divInfo.appendChild(divNomImg);
@@ -1717,8 +1741,8 @@ document
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-function sendMessage() {
-  console.log(document.getElementById('messageInput').value);
+function sendMessage(msg) {
+  
     fetch(send_message, {
         method: 'POST',
         headers: {
@@ -1727,7 +1751,7 @@ function sendMessage() {
         body: JSON.stringify({
             user_id: userActuel.id,
             chatroom_id: currentChat,
-            message: document.getElementById('messageInput').value
+            message: msg
         }),
     })
     .then(response => response.json())
