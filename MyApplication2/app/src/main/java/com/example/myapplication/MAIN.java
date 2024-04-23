@@ -40,6 +40,8 @@ import okhttp3.ResponseBody;
 public class MAIN extends AppCompatActivity {
 
     private boolean chatroomDisplay ;
+    private boolean marketDisplay;
+    private boolean postDisplay;
     private TextView title;
     private EditText searchUser;
     private Button  chat,market,profile,newChat, search,feed,post;
@@ -66,6 +68,8 @@ public class MAIN extends AppCompatActivity {
         scrollView = findViewById(R.id.list);
         layout=findViewById(R.id.linear);
         chatroomDisplay=false;
+        postDisplay=false;
+        marketDisplay=false;
         search = findViewById(R.id.searchButton);
         feed = findViewById(R.id.feed);
         post = findViewById(R.id.createPost);
@@ -133,7 +137,12 @@ public class MAIN extends AppCompatActivity {
             }
         }).start();
 
-
+    market.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            loadPosts(false,"annonce");
+        }
+    });
     post.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -142,21 +151,30 @@ public class MAIN extends AppCompatActivity {
     });
 
     feed.setOnClickListener(new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
-            loadPosts(true);
+            postDisplay = true;
+            marketDisplay=false;
+            chatroomDisplay=false;
+            loadPosts(false,"actualite");
         }
     });
 
     search.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(searchUser.getText().equals("")){
-                loadChatRooms(false);
+            if(!(searchUser.getText().equals(""))){
+                if(chatroomDisplay)
+                    loadChatRooms(true);
+                else if(marketDisplay){
+                    loadPosts(true,"annonce");
+                }
+                else if(postDisplay){
+                    loadPosts(true,"actualite");
+                }
             }
-            else{
-                loadChatRooms(true);
-            }
+
         }
     });
 
@@ -166,6 +184,8 @@ public class MAIN extends AppCompatActivity {
         public void onClick(View v) {
             searchUser.setText("");
             chatroomDisplay=true;
+            postDisplay = false;
+            marketDisplay=false;
             loadChatRooms(false);
         }
     });
@@ -196,7 +216,7 @@ public class MAIN extends AppCompatActivity {
     }
 
 
-    private void loadPosts(boolean user){
+    private void loadPosts(boolean user, String type){
         OkHttpClient client;
         client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -204,13 +224,13 @@ public class MAIN extends AppCompatActivity {
         if(user) {
             String name = searchUser.getText().toString();
             requete = new Request.Builder()
-                    .url(API_URL + "/api/getPostOf/"  + name)
+                    .url(API_URL + "/api/getPostOf/"  + name + "/" + type)
                     .header("Authorization", "Bearer " + token)
                     .build();
         }
         else{
             requete = new Request.Builder()
-                    .url(API_URL + "/api/getPost/" + id)
+                    .url(API_URL + "/api/posts"+ "/" + type)
                     .header("Authorization", "Bearer " + token)
                     .build();
         }
@@ -219,38 +239,52 @@ public class MAIN extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                int code;
                 Response response = null;
                 try {
                     response = client.newCall(requete).execute();
+                    code = response.code();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                ResponseBody responseBody = response.body();
-                MAIN.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Post[]  list;
-                        Post post = new Post();
-                        ObjectMapper mapper = new ObjectMapper();
-                        String jsonId;
-                        try {
-                            jsonId=responseBody.string();
-                            list= mapper.readValue(jsonId, Post[].class);
 
 
-                             PostAdapter adaptater = new PostAdapter(MAIN.this, R.layout.chat_display, list);
-                            scrollView.setAdapter(adaptater);
+
+                    ResponseBody responseBody = response.body();
+
+                    MAIN.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Post[] list;
+
+                            Post post = new Post();
+                            ObjectMapper mapper = new ObjectMapper();
+                            String jsonId;
+                            if(code == 404){
+                                Toast.makeText(MAIN.this,"maucais username",Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                try {
+
+                                    jsonId = responseBody.string();
+
+                                    list = mapper.readValue(jsonId, Post[].class);
 
 
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                                    PostAdapter adaptater = new PostAdapter(MAIN.this, R.layout.post_layout, list, MAIN.this);
+                                    scrollView.setAdapter(adaptater);
+
+
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
+
                         }
+                    });
 
 
-
-
-                    }
-                });
 
             }
         }).start();
@@ -731,7 +765,9 @@ public class MAIN extends AppCompatActivity {
 //    }
 
 
-
+public String getToken(){
+        return token;
+}
 
 
 

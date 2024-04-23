@@ -3,5 +3,5 @@
 
     <item android:state_checked="false" android:drawable="@drawable/lic_ike" android:color="@color/black" />
 
-    <item android:state_checked="true" android:drawable="@drawable/lic_ike" android:color="@color/blue" />
+    <item android:state_checked="true" android:drawable="@drawable/lic_ike" android:color="@color/white" />
 </selector>

@@ -26,6 +26,7 @@ body {
     padding: 20px;
     margin: 20px;
     border: 1px solid black;
+
 }
 
 .profile-boutons button{
@@ -89,6 +90,7 @@ body {
 .publication-container {
     display: flex;
     flex-direction: column;
+    width: 500px
 }
 
 .info-container p {
@@ -703,4 +705,56 @@ footer {
 .menu-items li{
     cursor: pointer;
     
+}
+
+/* image bouton modifier et supprimer posts */
+
+.image-modifier{
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/pen.png');
+}
+.image-delete {
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/remove.png');
+
+}
+
+.container-titreEtBtn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container-delete-modify {
+    display: flex;
+    gap: 5px;
+}
+
+/* image de la personne recherchee*/
+.profile-searched img {
+    width: 75px;
+    height: 75px;
+}
+
+.nomImage-searched {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.annonce-delete {
+    position: relative;
+    right: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.container-annonceBtn {
+    position: relative;
+}
+
+.container-annonceBtn img {
+    float: right;
 }

@@ -84,6 +84,20 @@ $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $listePublications = json_encode($publications);
 
+$stmt = $pdo->prepare('SELECT pc.*
+FROM publication_commentaire pc
+LEFT JOIN Block_List bl ON pc.user_id = bl.blocked_id
+WHERE NOT EXISTS (
+    SELECT 1 FROM Block_List bl2
+    WHERE bl2.user_id = :currentUserId 
+    AND bl2.blocked_id = pc.user_id
+)
+GROUP BY pc.id');
+$stmt->bindValue(':currentUserId', $loggedUserId);
+$stmt->execute();
+$allComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$allCommentsJson = json_encode($allComments);
+
 
 // fetch tous les users, incluant celui deja connecte
 $stmt = $pdo->prepare('SELECT * FROM users');
@@ -97,10 +111,12 @@ $stmt->execute();
 $allLikes = $stmt->fetchAll();
 $allLikesJson = json_encode($allLikes);
 
-$stmt = $pdo->prepare("SELECT * FROM `publication_commentaire`");
+// fetch tous les users bloques 
+$stmt = $pdo->prepare("SELECT blocked_id FROM Block_List WHERE user_id = :user_id");
+$stmt->bindValue(":user_id", $_SESSION['usager']);
 $stmt->execute();
-$allComments = $stmt->fetchAll();
-$allCommentsJson = json_encode($allComments);
+$blockedUsers = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$blockList = json_encode($blockedUsers);
 
 ?>
 
@@ -125,9 +141,9 @@ $allCommentsJson = json_encode($allComments);
         let userActuel = <?= $loggedUserId ?>;
         let allLikesList = <?= $allLikesJson ?>;
         let allCommentsList = <?= $allCommentsJson ?>;
+        let blockList = <?= $blockList ?>
 
-
-        console.log(listePosts);
+        console.log(blockList);
     </script>
 </head>
 
@@ -479,13 +495,14 @@ $allCommentsJson = json_encode($allComments);
                         <div id="div chat">
                             <input type="text" id="1">
                         </div>
-                      
+                        <div id="userData" data-user-id="<?= $loggedUserId ?>"></div>
+                        <div id="chatRoomData" data-chat-room-id="<?= $chatRoomId ?>"></div>
                         <button onclick="ajoutChamps();">new user</button>
                         <button>cree</button>
                     </form>
                 </div>
 
-                <!-- surely ca peut etre mieu fait-->
+                <!-- surely ca peiut etre mieu fait-->
                 <script>
                     const creation = document.getElementById("hide create");
                     creation.style.display = "none";
@@ -500,7 +517,7 @@ $allCommentsJson = json_encode($allComments);
               
                 <form class="boiteInput" id="messageForm" onsubmit="sendMessage(); return false;">
                     <input type="text" id="messageInput" placeholder="Écrire un message...">
-                    <button id="sendMessageButton">Envoyer</button>
+                    <button onclick="sendMessage();" id="sendMessageButton">Envoyer</button>
                     <button id="openGifBtn">Select GIF</button>
 
                     <div id="gifModal" style="display: none;">
@@ -562,18 +579,13 @@ $allCommentsJson = json_encode($allComments);
             }
         }
 
-       function ajouterAuPanier(element) {
-    var nom = element.getAttribute('data-name');
-    var prix = parseFloat(element.getAttribute('data-price'));
-    if(nom && !isNaN(prix)) { // S'assure que nom n'est pas undefined et prix est un nombre
-        panierItems.push({ nom: nom, prix: prix });
-        total += prix;
-        afficherPanier();
-    } else {
-        console.error("Données d'article incorrectes", element);
-    }
-}
-
+        function ajouterAuPanier(element) {
+            var nom = element.dataset.name;
+            var prix = parseFloat(element.dataset.price);
+            panierItems.push({ nom: nom, prix: prix });
+            total += prix;
+            afficherPanier();
+        }
 
         function afficherPanier() {
             var panierItemsList = document.getElementById("panier-items");

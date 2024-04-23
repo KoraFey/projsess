@@ -12,6 +12,7 @@ let idUser;
 const getMessage = "/api/messages/";
 const postApiUrl = "/api/post/";
 const postApiLikes = "/api/postLike/";
+const deletePost = "/api/deletePost/";
 const send_message = "/api/postMessages/";
 const postApiBlocker = "/api/blockUser/";
 let chatroomList;
@@ -27,299 +28,446 @@ let conteneurPrincipal = [
   profileInfo
 ];
 
-document.addEventListener("DOMContentLoaded", function () {  
-  function afficherPublications(publications) {
-    console.log(publications);
-    if(publications != null && publications.length != 0){
-    const conteneurFeed = document.getElementById('conteneurFeed');
-    conteneurFeed.innerHTML = ''; 
 
-    const conteneurMarket = document.getElementById('conteneurMarket');
-    conteneurMarket.innerHTML = ''; 
+function afficherPublications(publications) {
+  console.log(publications);
+  if(publications != null && publications.length != 0){
+  const conteneurFeed = document.getElementById('conteneurFeed');
+  conteneurFeed.innerHTML = ''; 
 
-    publications.reverse();
-    publications.forEach(publication => {
-        if (publication.type === 'actualite') {
-            const publicationContainer = document.createElement('div');
-            publicationContainer.classList.add('publication-container');
+  const conteneurMarket = document.getElementById('conteneurMarket');
+  conteneurMarket.innerHTML = ''; 
 
-            const infoContainer = document.createElement('div');
-            infoContainer.classList.add('info-container');
-    
-            const h3 = document.createElement('h3');
-            const p = document.createElement('p');
+  publications.reverse();
+  publications.forEach(publication => {
+      if (publication.type === 'actualite') {
+          const publicationContainer = document.createElement('div');
+          publicationContainer.classList.add('publication-container');
 
-            const user = allUsersList.find(user => user.id === publication.user_id);
-            h3.textContent = user.username; 
-            const userPost = user.username; 
-            p.textContent = publication.description + ' | ' + publication.date_publication;
-    
-            const tagsContainer = document.createElement('span');
-            tagsContainer.classList.add('tags-users');
-            
-            if (publication.tag_users != null) {
-                const tagsUsers = publication.tag_users.split(',').map(tag => {
-                    const tagUser = allUsersList.find(user => user.id === parseInt(tag));
-                    const tagSpan = document.createElement('span');
-                    tagSpan.classList.add('tag-user');
-                    tagSpan.textContent = tagUser.username;
-                    return tagSpan;
-                });
-                
-                const estAvec = document.createElement('span');
-                estAvec.textContent = ' est avec: ';
-                tagsContainer.appendChild(estAvec);
-                
-                tagsUsers.forEach((tag, index) => {
-                    tagsContainer.appendChild(tag);
-                    if (index < tagsUsers.length - 1) {
-                        const vigurle = document.createElement('span');
-                        vigurle.textContent = ', ';
-                        tagsContainer.appendChild(vigurle);
-                    }
-                });
-            }
-            
-            infoContainer.appendChild(h3);
-            infoContainer.appendChild(tagsContainer);          
-            infoContainer.appendChild(p);
-    
-            const carouselContainer = document.createElement('div');
-            const carouselInner = document.createElement('div');
+          const infoContainer = document.createElement('div');
+          infoContainer.classList.add('info-container');
+  
+          const titreEtBtn = document.createElement('div');
+          titreEtBtn.classList.add('container-titreEtBtn');
 
-            carouselContainer.classList.add('carousel', 'slide');
-            carouselContainer.setAttribute('data-bs-ride', 'carousel');
-            carouselContainer.id = `publicationCarousel${publication.id}`;
-            carouselInner.classList.add('carousel-inner');
+          const h3 = document.createElement('h3');
+          const p = document.createElement('p');
 
-            const imgLike = document.createElement('img');
-            imgLike.src = '../images/heart.png';
-            imgLike.alt = 'like';
-            imgLike.classList.add('image-like'); 
+          const user = allUsersList.find(user => user.id === publication.user_id);
+          h3.textContent = user.username; 
+          const userPost = user.username; 
+          p.textContent = publication.description + ' | ' + publication.date_publication;
+  
 
-            const imageUrls = publication.image_urls.split(',');
-            imageUrls.forEach((url, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (index === 0) 
-                    carouselItem.classList.add('active');
-                
-                const img = document.createElement('img');
-                img.classList.add('d-block', 'w-100', 'postImage'); 
-                img.src = url;
-                img.alt = 'post';
+          titreEtBtn.appendChild(h3);
 
-                img.addEventListener('dblclick', function() {
-                      imgLike.src = '../images/hearted.png'; 
-                      incrementLikes(publication.id);
-                });
+          if(publication.user_id == userActuel){
+            const btnFonctions = document.createElement('div');
+            btnFonctions.classList.add('container-delete-modify');
 
-                carouselItem.appendChild(img);
-                carouselInner.appendChild(carouselItem);
-            });
-            carouselContainer.appendChild(carouselInner);
-    
-            const carouselAvant = document.createElement('button');
-            const carouselApres = document.createElement('button');
+            //const btnModifier = document.createElement('img');
+            const btnSupprimer = document.createElement('img');
 
-            carouselAvant.classList.add('carousel-control-prev');
-            carouselAvant.type = 'button';
-            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselAvant.setAttribute('data-bs-slide', 'prev');
-            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
-    
-            carouselApres.classList.add('carousel-control-next');
-            carouselApres.type = 'button';
-            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselApres.setAttribute('data-bs-slide', 'next');
-            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
-    
-            carouselContainer.appendChild(carouselAvant);
-            carouselContainer.appendChild(carouselApres);
-    
-            publicationContainer.appendChild(infoContainer);
-            publicationContainer.appendChild(carouselContainer);
-            
+            //btnModifier.src = '../images/pen.png';
+            //btnModifier.alt = 'modify';
+            //btnModifier.classList.add('image-modifier'); 
+
+            btnSupprimer.src = '../images/remove.png';
+            btnSupprimer.alt = 'delete';
+            btnSupprimer.classList.add('image-delete'); 
 
 
-            imgLike.addEventListener('click', function() {
-              if (imgLike.src.includes('hearted.png')) {
-                  imgLike.src = '../images/heart.png'; 
-                  decrementLikes(publication.id);
+            btnSupprimer.addEventListener('click', function() {
+              const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce post ?");
+          
+              if (confirmation) {
+                  fetch(deletePost, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({id_post: publication.id})
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error('response was not ok');
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                    listePosts = data.listePosts;
+                    afficherPublications(listePosts);
+                  })
+                  .catch(error => {
+                      console.error('Erreur lors de la suppression du post :', error);
+                  });
               } else {
-                  imgLike.src = '../images/hearted.png'; 
-                  incrementLikes(publication.id);
+                  console.log('La suppression du post a ete annulee');
               }
-            });
+          });
+          
 
-            const nbLikes = document.createElement('p');
-            nbLikes.id = 'nbLikes' + publication.id;
+            //btnFonctions.appendChild(btnModifier);
+            btnFonctions.appendChild(btnSupprimer);
+            titreEtBtn.appendChild(btnFonctions);
+          }
 
-            let likesCount = 0;
-            allLikesList.forEach((like) => {
-              if (like.id_publication == publication.id) {
-                likesCount++;
-                if(like.user_id == userActuel){
-                  imgLike.src = '../images/hearted.png'; 
-                }
+          const tagsContainer = document.createElement('span');
+          tagsContainer.classList.add('tags-users');
+          
+          if (publication.tag_users != null) {
+              const tagsUsers = publication.tag_users.split(',').map(tag => {
+                  const tagUser = allUsersList.find(user => user.id === parseInt(tag));
+                  const tagSpan = document.createElement('span');
+                  tagSpan.classList.add('tag-user');
+                  tagSpan.textContent = tagUser.username;
+                  return tagSpan;
+              });
+              
+              const estAvec = document.createElement('span');
+              estAvec.textContent = ' est avec: ';
+              tagsContainer.appendChild(estAvec);
+              
+              tagsUsers.forEach((tag, index) => {
+                  tagsContainer.appendChild(tag);
+                  if (index < tagsUsers.length - 1) {
+                      const vigurle = document.createElement('span');
+                      vigurle.textContent = ', ';
+                      tagsContainer.appendChild(vigurle);
+                  }
+              });
+          }
+          
+          infoContainer.appendChild(titreEtBtn);
+          infoContainer.appendChild(tagsContainer);          
+          infoContainer.appendChild(p);
+  
+          const carouselContainer = document.createElement('div');
+          const carouselInner = document.createElement('div');
+
+          carouselContainer.classList.add('carousel', 'slide');
+          carouselContainer.setAttribute('data-bs-ride', 'carousel');
+          carouselContainer.id = `publicationCarousel${publication.id}`;
+          carouselInner.classList.add('carousel-inner');
+
+          const imgLike = document.createElement('img');
+          imgLike.src = '../images/heart.png';
+          imgLike.alt = 'like';
+          imgLike.classList.add('image-like'); 
+
+          const imageUrls = publication.image_urls.split(',');
+          imageUrls.forEach((url, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.classList.add('carousel-item');
+              if (index === 0) 
+                  carouselItem.classList.add('active');
+              
+              const img = document.createElement('img');
+              img.classList.add('d-block', 'w-100', 'postImage'); 
+              img.src = url;
+              img.alt = 'post';
+
+              img.addEventListener('dblclick', function() {
+                    imgLike.src = '../images/hearted.png'; 
+                    incrementLikes(publication.id);
+              });
+
+              carouselItem.appendChild(img);
+              carouselInner.appendChild(carouselItem);
+          });
+          carouselContainer.appendChild(carouselInner);
+  
+          const carouselAvant = document.createElement('button');
+          const carouselApres = document.createElement('button');
+
+          carouselAvant.classList.add('carousel-control-prev');
+          carouselAvant.type = 'button';
+          carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselAvant.setAttribute('data-bs-slide', 'prev');
+          carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+  
+          carouselApres.classList.add('carousel-control-next');
+          carouselApres.type = 'button';
+          carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselApres.setAttribute('data-bs-slide', 'next');
+          carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+  
+          carouselContainer.appendChild(carouselAvant);
+          carouselContainer.appendChild(carouselApres);
+  
+          publicationContainer.appendChild(infoContainer);
+          publicationContainer.appendChild(carouselContainer);
+          
+
+
+          imgLike.addEventListener('click', function() {
+            if (imgLike.src.includes('hearted.png')) {
+                imgLike.src = '../images/heart.png'; 
+                decrementLikes(publication.id);
+            } else {
+                imgLike.src = '../images/hearted.png'; 
+                incrementLikes(publication.id);
+            }
+          });
+
+          const nbLikes = document.createElement('p');
+          nbLikes.id = 'nbLikes' + publication.id;
+
+          let likesCount = 0;
+          allLikesList.forEach((like) => {
+            if (like.id_publication == publication.id) {
+              likesCount++;
+              if(like.user_id == userActuel){
+                imgLike.src = '../images/hearted.png'; 
               }
-            });
-            
-            if(likesCount != null && likesCount != 1 && likesCount != 0)
-              nbLikes.textContent = likesCount + " likes";
-            else if(likesCount == 1)
-              nbLikes.textContent = "1 like";
-            else 
-              nbLikes.textContent = "0 like";
+            }
+          });
+          
+          if(likesCount != null && likesCount != 1 && likesCount != 0)
+            nbLikes.textContent = likesCount + " likes";
+          else if(likesCount == 1)
+            nbLikes.textContent = "1 like";
+          else 
+            nbLikes.textContent = "0 like"; 
 
-            const divInteractions = document.createElement("div");
-            divInteractions.id = "divInteractions";
+          const divInteractions = document.createElement("div");
+          divInteractions.id = "divInteractions";
 
-            const imgCmmt = document.createElement('img');
-            imgCmmt.src = '../images/chat.png';
-            imgCmmt.alt = 'comment';
-            imgCmmt.classList.add('image-like'); 
+          const imgCmmt = document.createElement('img');
+          imgCmmt.src = '../images/chat.png';
+          imgCmmt.alt = 'comment';
+          imgCmmt.classList.add('image-like'); 
 
-            divInteractions.appendChild(imgLike);
-            divInteractions.appendChild(imgCmmt);
-            publicationContainer.appendChild(divInteractions);
-            publicationContainer.appendChild(nbLikes);
+          divInteractions.appendChild(imgLike);
+          divInteractions.appendChild(imgCmmt);
+          publicationContainer.appendChild(divInteractions);
+          publicationContainer.appendChild(nbLikes);
 
-            const divComments = document.createElement("div");
-            divComments.id = "divComments" + publication.id;
-            divComments.style.display = 'none';
+          const divComments = document.createElement("div");
+          divComments.id = "divComments" + publication.id;
+          divComments.style.display = 'none';
 
-            imgCmmt.addEventListener('click', function() {
-                if(document.getElementById(divComments.id).style.display == 'block')
-                  document.getElementById(divComments.id).style.display = 'none';
-                else
-                  document.getElementById(divComments.id).style.display = 'block';
-            });
-
-            divComments.style.maxHeight = '150px';
-            divComments.style.overflow = 'auto';
-            publicationContainer.appendChild(divComments);
-
-            const inputDiv = document.createElement('div');
-            inputDiv.classList.add("commentDiv");
-
-            const inputComment = document.createElement('input');
-            inputComment.id = "id_inputComment"+publication.id;
-            inputComment.type = 'text';
-            inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
-
-            const commentButton = document.createElement('button');
-            commentButton.type = "button";
-            commentButton.textContent = "Send";
-            commentButton.addEventListener('click', function() {
-              if(inputComment.value != ""  && inputComment.value != null)
-                commenterPost(publication.id);
-
+          imgCmmt.addEventListener('click', function() {
               if(document.getElementById(divComments.id).style.display == 'block')
                 document.getElementById(divComments.id).style.display = 'none';
               else
                 document.getElementById(divComments.id).style.display = 'block';
-            });
+          });
 
-            inputDiv.appendChild(inputComment);
-            inputDiv.appendChild(commentButton);
-            publicationContainer.appendChild(inputDiv);
-            
-            conteneurFeed.appendChild(publicationContainer);
-        } else if(publication.type === 'annonce'){
-            const annonceContainer = document.createElement('div');
-            annonceContainer.classList.add('annonce-container');
+          divComments.style.maxHeight = '150px';
+          divComments.style.overflow = 'auto';
+          publicationContainer.appendChild(divComments);
 
-            const infoContainer = document.createElement('div');
-            infoContainer.classList.add('info-container');
+          const inputDiv = document.createElement('div');
+          inputDiv.classList.add("commentDiv");
 
-            const prixEtUser = document.createElement('div');
-            prixEtUser.classList.add('prix-user');
-    
-            const h4 = document.createElement('h4');
-            const p = document.createElement('p');
-            p.style.maxHeight = '120px';
-            p.style.overflowY = 'auto'; 
+          const inputComment = document.createElement('input');
+          inputComment.id = "id_inputComment"+publication.id;
+          inputComment.type = 'text';
+          inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
+
+          const commentButton = document.createElement('button');
+          commentButton.type = "button";
+          commentButton.textContent = "Send";
+          commentButton.addEventListener('click', function() {
+            if(inputComment.value != ""  && inputComment.value != null)
+              commenterPost(publication.id);
+
+            if(document.getElementById(divComments.id).style.display == 'block')
+              document.getElementById(divComments.id).style.display = 'none';
+            else
+              document.getElementById(divComments.id).style.display = 'block';
+          });
+
+          inputDiv.appendChild(inputComment);
+          inputDiv.appendChild(commentButton);
+          publicationContainer.appendChild(inputDiv);
+          
+          conteneurFeed.appendChild(publicationContainer);
+      } else if(publication.type === 'annonce'){
+          const annonceContainer = document.createElement('div');
+          annonceContainer.classList.add('annonce-container');
+
+          const infoContainer = document.createElement('div');
+          infoContainer.classList.add('info-container');
+
+          const prixEtUser = document.createElement('div');
+          prixEtUser.classList.add('prix-user');
+  
+          const h4 = document.createElement('h4');
+          const p = document.createElement('p');
+          p.style.maxHeight = '120px';
+          p.style.overflowY = 'auto'; 
 
 
-            const user = allUsersList.find(user => user.id === publication.user_id);
-            h4.textContent = user.username; 
-            /*
-            const userPost = user.username; 
-            */
-            p.textContent = publication.description + ' | ' + publication.date_publication;
+          const user = allUsersList.find(user => user.id === publication.user_id);
+          h4.textContent = user.username; 
+          /*
+          const userPost = user.username; 
+          */
+          p.textContent = publication.description + ' | ' + publication.date_publication;
 
-            const price = document.createElement('h3');
-            price.textContent = "$ "+publication.prix * 100/100
+          const price = document.createElement('h3');
+          price.textContent = "$ "+publication.prix * 100/100
 
-            prixEtUser.appendChild(price);
-            prixEtUser.appendChild(h4);
-            infoContainer.appendChild(prixEtUser);
-            infoContainer.appendChild(p);
-    
-            const carouselContainer = document.createElement('div');
-            const carouselInner = document.createElement('div');
 
-            carouselContainer.classList.add('carousel', 'slide');
-            carouselContainer.setAttribute('data-bs-ride', 'carousel');
-            carouselContainer.id = `publicationCarousel${publication.id}`;
-            carouselInner.classList.add('carousel-inner');
+          const titreEtBtn = document.createElement('div');
+          titreEtBtn.classList.add('container-annonceBtn');
 
-            const imgLike = document.createElement('img');
-            imgLike.src = '../images/heart.png';
-            imgLike.alt = 'like';
-            imgLike.classList.add('image-like'); 
 
-            const imageUrls = publication.image_urls.split(',');
-            imageUrls.forEach((url, index) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('carousel-item');
-                if (index === 0) 
-                    carouselItem.classList.add('active');
-                
-                const img = document.createElement('img');
-                img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
-                img.src = url;
-                img.alt = 'post';
+          if(publication.user_id == userActuel){
+            //const btnModifier = document.createElement('img');
+            const btnSupprimer = document.createElement('img');
 
-                img.addEventListener('dblclick', function() {
-                      imgLike.src = '../images/hearted.png'; 
-                      incrementLikes(publication.id);
-                });
+            //btnModifier.src = '../images/pen.png';
+            //btnModifier.alt = 'modify';
+            //btnModifier.classList.add('image-modifier'); 
 
-                carouselItem.appendChild(img);
-                carouselInner.appendChild(carouselItem);
-            });
-            carouselContainer.appendChild(carouselInner);
-    
-            const carouselAvant = document.createElement('button');
-            const carouselApres = document.createElement('button');
+            btnSupprimer.src = '../images/remove.png';
+            btnSupprimer.alt = 'delete';
+            btnSupprimer.classList.add('annonce-delete'); 
 
-            carouselAvant.classList.add('carousel-control-prev');
-            carouselAvant.type = 'button';
-            carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselAvant.setAttribute('data-bs-slide', 'prev');
-            carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
-    
-            carouselApres.classList.add('carousel-control-next');
-            carouselApres.type = 'button';
-            carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
-            carouselApres.setAttribute('data-bs-slide', 'next');
-            carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
-    
-            carouselContainer.appendChild(carouselAvant);
-            carouselContainer.appendChild(carouselApres);
 
-            annonceContainer.appendChild(carouselContainer);
-            annonceContainer.appendChild(infoContainer);
+            btnSupprimer.addEventListener('click', function() {
+              const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce post ?");
+          
+              if (confirmation) {
+                  fetch(deletePost, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({id_post: publication.id})
+                  })
+                  .then(response => {
+                      if (!response.ok) {
+                          throw new Error('response was not ok');
+                      }
+                      return response.json();
+                  })
+                  .then(data => {
+                    listePosts = data.listePosts;
+                    afficherPublications(listePosts);
+                  })
+                  .catch(error => {
+                      console.error('Erreur lors de la suppression du post :', error);
+                  });
+              } else {
+                  console.log('La suppression du post a ete annulee');
+              }
+          });
+          
 
-            conteneurMarket.appendChild(annonceContainer);
-        }
+            //btnFonctions.appendChild(btnModifier);
+            titreEtBtn.appendChild(btnSupprimer);
+          }
 
-    });
-    populateComments(allCommentsList);
-  }
+
+          prixEtUser.appendChild(price);
+          prixEtUser.appendChild(h4);
+          
+          infoContainer.appendChild(prixEtUser);
+          infoContainer.appendChild(titreEtBtn);
+
+          infoContainer.appendChild(p);
+
+  
+          const carouselContainer = document.createElement('div');
+          const carouselInner = document.createElement('div');
+
+          carouselContainer.classList.add('carousel', 'slide');
+          carouselContainer.setAttribute('data-bs-ride', 'carousel');
+          carouselContainer.id = `publicationCarousel${publication.id}`;
+          carouselInner.classList.add('carousel-inner');
+
+          const imageUrls = publication.image_urls.split(',');
+          imageUrls.forEach((url, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.classList.add('carousel-item');
+              if (index === 0) 
+                  carouselItem.classList.add('active');
+              
+              const img = document.createElement('img');
+              img.classList.add('d-block', 'w-100', 'postImage-annonce'); 
+              img.src = url;
+              img.alt = 'post';
+              img.classList.add('carousel-img-container');
+              img.addEventListener('mouseover', () => {
+                  img.classList.add('image-opacity');
+              });
+              img.addEventListener('mouseout', () => {
+                  img.classList.remove('image-opacity');
+              });
+          
+              const interestedBtn = document.createElement('button');
+              interestedBtn.type = 'button';
+              interestedBtn.textContent = 'Intéressé';
+              interestedBtn.classList.add('btn', 'btn-success');
+          
+              const interestedText = document.createElement('div');
+              interestedText.classList.add('commander-text');
+          
+              carouselItem.addEventListener('mouseover', () => {
+                interestedText.style.opacity = '1';
+              });
+              carouselItem.addEventListener('mouseout', () => {
+                interestedText.style.opacity = '0';
+              });
+
+              interestedBtn.addEventListener('click', function (event) {
+                let msg = "Je suis intéressé par votre post '" + publication.description.substring(0, 10) + "'..." ;
+                console.log(msg + "User id: " +publication.user_id);
+              });
+
+              interestedText.appendChild(interestedBtn);
+          
+              carouselItem.appendChild(img);
+              carouselItem.appendChild(interestedText);
+              carouselInner.appendChild(carouselItem);
+          });
+          
+          carouselContainer.appendChild(carouselInner);
+          
+          
+          
+          const carouselAvant = document.createElement('button');
+          const carouselApres = document.createElement('button');
+
+          carouselAvant.classList.add('carousel-control-prev');
+          carouselAvant.type = 'button';
+          carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselAvant.setAttribute('data-bs-slide', 'prev');
+          carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+  
+          carouselApres.classList.add('carousel-control-next');
+          carouselApres.type = 'button';
+          carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselApres.setAttribute('data-bs-slide', 'next');
+          carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+  
+          carouselContainer.appendChild(carouselAvant);
+          carouselContainer.appendChild(carouselApres);
+
+          annonceContainer.appendChild(carouselContainer);
+          annonceContainer.appendChild(infoContainer);
+
+          conteneurMarket.appendChild(annonceContainer);
+      }
+
+  });
+  populateComments(allCommentsList);
+};
 }
+
+let btnAjouterPost = document.createElement('button');
+btnAjouterPost.textContent = 'Publier';
+
+
+btnAjouterPost.setAttribute('class', 'btnAjouter');
+btnAjouterPost.setAttribute('id', 'ajouterPost');
+
+let sectionBtnFonctions = document.querySelector('.btnFonctions');
+sectionBtnFonctions.appendChild(btnAjouterPost);
 
 btnAjouterPost.addEventListener('click', function (event) {
   event.preventDefault(); 
@@ -523,8 +671,10 @@ function populateComments(comments){
   });
 }
 
-afficherPublications(listePosts);
+document.addEventListener("DOMContentLoaded", function () {
+  afficherPublications(listePosts);
 });
+
 
 function genererFormulaireAjout(modifier) {
   let divAjouter = document.createElement('div');
@@ -592,6 +742,51 @@ function genererFormulaireAjout(modifier) {
                   }
               }
           });
+          
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.id = 'fileInput';
+          fileInput.accept = 'image/*';
+
+          fileInput.addEventListener('change', function() {
+            const selectedFile = fileInput.files[0];
+        
+            if (selectedFile) {
+                const objectURL = URL.createObjectURL(selectedFile);
+        
+                const image = new Image();
+                image.src = objectURL;
+                image.style.maxHeight = '100px'; 
+                image.style.marginRight = '10px'; 
+                image.style.cursor = 'pointer';
+        
+                image.addEventListener('click', function() {
+                    this.parentNode.removeChild(this);
+                    postMax--;
+                    urlInput.disabled = false;
+                    addButton.disabled = false;
+                    urlInput.value = '';
+                });
+        
+                urlList.appendChild(image);
+                urlList.scrollTop = urlList.scrollHeight;
+                postMax++;
+        
+                if (postMax === 10) {
+                    urlInput.disabled = true;
+                    addButton.disabled = true;
+                    urlInput.value = '10 images au max !';
+                }
+            }
+        });
+
+        
+          input.appendChild(urlInput);
+          input.appendChild(addButton);
+          input.appendChild(fileInput);
+  
+
+
           input.appendChild(addButton);
           const urlList = document.createElement('div'); 
           urlList.id = 'urlList';
@@ -706,17 +901,6 @@ function replaceForm() {
   btnAjouterPost.click();
 }
 
-let btnAjouterPost = document.createElement('button');
-btnAjouterPost.textContent = 'Publier';
-
-
-btnAjouterPost.setAttribute('class', 'btnAjouter');
-btnAjouterPost.setAttribute('id', 'ajouterPost');
-
-let sectionBtnFonctions = document.querySelector('.btnFonctions');
-sectionBtnFonctions.appendChild(btnAjouterPost);
-
-
 function displayConteneur(conteneur) {
   for (let i = 0; i < conteneurPrincipal.length; i++) {
     if(conteneurPrincipal[i].id !== "conteneurMarket"){
@@ -827,6 +1011,7 @@ document.addEventListener("DOMContentLoaded", function () {
               rechercheResultats.innerHTML = ''; 
           });
 
+          
           let profile = document.createElement('article')
           let boutons = document.createElement('div')
           boutons.classList.add('profile-boutons')
@@ -839,17 +1024,30 @@ document.addEventListener("DOMContentLoaded", function () {
           block.type = 'button';
 
           message.textContent = 'Messager';
-          block.textContent = 'Blocker';
+          block.textContent = 'Bloquer';
+
+          if(blockList != null){
+            blockList.forEach(userBlock => {
+              if(user.id == userBlock)
+                block.textContent = 'Debloquer';
+            })
+          }
+         
 
           block.addEventListener('click', function (event) {
-            console.log(user.id);
+            let blocker = "block";
+            if(block.textContent == 'Bloquer'){
+              blocker = "block";
+            } else if(block.textContent == 'Debloquer'){
+              blocker = "unblock";
+            }
             event.preventDefault(); 
             fetch(postApiBlocker, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ blocked_id: user.id})
+              body: JSON.stringify({blocked_id: user.id, block_unblock: blocker})
           })
           .then(response => {
               if (!response.ok) {
@@ -858,7 +1056,18 @@ document.addEventListener("DOMContentLoaded", function () {
               return response.json();
           })
           .then(data => {
+            listePosts = data.listePosts;
+            allCommentsList = data.allCommentsList;
+            console.log(listePosts);
+            afficherPublications(listePosts);
 
+            console.log(block.textContent);
+            if(block.textContent == 'Bloquer'){
+              console.log("OK");
+              block.textContent = 'Debloquer';            
+            } else if(block.textContent == 'Debloquer'){
+              block.textContent = 'Bloquer'            
+            }
           })
           .catch(error => {
               console.error('POST like erreure :', error);
@@ -870,10 +1079,22 @@ document.addEventListener("DOMContentLoaded", function () {
           boutons.appendChild(block);
 
           profile.classList.add('profile-searched')
+
+          let nomImage = document.createElement('div')
+          nomImage.classList.add('nomImage-searched');
+
+          let img = document.createElement('img')
           let nom = document.createElement('h3')
           nom.textContent = user.username;
+          if(user.url_pfp != null){
+            img.src = user.url_pfp;
+          } else {
+            img.src = "../images/user.png";
+          }
+          nomImage.appendChild(img);
+          nomImage.appendChild(nom);
 
-          profile.appendChild(nom);
+          profile.appendChild(nomImage);
           profile.appendChild(boutons);
           conteneurProfile.appendChild(profile);
 
@@ -1111,7 +1332,6 @@ document
   .getElementById("profile-link")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // Ajoutez ici le code pour gérer le clic sur le lien du profil
     console.log("Lien Profil cliqué");
   });
 
@@ -1119,7 +1339,6 @@ document
   .getElementById("change-password-link")
   .addEventListener("click", function (event) {
     event.preventDefault();
-    // Ajoutez ici le code pour gérer le clic sur le lien de changement de mot de passe
     console.log("Lien Changer Mot de Passe cliqué");
   });
 
@@ -1149,7 +1368,6 @@ document
 function sendMessage() {
 console.log(document.getElementById('messageInput').value);
 console.log(userActuel);
-  // Send message to server
   fetch(send_message, {
       method: 'POST',
       headers: {
@@ -1163,11 +1381,9 @@ console.log(userActuel);
   })
   .then(response => response.json())
   .then(data => {
-      // Handle success (if needed)
       console.log('Message sent successfully:', data);
   })
   .catch(error => {
-      // Handle error (if needed)
       console.error('Error sending message:', error);
   });
 }
@@ -1335,6 +1551,13 @@ function linkChat(){
           .catch((error) =>
           console.error(
           "Il y'a eu une erreur lors de l'obtention des données:" +
+        chatMessages.appendChild(messageElement);
+        console.log(messageElement);
+      });
+    })
+    .catch((error) =>
+      console.error(
+        "Il y'a eu une erreur lors de l'obtention des données:" +
           error.message
           )
         );   

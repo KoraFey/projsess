@@ -57,7 +57,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +76,9 @@
                     android:id="@+id/like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/like_icone" />
+                    android:button="@drawable/like_icone"
+                    android:buttonTint="#FBF8F8"
+                    android:drawableTint="#F41D1D" />
 
                 <RadioButton
                     android:id="@+id/dislike"
