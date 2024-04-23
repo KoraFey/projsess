@@ -29,8 +29,9 @@ try{
         }   
     }
 if($p){
-    $stmt = $pdo->prepare("INSERT INTO `Chat_Room` (`name`) VALUES (:name)");
+    $stmt = $pdo->prepare("INSERT INTO `Chat_Room` (`name`,owner_id) VALUES (:name, :owner_id)");
     $stmt->bindValue(":name", $bodys->titre);
+    $stmt->bindValue(":owner_id", $gUserId);
     $stmt->execute();
     $id= $pdo->lastInsertId();
 
