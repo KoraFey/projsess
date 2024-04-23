@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -57,16 +58,17 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp" />
 
         <LinearLayout
+            android:id="@+id/laypos"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:orientation="horizontal">
 
             <RadioGroup
                 android:id="@+id/radioGroup"
-                android:layout_width="100dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
@@ -89,11 +91,13 @@
 
             <Button
                 android:id="@+id/comments"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="commentaire" />
+
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,13 @@
 <?php
 require_once __DIR__ . "/../config.php";
+try{
+    $gUserId = authentifier();
+} catch(Exception $e){
+    $response = [];
+    http_response_code(401);
+    $response['error'] = "Non autorisé";
+    echo json_encode($response);
+}
 
 $body = json_decode(file_get_contents("php://input"));
 
@@ -17,7 +25,7 @@ try {
     if ($body->delete_ou_insert_comment == "comment"){
         $stmt = $pdo->prepare("INSERT INTO `publication_commentaire` (`id_publication`, `user_id`, `commentaire`) VALUES (:id_publication, :user_id, :comment)");
         $stmt->bindValue(":id_publication", $body->publication_id);
-        $stmt->bindValue(":user_id", $_SESSION['usager']);
+        $stmt->bindValue(":user_id",$gUserId);
         $stmt->bindValue(":comment", $body->comment);
         $stmt->execute();
 
@@ -33,7 +41,7 @@ try {
     if ($body->delete_ou_insert_comment == "insert"){
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM `publication_likes` WHERE `id_publication` = :id_publication AND `user_id` = :user_id");
         $stmt->bindValue(":id_publication", $body->publication_id);
-        $stmt->bindValue(":user_id", $_SESSION['usager']);
+        $stmt->bindValue(":user_id", $gUserId);
         $stmt->execute();
         $likeCount = $stmt->fetchColumn();
     }
@@ -42,13 +50,13 @@ try {
         if ($body->delete_ou_insert_comment == "insert"){
                 $stmt = $pdo->prepare("INSERT INTO `publication_likes` (`id_publication`, `user_id`) VALUES (:id_publication, :user_id)");
                 $stmt->bindValue(":id_publication", $body->publication_id);
-                $stmt->bindValue(":user_id", $_SESSION['usager']);
+                $stmt->bindValue(":user_id", $gUserId);
                 $stmt->execute();
             
         } else if ($body->delete_ou_insert_comment == "delete"){
                 $stmt = $pdo->prepare("DELETE FROM `publication_likes` WHERE `id_publication` = :id_publication AND `user_id` = :user_id");
                 $stmt->bindValue(":id_publication", $body->publication_id);
-                $stmt->bindValue(":user_id", $_SESSION['usager']);
+                $stmt->bindValue(":user_id", $gUserId);
                 $stmt->execute();
         }
     } else {

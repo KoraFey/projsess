@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,11 +73,22 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final ImageView content = view.findViewById(R.id.contentpost);
             final TextView caption = view.findViewById(R.id.textView6);
             final RadioButton like = view.findViewById(R.id.like);
+            final RadioGroup group = view.findViewById(R.id.radioGroup);
             final RadioButton dislike = view.findViewById(R.id.dislike);
             final Button      comments = view.findViewById(R.id.comments);
+            final LinearLayout  lay = view.findViewById(R.id.laypos);
 
             if(post.getType().equals("annonce")){
                 comments.setText("notifier vendeur");
+//                like.setVisibility(View.INVISIBLE);
+//                dislike.setVisibility(View.INVISIBLE);
+                lay.removeView(group);
+                final View memberView = main.getLayoutInflater().inflate(R.layout.prix_post_lay,null,false);
+                TextView prix = (TextView) memberView.findViewById(R.id.textView3);
+                prix.setText(String.valueOf(post.getPrix())+"$");
+                lay.addView(memberView,0);
+
+
 
 
             }
@@ -82,8 +96,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 @Override
                 public void onClick(View v) {
                     if(post.getType().equals("annonce")){
-                        Toast.makeText(context,main.getToken(),Toast.LENGTH_LONG ).show();
-                        sendMessage(String.valueOf(post.getUser_id()),post.getDescription());
+
+                        sendMessage(post.getDescription().toString(),post.getUser_id());
                     }
                     else{
                         Toast.makeText(context,"dfghj",Toast.LENGTH_LONG ).show();
@@ -159,12 +173,14 @@ public class PostAdapter extends ArrayAdapter<Post> {
      }
 
 
-    private void sendMessage(String titre, String id){
+    private void sendMessage(String titre, int id){
         client = new OkHttpClient();
         JSONObject obj = new JSONObject();
+        String s ="bonjour je suis" ;
         try{
-            obj.put("message", "bonjour je suis interesser par votre annonce: "+titre);
             obj.put("user_id", id);
+            obj.put("message", s);
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -189,7 +205,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         main.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context,id,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(main,String.valueOf(id),Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -197,7 +213,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                         break;
                     case 500:
-                        Toast.makeText(context,"erreur serveur",Toast.LENGTH_SHORT).show();
+                        main.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(main,"500",Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                 }
             }
