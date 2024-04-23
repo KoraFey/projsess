@@ -670,10 +670,14 @@ function commenterPost(publicationid) {
 }
 
 function populateComments(comments){
+  console.log(allCommentsList);
+
   comments.forEach(post => {
     let id_post = post.id_publication;
     let divComment = document.getElementById("divComments"+id_post);
-    divComment.innerHTML = "";
+
+    if(divComment != null)
+      divComment.innerHTML = "";
   });
 
   comments.forEach(post => {
@@ -1054,6 +1058,7 @@ document.addEventListener("DOMContentLoaded", function () {
           message.textContent = 'Messager';
           block.textContent = 'Bloquer';
 
+          console.log("ASFSAD"+ blockList)
           if(blockList != null){
             blockList.forEach(userBlock => {
               if(user.id == userBlock)
@@ -1085,7 +1090,9 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then(data => {
             listePosts = data.listePosts;
+
             allCommentsList = data.allCommentsList;
+            blockList = data.blockList;
             afficherPublications(listePosts);
 
             if(block.textContent == 'Bloquer'){

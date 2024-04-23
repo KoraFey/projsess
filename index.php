@@ -81,22 +81,39 @@ $stmt = $pdo->prepare('SELECT p.*, GROUP_CONCAT(DISTINCT pt.user_id) AS tag_user
 $stmt->bindValue(':currentUserId', $loggedUserId);
 $stmt->execute();
 $publications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 $listePublications = json_encode($publications);
 
-$stmt = $pdo->prepare('SELECT pc.*
-FROM publication_commentaire pc
-LEFT JOIN Block_List bl ON pc.user_id = bl.blocked_id
-WHERE NOT EXISTS (
-    SELECT 1 FROM Block_List bl2
-    WHERE bl2.user_id = :currentUserId 
-    AND bl2.blocked_id = pc.user_id
-)
-GROUP BY pc.id');
-$stmt->bindValue(':currentUserId', $loggedUserId);
+
+$stmtBlocked = $pdo->prepare('SELECT blocked_id FROM Block_List WHERE user_id = :currentUserId');
+$stmtBlocked->bindValue(':currentUserId', $loggedUserId);
+$stmtBlocked->execute();
+$blockedUsers = $stmtBlocked->fetchAll(PDO::FETCH_ASSOC);
+
+if ($blockedUsers) {
+    $blockedUserIds = array_column($blockedUsers, 'blocked_id');
+
+    $stmt = $pdo->prepare('SELECT pc.*
+        FROM publication_commentaire pc
+        LEFT JOIN Publication p ON pc.id_publication = p.id
+        WHERE NOT EXISTS (
+            SELECT 1 FROM Block_List bl
+            WHERE bl.user_id = :currentUserId 
+            AND bl.blocked_id = pc.user_id
+        )
+        AND (p.user_id IS NULL OR p.user_id NOT IN (' . implode(',', $blockedUserIds) . '))
+        GROUP BY pc.id');
+    $stmt->bindValue(':currentUserId', $loggedUserId);
+} else {
+    $stmt = $pdo->prepare('SELECT pc.*
+        FROM publication_commentaire pc
+        LEFT JOIN Publication p ON pc.id_publication = p.id
+        GROUP BY pc.id');
+}
+
 $stmt->execute();
 $allComments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $allCommentsJson = json_encode($allComments);
+
 
 
 // fetch tous les users, incluant celui deja connecte
@@ -143,7 +160,7 @@ $blockList = json_encode($blockedUsers);
         let allCommentsList = <?= $allCommentsJson ?>;
         let blockList = <?= $blockList ?>
 
-        console.log(blockList);
+        console.log(allCommentsList);
     </script>
 </head>
 

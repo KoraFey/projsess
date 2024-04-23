@@ -44,16 +44,22 @@ try {
     
     $stmt = $pdo->prepare('SELECT pc.*
     FROM publication_commentaire pc
-    LEFT JOIN Block_List bl ON pc.user_id = bl.blocked_id
+    INNER JOIN Publication p ON pc.id_publication = p.id
+    LEFT JOIN Block_List bl ON p.user_id = bl.blocked_id
     WHERE NOT EXISTS (
         SELECT 1 FROM Block_List bl2
         WHERE bl2.user_id = :currentUserId 
-        AND bl2.blocked_id = pc.user_id
-    )
-    GROUP BY pc.id');
+        AND bl2.blocked_id = p.user_id
+    ) AND p.id NOT IN (
+        SELECT id FROM Publication WHERE user_id = :blockedUserId
+    )');
+
     $stmt->bindValue(':currentUserId', $gUserId);
+    $stmt->bindValue(':blockedUserId', $body->blocked_id);
     $stmt->execute();
     $commentaires = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
     $stmt = $pdo->prepare("SELECT blocked_id FROM Block_List WHERE user_id = :user_id");
     $stmt->bindValue(":user_id", $_SESSION['usager']);
