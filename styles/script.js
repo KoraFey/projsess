@@ -60,7 +60,7 @@ function afficherPublications(publications) {
 
           titreEtBtn.appendChild(h3);
 
-          if(publication.user_id == userActuel){
+          if(publication.user_id == userActuel.id){
             const btnFonctions = document.createElement('div');
             btnFonctions.classList.add('container-delete-modify');
 
@@ -217,7 +217,7 @@ function afficherPublications(publications) {
           allLikesList.forEach((like) => {
             if (like.id_publication == publication.id) {
               likesCount++;
-              if(like.user_id == userActuel){
+              if(like.user_id == userActuel.id){
                 imgLike.src = '../images/hearted.png'; 
               }
             }
@@ -315,7 +315,7 @@ function afficherPublications(publications) {
           titreEtBtn.classList.add('container-annonceBtn');
 
 
-          if(publication.user_id == userActuel){
+          if(publication.user_id == userActuel.id){
             //const btnModifier = document.createElement('img');
             const btnSupprimer = document.createElement('img');
 
@@ -1181,38 +1181,25 @@ document.addEventListener("DOMContentLoaded", function () {
   
   getChatRoom();
   
-  /*
-  usersList.forEach(user => {
-    let listItem = document.createElement('li');
-    let anchor = document.createElement('a');
-    anchor.setAttribute('href', '#');
-    anchor.textContent = user.username;
-    
-    let image = document.createElement('img');
-    image.setAttribute('src', './images/user.png');
+/*
+//lien pour les liens de convo vers --> profile
+const amisListe = document.querySelectorAll('.amis li');
 
-    listItem.appendChild(image);
-    listItem.appendChild(anchor);
+const tableauAmis = [];
 
-    amisList.appendChild(listItem);
+amisListe.forEach(li => {
+    const imgSrc = li.querySelector('img').src;
+    const nom = li.querySelector('a').textContent;
+
+    tableauAmis.push({ imgSrc, nom });
 });
+
+console.log("ALLALALAL");
 
 */
-//lien pour les liens de convo vers --> profile
-let liens = document.querySelectorAll('.amis a');
 
-liens.forEach(function(lien) {
-  lien.addEventListener('click', function(event) {
-        event.preventDefault(); 
-
-        lienProfile = this.textContent;
-        
-        displayConteneur('profileInfo');
-
-        lienProfile = null;
-    });
 });
-});
+
 
 const chatMessages = document.getElementById('chatMessages');
 
@@ -1334,7 +1321,7 @@ function afficherProfile(user) {
           p.textContent = publication.description + ' | ' + publication.date_publication;
 
 
-          if (publication.user_id == userActuel) {
+          if (publication.user_id == userActuel.id) {
               const btnFonctions = document.createElement('div');
               btnFonctions.classList.add('container-delete-modify');
 
@@ -1484,7 +1471,7 @@ function afficherProfile(user) {
           allLikesList.forEach((like) => {
               if (like.id_publication == publication.id) {
                   likesCount++;
-                  if (like.user_id == userActuel) {
+                  if (like.user_id == userActuel.id) {
                       imgLike.src = '../images/hearted.png';
                   }
               }
@@ -1732,14 +1719,13 @@ document
 
 function sendMessage() {
   console.log(document.getElementById('messageInput').value);
-  console.log(userActuel);
     fetch(send_message, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            user_id: userActuel,
+            user_id: userActuel.id,
             chatroom_id: currentChat,
             message: document.getElementById('messageInput').value
         }),
@@ -1753,7 +1739,7 @@ function sendMessage() {
     });
   }
   function getChatRoom() {
-    fetch('/api/chatrooms/'+ userActuel, {
+    fetch('/api/chatrooms/'+ userActuel.id, {
          method: "GET" })
         .then((response) => {
         if (!response.ok) {
@@ -1775,7 +1761,7 @@ function sendMessage() {
   );
   }
   // function getIdOtherPerson(){
-  //   fetch('/api/getIdOtherPerson/' + userActuel +'/'+ chatroom.id, {
+  //   fetch('/api/getIdOtherPerson/' + userActuel.id +'/'+ chatroom.id, {
   //   method: "GET" })
   //   .then((response) => {
   //     if (!response.ok) {
@@ -1799,7 +1785,7 @@ function sendMessage() {
     chatroomList.forEach(chatroom =>{
       
       if (chatroom.nb_personnes == 2) { 
-        fetch('/api/getIdOtherPerson/' + userActuel +'/'+ chatroom.id, {
+        fetch('/api/getIdOtherPerson/' + userActuel.id +'/'+ chatroom.id, {
           method: "GET" })
           .then((response) => {
             if (!response.ok) {
@@ -1827,19 +1813,35 @@ function sendMessage() {
         anchorChat.setAttribute('href','#');
         let imageChat = document.createElement('img');
 
-        console.log(chatroom.id);
 
         chatroomUsers.forEach(chat => {
           if (chatroom.id === chat.chat_room_id) { 
             usersList.forEach(user => {
               if (chat.user_id === user.id) { 
                 anchorChat.textContent = user.username;
-                console.log(user.url_pfp);
+                
                 if(user.url_pfp != null){
                   imageChat.src = user.url_pfp;
                 } else {
                   imageChat.src = './images/user.png';
                 }
+                anchorChat.addEventListener('click', function(event) {
+                  event.preventDefault(); 
+          
+                  const username = document.getElementById('nomProfile');
+                  username.textContent = user.username;
+                  
+                  const img = document.getElementById('profile-img');
+                  
+                  if(user.url_pfp != null){
+                    img.src = user.url_pfp;
+                  } else {
+                    img.src = "../images/utilisateur.png";
+                  }
+                  img.alt = 'img user' 
+  
+                  displayConteneur('profileInfo');
+                });
               }
             });
           }
@@ -1848,6 +1850,7 @@ function sendMessage() {
         listChat.appendChild(imageChat);
         listChat.appendChild(anchorChat);
         amisList.appendChild(listChat);
+
 
        
         anchorChat.onclick = function(){
@@ -1868,14 +1871,38 @@ function sendMessage() {
       
             chatMessages.innerHTML = '';
           
+            console.log(data);
             data.forEach(message => {
-              const nom = document.createElement('h3');
-              const messageElement = document.createElement('div');
+              const divBase = document.createElement('div');
+              const div = document.createElement('div');
+
+              console.log(message.username + userActuel.id);
+
+              if(message.username == userActuel.username){
+              div.classList.add("messagesContainer-moi");
+              divBase.classList.add("divBaseMsg-moi");
+              } else{
+              div.classList.add("messagesContainer");
+              divBase.classList.add("divBaseMsg");
+              }
+          
+              const nom = document.createElement('h6');
+              const messageElement = document.createElement('p');
+          
               messageElement.textContent = message.message;
-              
-              chatMessages.appendChild(messageElement);
-              console.log(messageElement);
-            });
+          
+              nom.textContent = message.username;
+          
+              const containerWidth = Math.max(100, message.message.length * 10); 
+          
+              div.style.width = `${containerWidth}px`;
+          
+              div.appendChild(nom);
+              div.appendChild(messageElement);
+              divBase.appendChild(div);
+              chatMessages.appendChild(divBase);
+          });
+          
           })
             .catch((error) =>
             console.error(

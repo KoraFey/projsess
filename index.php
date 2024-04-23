@@ -142,6 +142,13 @@ $stmt->execute();
 $listeChatroomUsers = $stmt->fetchAll();
 $chatroomUsers = json_encode($listeChatroomUsers);
 
+// infos user actuel
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
+$stmt->bindValue(":user_id", $_SESSION['usager']);
+$stmt->execute();
+$userActual = $stmt->fetch();
+$userAct = json_encode($userActual);
+
 ?>
 
 <!DOCTYPE html>
@@ -162,13 +169,13 @@ $chatroomUsers = json_encode($listeChatroomUsers);
         let gifsList = <?= $gifsJson ?>;
         let listePosts = <?= $listePublications ?>;
         let allUsersList = <?= $allUsersJson ?>;
-        let userActuel = <?= $loggedUserId ?>;
+        let userActuel = <?= $userAct ?>;
         let allLikesList = <?= $allLikesJson ?>;
         let allCommentsList = <?= $allCommentsJson ?>;
         let blockList = <?= $blockList ?>;
         let chatroomUsers = <?= $chatroomUsers ?>;
 
-        console.log(chatroomUsers);
+        console.log(userActuel);
     </script>
 </head>
 
@@ -505,8 +512,7 @@ $chatroomUsers = json_encode($listeChatroomUsers);
                 <img src="images/utilisateur.png" alt="Photo de profil" id="profile-img">
 
                 <div class="profile-details">
-                    <p><strong>Nom :</strong> <span id="nomProfile">John</span></p>
-                    <p><strong>Prénom :</strong> <span id="prenomProfile">Doe</span></p>
+                    <p><strong>Username :</strong> <span id="nomProfile">John</span></p>
                 </div>
             </div>
             <div id="chat-container" class="chat-container">

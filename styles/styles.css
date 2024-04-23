@@ -837,3 +837,48 @@ footer {
     border-radius: 20px;
     padding-left: 10px;
 }
+
+/* style pour chaque message*/
+
+#chatMessages {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.divBaseMsg {
+    width: 100%;
+    display: flex;
+}
+
+.messagesContainer {
+    align-items: flex-start;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%; 
+    box-sizing: border-box; 
+}
+.messagesContainer h6,.messagesContainer p{
+    margin: 10px;
+}
+.messagesContainer-moi p, .messagesContainer-moi h6{
+    margin: 10px;
+}
+
+
+.messagesContainer-moi {
+    align-items: flex-end;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+.divBaseMsg-moi {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end; 
+
+    padding-right: 10px;
+}
