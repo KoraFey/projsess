@@ -3,34 +3,32 @@ $webAccess = true;
 require_once __DIR__.'/config.php'; // Assurez-vous que ce fichier contient la connexion à la base de données avec l'objet PDO $pdo.
 
 
-$userId = $_SESSION['user_id'] ?? 1; // Remplacez par la logique d'authentification pour obtenir l'ID de l'utilisateur connecté.
 
-// Vérifier si le formulaire est soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les informations depuis le formulaire
-    $username = $_POST['edit-username'] ?? '';
-    $password = $_POST['edit-password'] ?? '';
-    $urlPfp = $_POST['edit-image-url'] ?? '';
+    $username = $_POST['edit-username'];
+    $password = $_POST['edit-password'];
+    $urlPfp = $_POST['edit-image-url'];
 
-    // Hasher le mot de passe
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Préparer et exécuter la requête pour mettre à jour les informations
-    $stmt = $pdo->prepare("UPDATE users SET username = ?, password = ?, url_pfp = ? WHERE id = ?");
-    $stmt->execute([$username, $hashedPassword, $urlPfp, $userId]);
+    $stmt = $pdo->prepare("UPDATE users SET `username` = :username, `password` = :password, url_pfp = :url WHERE id = :id");
+    $stmt->bindValue("username",$username);
+    $stmt->bindValue("password",$hashedPassword);
+    $stmt->bindValue("url",$urlPfp);
+    $stmt->bindValue("id",$_SESSION["usager"]);
+    $stmt->execute();
 
-    // Redirection pour éviter la re-soumission du formulaire
     header("Location: profil.php");
     exit;
 }
 
-// Charger les informations actuelles de l'utilisateur
-$stmt = $pdo->prepare("SELECT username, url_pfp FROM users WHERE id = ?");
-$stmt->execute([$userId]);
+$stmt = $pdo->prepare("SELECT username, url_pfp FROM users WHERE id = :id");
+$stmt->bindValue("id",$_SESSION["usager"]);
+$stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$username = $user['username'] ?? 'Inconnu';
-$urlPfp = $user['url_pfp'] ?? 'images/utilisateur.png';
+$username = $user['username'];
+$urlPfp = $user['url_pfp'];
 ?>
 
 <!DOCTYPE html>
