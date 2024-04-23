@@ -28,6 +28,7 @@ post('/api/modifyUser/$id','/api/modifyUser.php');
 post('/api/postMessages','/api/newMessages.php');
 
 
+get('/api/getIdOtherPerson/$id/$chatRoomId', '/api/getIdOtherPerson.php');
 
 get('/api/getChatRoomUser/$id', '/api/getChatRoomUser.php');
 get('/api/getChatRoomUserWith/$id/$name', '/api/getChatRooomWith.php');
