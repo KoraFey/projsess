@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +33,7 @@ import okhttp3.ResponseBody;
 public class Profile extends AppCompatActivity {
 
     private Button cancel,submit;
+    private ImageView test;
 
     private EditText username,mpd1,mpd2;
 
@@ -48,6 +52,7 @@ public class Profile extends AppCompatActivity {
         layout = findViewById(R.id.profile);
         submit = findViewById(R.id.toggleedit);
         cancel = findViewById(R.id.profilereturn);
+
 
 
         id = getIntent().getStringExtra("id");

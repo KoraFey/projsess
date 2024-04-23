@@ -40,15 +40,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/contentpost"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:layout_height="225dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -66,28 +66,12 @@
             android:layout_height="50dp"
             android:orientation="horizontal">
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="250dp"
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toBottomOf="@+id/description">
-
-                <RadioButton
-                    android:id="@+id/like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/like_icone"
-                    android:buttonTint="#FBF8F8"
-                    android:drawableTint="#F41D1D" />
-
-                <RadioButton
-                    android:id="@+id/dislike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/dislike_icone" />
-            </RadioGroup>
+                android:layout_weight="1"
+                android:text="Button" />
 
             <Button
                 android:id="@+id/comments"
@@ -97,6 +81,12 @@
                 android:text="commentaire" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
 
     </LinearLayout>
 

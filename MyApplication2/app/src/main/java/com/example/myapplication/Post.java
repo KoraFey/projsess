@@ -77,6 +77,11 @@ public class Post {
     }
 
     public String[] getUrl() {
+        if(url==null){
+            url = new String[1];
+            url[0]="wert";
+        }
+
         return url;
     }
 

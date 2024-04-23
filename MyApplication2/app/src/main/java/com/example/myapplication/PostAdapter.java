@@ -2,33 +2,29 @@ package com.example.myapplication;
 
 import static com.example.myapplication.MainActivity.API_URL;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -42,6 +38,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
     private int viewRessourceId;
     private MAIN main;
     private   OkHttpClient client;
+    private boolean wasChecked;
+    private  LinearLayoutManager manager;
+
+    private horizonAdapter horizonAdapter;
     private MediaType JSON;
 
     public PostAdapter(@NonNull Context context, int resource,@NonNull Post[] list, MAIN main) {
@@ -60,6 +60,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View getView(int position, View convertView, ViewGroup parent){
+
         View view=convertView;
         if(view==null){
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,19 +71,23 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final ImageView icone = view.findViewById(R.id.iconeUser);
             final TextView username = view.findViewById(R.id.usernamePost);
             final TextView time = view.findViewById(R.id.timePostp);
-            final ImageView content = view.findViewById(R.id.contentpost);
+            final RecyclerView content = view.findViewById(R.id.rec);
             final TextView caption = view.findViewById(R.id.textView6);
-            final RadioButton like = view.findViewById(R.id.like);
-            final RadioGroup group = view.findViewById(R.id.radioGroup);
-            final RadioButton dislike = view.findViewById(R.id.dislike);
+            final Button like = view.findViewById(R.id.button2);
             final Button      comments = view.findViewById(R.id.comments);
             final LinearLayout  lay = view.findViewById(R.id.laypos);
+            final LinearLayout  l = view.findViewById(R.id.linearLayout);
+
+            manager= new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false);
+
+            horizonAdapter = new horizonAdapter(post.getUrl(),main);
+            content.setLayoutManager(manager);
+            content.setAdapter(horizonAdapter);
 
             if(post.getType().equals("annonce")){
                 comments.setText("notifier vendeur");
-//                like.setVisibility(View.INVISIBLE);
-//                dislike.setVisibility(View.INVISIBLE);
-                lay.removeView(group);
+
+                lay.removeView(like);
                 final View memberView = main.getLayoutInflater().inflate(R.layout.prix_post_lay,null,false);
                 TextView prix = (TextView) memberView.findViewById(R.id.textView3);
                 prix.setText(String.valueOf(post.getPrix())+"$");
@@ -108,22 +113,36 @@ public class PostAdapter extends ArrayAdapter<Post> {
             username.setText(post.getUsername());
             time.setText(post.getDate_publication());
             caption.setText(post.getDescription());
+
             if(post.getLike()==1){
-                like.setChecked(true);
+                wasChecked=true;
+                like.setBackgroundColor(context.getColor(R.color.green));
             }
             else{
-                dislike.setChecked(false);
+                like.setBackgroundColor(context.getColor(R.color.grey));
+                wasChecked=false;
             }
             //------------------------------
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(like.isChecked()){
-                       // liked(true,post.getId());
+                    if(!(wasChecked)){
+
+                        liked(true,post.getId());
+                        wasChecked=true;
+                        like.setBackgroundColor(context.getColor(R.color.green));
 
                     }
+                    else{
+                        liked(false,post.getId());
+                        wasChecked=false;
+                        like.setBackgroundColor(context.getColor(R.color.grey));
+                    }
+
                 }
             });
+
+
 
 
 
@@ -141,11 +160,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
          try {
              if(like) {
-                 obj.put("like", 1);
+                 obj.put("delete_ou_insert_comment", "insert");
              }
              else{
-                 obj.put("like", 0);
+                 obj.put("delete_ou_insert_comment", "delete");
              }
+             obj.put("publication_id",id);
          } catch (JSONException e) {
              throw new RuntimeException(e);
          }
@@ -154,8 +174,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
 
          Request requete = new Request.Builder()
-                 .url(API_URL + "/api/like/"+"/"+id)
-                 .header("Authorization", "Bearer "+"token")
+                 .url(API_URL + "/api/postLike")
+                 .header("Authorization", "Bearer "+main.getToken())
                  .post(corpsRequete)
                  .build();
          new Thread(new Runnable() {
