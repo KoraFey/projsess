@@ -29,7 +29,6 @@ let conteneurPrincipal = [
 
 
 function afficherPublications(publications) {
-  console.log(publications);
   if(publications != null && publications.length != 0){
   const conteneurFeed = document.getElementById('conteneurFeed');
   conteneurFeed.innerHTML = ''; 
@@ -213,6 +212,7 @@ function afficherPublications(publications) {
           nbLikes.id = 'nbLikes' + publication.id;
 
           let likesCount = 0;
+
           allLikesList.forEach((like) => {
             if (like.id_publication == publication.id) {
               likesCount++;
@@ -576,15 +576,27 @@ function incrementLikes(publicationid) {
       return response.json();
   })
   .then(data => {
-      let nbLikes = document.getElementById('nbLikes' + data.publication_id)
+    allLikesList = data.allLikesList;
 
-      console.log(data.likes)
+      let nbLikes = document.getElementById('nbLikes' + data.publication_id);
+      let nbLikesPersonnel = document.getElementById('nbLikesPersonnel' + data.publication_id);
+
       if(data.likes != null && data.likes != 1 && data.likes != 0)
         nbLikes.textContent = data.likes + " likes"
       else if(data.likes == 1)
         nbLikes.textContent = "1 like";
       else 
         nbLikes.textContent = "0 like";
+
+      if(nbLikesPersonnel != null){
+          if(data.likes != null && data.likes != 1 && data.likes != 0)
+            nbLikesPersonnel.textContent = data.likes + " likes"
+          else if(data.likes == 1)
+            nbLikesPersonnel.textContent = "1 like";
+          else 
+            nbLikesPersonnel.textContent = "0 like";
+      }
+      
   })
   .catch(error => {
       console.error('POST like erreure :', error);
@@ -593,6 +605,7 @@ function incrementLikes(publicationid) {
 
 
 function decrementLikes(publicationid) {
+  console.log("asd")
   fetch(postApiLikes, {
     method: 'POST',
     headers: {
@@ -607,14 +620,25 @@ function decrementLikes(publicationid) {
     return response.json();
 })
 .then(data => {
-    let nbLikes = document.getElementById('nbLikes' + data.publication_id)
+  allLikesList = data.allLikesList;
+  let nbLikes = document.getElementById('nbLikes' + data.publication_id);
+      let nbLikesPersonnel = document.getElementById('nbLikesPersonnel' + data.publication_id);
 
-    if(data.likes != null && data.likes != 1 && data.likes != 0)
-      nbLikes.textContent = data.likes + " likes"
-    else if(data.likes == 1)
-      nbLikes.textContent = "1 like";
-    else 
-      nbLikes.textContent = "0 like";
+      if(data.likes != null && data.likes != 1 && data.likes != 0)
+        nbLikes.textContent = data.likes + " likes"
+      else if(data.likes == 1)
+        nbLikes.textContent = "1 like";
+      else 
+        nbLikes.textContent = "0 like";
+
+      if(nbLikesPersonnel != null){
+          if(data.likes != null && data.likes != 1 && data.likes != 0)
+            nbLikesPersonnel.textContent = data.likes + " likes"
+          else if(data.likes == 1)
+            nbLikesPersonnel.textContent = "1 like";
+          else 
+            nbLikesPersonnel.textContent = "0 like";
+      }
 })
 .catch(error => {
     console.error('POST like erreure :', error);
@@ -908,6 +932,10 @@ function displayConteneur(conteneur) {
       conteneurPrincipal[i].style.display = conteneurPrincipal[i].id === conteneur ? "grid" : "none";
     }
 
+    if(conteneurPrincipal[i].id === "conteneurFeed"){
+      afficherPublications(listePosts);
+    }
+
       let highlightedLien;
 
       if (conteneurPrincipal[i].id == conteneur) {
@@ -1057,10 +1085,8 @@ document.addEventListener("DOMContentLoaded", function () {
           .then(data => {
             listePosts = data.listePosts;
             allCommentsList = data.allCommentsList;
-            console.log(listePosts);
             afficherPublications(listePosts);
 
-            console.log(block.textContent);
             if(block.textContent == 'Bloquer'){
               console.log("OK");
               block.textContent = 'Debloquer';            
@@ -1090,6 +1116,15 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             img.src = "../images/user.png";
           }
+
+          img.addEventListener('click', function() {
+            afficherProfile(user);
+          });
+
+          nom.addEventListener('click', function() {
+            afficherProfile(user);
+          });
+
           nomImage.appendChild(img);
           nomImage.appendChild(nom);
 
@@ -1179,6 +1214,355 @@ liens.forEach(function(lien) {
 const chatMessages = document.getElementById('chatMessages');
 
 
+function afficherProfile(user) {
+  const conteneurProfile = document.getElementById('conteneurProfile');
+  conteneurProfile.innerHTML = '';
+
+  const divPrincipal = document.createElement('div');
+  divPrincipal.id = 'divProfile';
+
+  const divInfo = document.createElement('div');
+  divInfo.id = 'personnelInfo';
+
+  const divNomImg = document.createElement('div');
+  divNomImg.id = 'nomImg';
+
+  const divPosts = document.createElement('div');
+  divPosts.id = 'divPosts';
+
+  const imgProfile = document.createElement('img');
+  if (user.url_pfp != null) {
+      imgProfile.src = user.url_pfp;
+  } else {
+      imgProfile.src = "../images/user.png";
+  }
+
+  const nomProfile = document.createElement('h3');
+  nomProfile.textContent = user.username;
+
+  let boutons = document.createElement('div')
+  boutons.classList.add('profile-boutons')
+
+  let message = document.createElement('button')
+  let block = document.createElement('button')
+
+  block.addEventListener
+  message.type = 'button';
+  block.type = 'button';
+
+  message.textContent = 'Messager';
+  block.textContent = 'Bloquer';
+
+  if (blockList != null) {
+      blockList.forEach(userBlock => {
+          if (user.id == userBlock)
+              block.textContent = 'Debloquer';
+      })
+  }
+
+
+  block.addEventListener('click', function(event) {
+      let blocker = "block";
+      if (block.textContent == 'Bloquer') {
+          blocker = "block";
+      } else if (block.textContent == 'Debloquer') {
+          blocker = "unblock";
+      }
+      event.preventDefault();
+      fetch(postApiBlocker, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ blocked_id: user.id, block_unblock: blocker })
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+              listePosts = data.listePosts;
+              allCommentsList = data.allCommentsList;
+              afficherPublications(listePosts);
+
+              if (block.textContent == 'Bloquer') {
+                  block.textContent = 'Debloquer';
+              } else if (block.textContent == 'Debloquer') {
+                  block.textContent = 'Bloquer'
+              }
+          })
+          .catch(error => {
+              console.error('POST like erreure :', error);
+          });
+
+  });
+
+  let publicationsPersonnel = [];
+
+  listePosts.forEach(post => {
+      if (post.user_id === user.id) {
+          publicationsPersonnel.push(post);
+      }
+  });
+
+  divPosts.innerHTML = '';
+
+  publicationsPersonnel.reverse()
+  publicationsPersonnel.forEach(publication => {
+
+      if (publication.type === 'actualite') {
+          const publicationContainer = document.createElement('div');
+          publicationContainer.classList.add('personnel-container');
+
+          const infoContainer = document.createElement('div');
+          infoContainer.classList.add('info-container');
+
+          const titreEtBtn = document.createElement('div');
+          titreEtBtn.classList.add('container-titreEtBtn');
+
+          const p = document.createElement('p');
+
+          const user = allUsersList.find(user => user.id === publication.user_id);
+          const userPost = user.username;
+          p.textContent = publication.description + ' | ' + publication.date_publication;
+
+
+          if (publication.user_id == userActuel) {
+              const btnFonctions = document.createElement('div');
+              btnFonctions.classList.add('container-delete-modify');
+
+              const btnSupprimer = document.createElement('img');
+
+              btnSupprimer.src = '../images/remove.png';
+              btnSupprimer.alt = 'delete';
+              btnSupprimer.classList.add('image-delete');
+
+
+              btnSupprimer.addEventListener('click', function() {
+                  const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce post ?");
+
+                  if (confirmation) {
+                      fetch(deletePost, {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({ id_post: publication.id })
+                          })
+                          .then(response => {
+                              if (!response.ok) {
+                                  throw new Error('response was not ok');
+                              }
+                              return response.json();
+                          })
+                          .then(data => {
+                              listePosts = data.listePosts;
+                              afficherPublications(listePosts);
+                          })
+                          .catch(error => {
+                              console.error('Erreur lors de la suppression du post :', error);
+                          });
+                  } else {
+                      console.log('La suppression du post a ete annulee');
+                  }
+              });
+
+
+              btnFonctions.appendChild(btnSupprimer);
+              titreEtBtn.appendChild(btnFonctions);
+          }
+
+          const tagsContainer = document.createElement('span');
+          tagsContainer.classList.add('tags-users');
+
+          if (publication.tag_users != null) {
+              const tagsUsers = publication.tag_users.split(',').map(tag => {
+                  const tagUser = allUsersList.find(user => user.id === parseInt(tag));
+                  const tagSpan = document.createElement('span');
+                  tagSpan.classList.add('tag-user');
+                  tagSpan.textContent = tagUser.username;
+                  return tagSpan;
+              });
+
+              const estAvec = document.createElement('span');
+              estAvec.textContent = ' est avec: ';
+              tagsContainer.appendChild(estAvec);
+
+              tagsUsers.forEach((tag, index) => {
+                  tagsContainer.appendChild(tag);
+                  if (index < tagsUsers.length - 1) {
+                      const vigurle = document.createElement('span');
+                      vigurle.textContent = ', ';
+                      tagsContainer.appendChild(vigurle);
+                  }
+              });
+          }
+
+          infoContainer.appendChild(titreEtBtn);
+          infoContainer.appendChild(tagsContainer);
+          infoContainer.appendChild(p);
+
+          const carouselContainer = document.createElement('div');
+          const carouselInner = document.createElement('div');
+
+          carouselContainer.classList.add('carousel', 'slide');
+          carouselContainer.setAttribute('data-bs-ride', 'carousel');
+          carouselContainer.id = `publicationCarousel${publication.id}`;
+          carouselInner.classList.add('carousel-inner');
+
+          const imgLike = document.createElement('img');
+          imgLike.src = '../images/heart.png';
+          imgLike.alt = 'like';
+          imgLike.classList.add('image-like');
+
+          const imageUrls = publication.image_urls.split(',');
+          imageUrls.forEach((url, index) => {
+              const carouselItem = document.createElement('div');
+              carouselItem.classList.add('carousel-item');
+              if (index === 0)
+                  carouselItem.classList.add('active');
+
+              const img = document.createElement('img');
+              img.classList.add('d-block', 'w-50', 'postImage-personnel');
+              img.src = url;
+              img.alt = 'post';
+
+              img.addEventListener('dblclick', function() {
+                  imgLike.src = '../images/hearted.png';
+                  incrementLikes(publication.id);
+              });
+
+              carouselItem.appendChild(img);
+              carouselInner.appendChild(carouselItem);
+          });
+          carouselContainer.appendChild(carouselInner);
+
+          const carouselAvant = document.createElement('button');
+          const carouselApres = document.createElement('button');
+
+          carouselAvant.classList.add('carousel-control-prev');
+          carouselAvant.type = 'button';
+          carouselAvant.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselAvant.setAttribute('data-bs-slide', 'prev');
+          carouselAvant.innerHTML = '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>';
+
+          carouselApres.classList.add('carousel-control-next');
+          carouselApres.type = 'button';
+          carouselApres.setAttribute('data-bs-target', `#publicationCarousel${publication.id}`);
+          carouselApres.setAttribute('data-bs-slide', 'next');
+          carouselApres.innerHTML = '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>';
+
+          carouselContainer.appendChild(carouselAvant);
+          carouselContainer.appendChild(carouselApres);
+
+          publicationContainer.appendChild(infoContainer);
+          publicationContainer.appendChild(carouselContainer);
+
+
+
+          imgLike.addEventListener('click', function() {
+              if (imgLike.src.includes('hearted.png')) {
+                  imgLike.src = '../images/heart.png';
+                  decrementLikes(publication.id);
+              } else {
+                  imgLike.src = '../images/hearted.png';
+                  incrementLikes(publication.id);
+              }
+          });
+
+          const nbLikes = document.createElement('p');
+          nbLikes.id = 'nbLikesPersonnel' + publication.id;
+
+          let likesCount = 0;
+          allLikesList.forEach((like) => {
+              if (like.id_publication == publication.id) {
+                  likesCount++;
+                  if (like.user_id == userActuel) {
+                      imgLike.src = '../images/hearted.png';
+                  }
+              }
+          });
+
+          if (likesCount != null && likesCount != 1 && likesCount != 0)
+              nbLikes.textContent = likesCount + " likes";
+          else if (likesCount == 1)
+              nbLikes.textContent = "1 like";
+          else
+              nbLikes.textContent = "0 like";
+
+          const divInteractions = document.createElement("div");
+          divInteractions.id = "divInteractions";
+
+          const imgCmmt = document.createElement('img');
+          imgCmmt.src = '../images/chat.png';
+          imgCmmt.alt = 'comment';
+          imgCmmt.classList.add('image-like');
+
+          divInteractions.appendChild(imgLike);
+          divInteractions.appendChild(imgCmmt);
+          publicationContainer.appendChild(divInteractions);
+          publicationContainer.appendChild(nbLikes);
+
+          const divComments = document.createElement("div");
+          divComments.id = "divComments" + publication.id;
+          divComments.style.display = 'none';
+
+          imgCmmt.addEventListener('click', function() {
+              if (document.getElementById(divComments.id).style.display == 'block')
+                  document.getElementById(divComments.id).style.display = 'none';
+              else
+                  document.getElementById(divComments.id).style.display = 'block';
+          });
+
+          divComments.style.maxHeight = '150px';
+          divComments.style.overflow = 'auto';
+          publicationContainer.appendChild(divComments);
+
+          const inputDiv = document.createElement('div');
+          inputDiv.classList.add("commentDiv");
+
+          const inputComment = document.createElement('input');
+          inputComment.id = "id_inputComment" + publication.id;
+          inputComment.type = 'text';
+          inputComment.placeholder = 'Ajouter un commentaire pour ' + userPost + '...';
+
+          const commentButton = document.createElement('button');
+          commentButton.type = "button";
+          commentButton.textContent = "Send";
+          commentButton.addEventListener('click', function() {
+              if (inputComment.value != "" && inputComment.value != null)
+                  commenterPost(publication.id);
+
+              if (document.getElementById(divComments.id).style.display == 'block')
+                  document.getElementById(divComments.id).style.display = 'none';
+              else
+                  document.getElementById(divComments.id).style.display = 'block';
+          });
+
+          inputDiv.appendChild(inputComment);
+          inputDiv.appendChild(commentButton);
+          publicationContainer.appendChild(inputDiv);
+
+          divPosts.appendChild(publicationContainer);
+      }
+  });
+
+
+
+  boutons.appendChild(message);
+  boutons.appendChild(block);
+
+  divNomImg.appendChild(imgProfile);
+  divNomImg.appendChild(nomProfile);
+  divInfo.appendChild(divNomImg);
+  divInfo.appendChild(boutons);
+
+  divPrincipal.appendChild(divInfo);
+  divPrincipal.appendChild(divPosts);
+  conteneurProfile.appendChild(divPrincipal);
+}
 
 
 function toggleSettings() {

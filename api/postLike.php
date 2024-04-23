@@ -59,8 +59,17 @@ try {
     $stmt->bindValue(":id_publication", $body->publication_id);
     $stmt->execute();
     $likes = $stmt->fetchColumn();
+
+    $stmt = $pdo->prepare("SELECT * FROM `publication_likes`");
+    $stmt->execute();
+    $likesAll = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    $response = ["likes" => $likes, "publication_id" => $body->publication_id];
+    $response = [
+        "likes" => $likes,
+        "publication_id" => $body->publication_id,
+        "allLikesList" => $likesAll
+    ];
+    
     }
 
 } catch (Exception $e) {

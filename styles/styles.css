@@ -731,10 +731,21 @@ footer {
     gap: 5px;
 }
 
+.container-delete-modify img:hover {
+    cursor: pointer;
+}
+
 /* image de la personne recherchee*/
 .profile-searched img {
     width: 75px;
     height: 75px;
+}
+
+.profile-searched img:hover {
+    cursor: pointer;
+}
+.profile-searched h3:hover {
+    cursor: pointer;
 }
 
 .nomImage-searched {
@@ -744,6 +755,8 @@ footer {
     align-items: center;
 }
 
+
+/* delete une annonce */
 .annonce-delete {
     position: relative;
     right: 0;
@@ -757,4 +770,70 @@ footer {
 
 .container-annonceBtn img {
     float: right;
+}
+
+.container-annonceBtn img:hover {
+    cursor: pointer;
+}
+
+/* style pour la page personnelle de la personne recherchée*/ 
+#personnelInfo img{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover; 
+}
+#nomImg {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    align-items: center;
+    gap: 20px;
+}
+
+#personnelInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: center;
+
+    border-bottom: solid 2px black;
+}
+#divPosts {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    align-items: center; 
+    justify-content: center;
+}
+
+
+
+.personnel-container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+
+.carousel-item img.postImage-personnel {
+    max-width: 400px;
+    max-height: 400px;
+    min-width: 400px;
+    min-height: 400px;
+    
+    object-fit: cover;
+
+}
+
+.personnel-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    
+}
+
+.personnel-container input[type='text'] {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding-left: 10px;
 }
