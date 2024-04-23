@@ -1735,27 +1735,6 @@ document
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-//   // Récupérer le champ de saisie du message
-// let champMessage = document.getElementById("messageInput");
-
-// // Ajouter un écouteur d'événements pour la touche "Entrée"
-// champMessage.addEventListener("keypress", function(e) {
-//     // Vérifier si la touche "Entrée" a été pressée
-//     if (e.key === "Enter") {
-//         // Récupérer le contenu du champ de saisie du message
-//         let contenuMessage = champMessage.value;
-
-//         // Envoyer le message (vous devrez implémenter cette fonction)
-//         envoyerMessage(contenuMessage);
-
-//         // Effacer le champ de saisie après l'envoi du message
-//         champMessage.value = "";
-
-//         // Empêcher le comportement par défaut du bouton "Entrée" qui est de sauter à la ligne
-//         e.preventDefault();
-//     }
-// });
 function sendMessage() {
 console.log(document.getElementById('messageInput').value);
 console.log(userActuel);
