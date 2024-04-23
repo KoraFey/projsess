@@ -1591,18 +1591,72 @@ function toggleSettings() {
   }
 }
 
-function toggleCreation() {
-  const creation = document.getElementById("hide create");
-  if (creation.style.display === "block") {
-    creation.style.display = "none";
-  } else {
-    creation.style.display = "block";
-  }
-  const champs = document.querySelectorAll(".new");
-  champs.forEach((e) => {
-    e.remove();
+function createChatRoom() {
+  document.getElementById("createChatForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const titre = document.getElementById("chatRoomTitle").value;
+      const usernames = Array.from(document.getElementsByName("usernames[]")).map(input => input.value);
+      const owner = document.getElementById("userData").dataset.userId;
+
+      const data = {
+          titre: titre,
+          users: usernames,
+          owner: owner
+      };
+
+      fetch('/api/createChat', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // Parse response as JSON
+      })
+      .then(data => {
+          // Handle successful response
+          console.log(data);
+      })
+      .catch(error => {
+          // Handle errors
+          console.error('There was a problem with the fetch operation:', error);
+      });
   });
 }
+
+
+function ajoutChampsInput() {
+  const usernamesContainer = document.getElementById("usernamesContainer");
+  const inputField = document.createElement("input");
+  inputField.type = "text";
+  inputField.name = "usernames[]"; // Use array notation to send multiple values
+  inputField.placeholder = "Username";
+  usernamesContainer.appendChild(inputField);
+}
+function toggleCreation() {
+  const creation = document.getElementById("hide-create");
+  creation.style.display = creation.style.display === "block" ? "none" : "block";
+}
+
+
+
+// function toggleCreation() {
+//   const creation = document.getElementById("hide create");
+//   if (creation.style.display === "block") {
+//     creation.style.display = "none";
+//   } else {
+//     creation.style.display = "block";
+//   }
+//   const champs = document.querySelectorAll(".new");
+//   champs.forEach((e) => {
+//     e.remove();
+//   });
+// }
 
 function toggleDarkMode() {
  
@@ -1949,7 +2003,12 @@ function sendMessage(msg) {
         anchorChat.setAttribute('href','#');
         anchorChat.textContent = chatroom.name;
         let imageChat = document.createElement('img');
-      
+        console.log(chatroom);
+          if(chatroom.url_icone != null){
+            imageChat.src = chatroom.url_icone;
+          } else {
+            imageChat.src = './images/chat.png';
+          }
         anchorChat.onclick = function(){
           currentChat = chatroom.id;  
           fetch(getMessage + chatroom.id, {
@@ -1970,14 +2029,35 @@ function sendMessage(msg) {
           
             // Iterate through each message in the data array
             data.forEach(message => {
-            // Create a new HTML element to represent the message
-              const messageElement = document.createElement('div');
-              messageElement.textContent = message.message; // Assuming 'content' is the message content field
-              
-          // Append the message element to the chatMessages container
-              chatMessages.appendChild(messageElement);
-              console.log(messageElement);
-            });
+              const divBase = document.createElement('div');
+              const div = document.createElement('div');
+
+              console.log(message.username + userActuel.id);
+
+              if(message.username == userActuel.username){
+              div.classList.add("messagesContainer-moi");
+              divBase.classList.add("divBaseMsg-moi");
+              } else{
+              div.classList.add("messagesContainer");
+              divBase.classList.add("divBaseMsg");
+              }
+          
+              const nom = document.createElement('h6');
+              const messageElement = document.createElement('p');
+          
+              messageElement.textContent = message.message;
+          
+              nom.textContent = message.username;
+          
+              const containerWidth = Math.max(100, message.message.length * 10); 
+          
+              div.style.width = `${containerWidth}px`;
+          
+              div.appendChild(nom);
+              div.appendChild(messageElement);
+              divBase.appendChild(div);
+              chatMessages.appendChild(divBase);
+          });
           })
             .catch((error) =>
             console.error(
@@ -1986,6 +2066,9 @@ function sendMessage(msg) {
             )
           );   
         }
+        listChat.appendChild(imageChat);
+        listChat.appendChild(anchorChat);
+        amisList.appendChild(listChat);
       }
     });
   }

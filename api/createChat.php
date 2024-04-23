@@ -26,15 +26,8 @@ try{
             $response['error'] = "username incorect";
             echo json_encode($response);
             $p=false;
-        }
-      
-    
-    
+        }   
     }
-
-
-
-
 if($p){
     $stmt = $pdo->prepare("INSERT INTO `Chat_Room` (`name`) VALUES (:name)");
     $stmt->bindValue(":name", $bodys->titre);
@@ -58,8 +51,7 @@ if($p){
 
     echo json_encode("good");
 }
- 
-    
+   
 }
 catch(PDOException $e){
     http_response_code(500);

@@ -520,22 +520,24 @@ $userAct = json_encode($userActual);
 
 
 
-                <button onClick="toggleCreation();">creer chat</button>
-                <div class="cree chat" id="hide create">
-                    <form>
-                        <div id="div chat">
-                            <input type="text" id="1">
+            <button onClick="toggleCreation();">creer chat</button>
+                <div class="cree chat" style="display: none;" id="hide-create">
+                    <form id="createChatForm" action="createChat.php" method="post">
+                        <input type="text" id="chatRoomTitle" name="chatRoomTitle" placeholder="Chat Room Title">
+                        <div id="usernamesContainer">
+                            <!-- Dynamically generated input fields for usernames -->
                         </div>
                         <div id="userData" data-user-id="<?= $loggedUserId ?>"></div>
                         <div id="chatRoomData" data-chat-room-id="<?= $chatRoomId ?>"></div>
-                        <button onclick="ajoutChamps();">new user</button>
-                        <button>cree</button>
+                        <button type="button" onclick="ajoutChampsInput();">Add User</button>
+                        <button type="submit" onclick="createChatRoom();">Create Chat Room</button>
                     </form>
                 </div>
 
+
                 <!-- surely ca peiut etre mieu fait-->
                 <script>
-                    const creation = document.getElementById("hide create");
+                    const creation = document.getElementById("hide-create");
                     creation.style.display = "none";
                 </script>
 
