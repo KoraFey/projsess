@@ -57,8 +57,9 @@
             android:text="ndfjernsjnserfnjernfffffffffffffffffffskjjjjjjjjjjjjjjjjjjjjjjnvkjrsnvrnvjsrnvnrjkjevrjvkrvnrnvnrvnvnrdnvdvndnvjdrnvnrjdvnjrnvndv" />
 
         <ListView
+            android:id="@+id/comm"
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/laypos"
@@ -81,12 +82,6 @@
                 android:text="commentaire" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
 
     </LinearLayout>
 

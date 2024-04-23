@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
@@ -38,6 +39,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class MAIN extends AppCompatActivity {
+    private Comments[] comments;
 
     private boolean chatroomDisplay ;
     private boolean marketDisplay;
@@ -73,7 +75,7 @@ public class MAIN extends AppCompatActivity {
         search = findViewById(R.id.searchButton);
         feed = findViewById(R.id.feed);
         post = findViewById(R.id.createPost);
-
+        comments = new Comments[0];
 
 
 
@@ -768,6 +770,61 @@ public class MAIN extends AppCompatActivity {
 public String getToken(){
         return token;
 }
+
+    public Comments[] loadComment(int id){
+        //comments = new Comments[0];
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(API_URL + "/api/getComments/"+id)
+                .header("Authorization", "Bearer " + token)
+                .get()
+                .build();
+       Thread t = new Thread (new Runnable()  {
+            Response response;
+            @Override
+            public void run() {
+                try {
+                    response = okHttpClient.newCall(request).execute();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                if(response.code()!=402) {
+                    ResponseBody responseBody = response.body();
+                    MAIN.this.runOnUiThread(new Runnable()  {
+                        @Override
+                        public void run() {
+                            String json;
+                            try {
+                                json = responseBody.string();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            ObjectMapper mapper = new ObjectMapper();
+                            try {
+                                comments = mapper.readValue(json, Comments[].class);
+
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+        });
+       t.start();
+       try {
+           t.join();
+           return comments;
+       } catch (InterruptedException e) {
+           throw new RuntimeException(e);
+       }
+
+
+    }
 
 
 

@@ -11,14 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -31,9 +36,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class PostAdapter extends ArrayAdapter<Post> {
     private Post[] list;
+
+    private Comments[] comments;
+    private CommentsAdapter commentsAdapter;
     private Context context;
     private int viewRessourceId;
     private MAIN main;
@@ -74,9 +83,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final RecyclerView content = view.findViewById(R.id.rec);
             final TextView caption = view.findViewById(R.id.textView6);
             final Button like = view.findViewById(R.id.button2);
-            final Button      comments = view.findViewById(R.id.comments);
+            final Button      comment = view.findViewById(R.id.comments);
             final LinearLayout  lay = view.findViewById(R.id.laypos);
-            final LinearLayout  l = view.findViewById(R.id.linearLayout);
+            ListView l = view.findViewById(R.id.comm);
 
             manager= new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false);
 
@@ -85,7 +94,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             content.setAdapter(horizonAdapter);
 
             if(post.getType().equals("annonce")){
-                comments.setText("notifier vendeur");
+                comment.setText("notifier vendeur");
 
                 lay.removeView(like);
                 final View memberView = main.getLayoutInflater().inflate(R.layout.prix_post_lay,null,false);
@@ -96,8 +105,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
 
 
+
             }
-            comments.setOnClickListener(new View.OnClickListener() {
+            comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(post.getType().equals("annonce")){
@@ -105,7 +115,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         sendMessage(post.getDescription().toString(),post.getUser_id());
                     }
                     else{
-                        Toast.makeText(context,"dfghj",Toast.LENGTH_LONG ).show();
+
+
+
+                        comments =  main.loadComment(post.getId());
+                        if(comments.length>0) {
+                            commentsAdapter = new CommentsAdapter(context, R.layout.message, comments);
+
+                            l.setAdapter(commentsAdapter);
+                            setListViewHeightBasedOnItems(l);
+                            comments = new Comments[0];
+                        }
+
+
                     }
                 }
             });
@@ -245,6 +267,41 @@ public class PostAdapter extends ArrayAdapter<Post> {
         }).start();
     }
 
+    public static boolean setListViewHeightBasedOnItems(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter != null) {
+
+            int numberOfItems = listAdapter.getCount();
+
+            // Get total height of all items.
+            int totalItemsHeight = 0;
+            for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+                View item = listAdapter.getView(itemPos, null, listView);
+                float px = 500 * (listView.getResources().getDisplayMetrics().density);
+                item.measure(View.MeasureSpec.makeMeasureSpec((int) px, View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                totalItemsHeight += item.getMeasuredHeight();
+            }
+
+            // Get total height of all item dividers.
+            int totalDividersHeight = listView.getDividerHeight() *
+                    (numberOfItems - 1);
+            // Get padding
+            int totalPadding = listView.getPaddingTop() + listView.getPaddingBottom();
+
+            // Set list height.
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalItemsHeight + totalDividersHeight + totalPadding;
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+            //setDynamicHeight(listView);
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
 
 
 }

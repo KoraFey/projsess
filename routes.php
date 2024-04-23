@@ -14,7 +14,7 @@ get('/api/getSettings/$id', '/api/getSettings.php');
 
 get('/api/getPostOf/$name/$type','/api/getPostOf.php');
 get('/api/posts/$type', '/api/getPosts.php');
-
+get('/api/getComments/$id','/api/getComments.php');
 
 
 
