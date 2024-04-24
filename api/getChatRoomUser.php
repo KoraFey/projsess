@@ -15,7 +15,27 @@ if (isset($id) && filter_var($id, FILTER_VALIDATE_INT)) {
     $stmt->bindParam(":id", $id);
     $stmt->execute();
 
+
+
     $chatRooms = $stmt->fetchAll();
+    $i=0;
+    foreach($chatRooms as $chat){
+        if($chat["nb_personnes"]==2){
+            $stmt = $pdo->prepare("SELECT username FROM Chat_Room_User INNER JOIN users ON users.id = Chat_Room_User.user_id WHERE chat_room_id = :id AND user_id <> :id2");
+            $stmt->bindValue(":id", $chat['id']);
+            $stmt->bindValue(":id2", $gUserId);
+            $stmt->execute();
+            $name = $stmt->fetch();
+
+            $chatRooms[$i]['name']=$name['username'];
+
+         
+
+        }
+        $i++;
+       
+    
+    }
 
 
     echo json_encode($chatRooms);

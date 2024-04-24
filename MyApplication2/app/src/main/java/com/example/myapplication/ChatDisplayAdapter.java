@@ -50,8 +50,11 @@ public class ChatDisplayAdapter extends ArrayAdapter<ChatRoomDisplay> {
             titre.setText(display.getName());
 
 
+
         }
         return view;
 
     }
+
+
 }
