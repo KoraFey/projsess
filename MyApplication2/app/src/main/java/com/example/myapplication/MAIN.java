@@ -391,6 +391,7 @@ public class MAIN extends AppCompatActivity {
         Button add = popUp.findViewById(R.id.addUrl);
         Button create = popUp.findViewById(R.id.createNewPost);
         EditText titre = popUp.findViewById(R.id.newDescription);
+        EditText url = popUp.findViewById(R.id.editurl);
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -432,6 +433,7 @@ public class MAIN extends AppCompatActivity {
                     try {
                         obj.put("titre", titre.getText().toString());
                         obj.put("users",array);
+                        obj.put("url", url.getText().toString());
                         obj.put("owner",id);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);

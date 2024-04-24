@@ -23,6 +23,16 @@
             android:src="@drawable/ic_info" />
 
         <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:hint="url"
+            android:inputType="text" />
+
+        <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

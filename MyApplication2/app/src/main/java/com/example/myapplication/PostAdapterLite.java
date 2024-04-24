@@ -92,7 +92,7 @@ public class PostAdapterLite extends ArrayAdapter<Post> {
             final LinearLayout lay = view.findViewById(R.id.laypos);
             final LinearLayout layP = view.findViewById(R.id.linearLayout);
             ListView l = view.findViewById(R.id.comm);
-
+            Picasso.get().load(post.getUrl_pfp()).placeholder(R.drawable.ic_info).into(icone);
 
             Picasso.get()
                     .load(post.getUrl()[0]).placeholder(R.drawable.ic_info).into(content);            //

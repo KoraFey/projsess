@@ -99,6 +99,7 @@ public class Profile extends AppCompatActivity {
         EditText username = popUp.findViewById(R.id.username);
         EditText mpd1 = popUp.findViewById(R.id.mdp1);
         EditText mpd2 = popUp.findViewById(R.id.mdp2);
+        EditText url = popUp.findViewById(R.id.editTextText);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,8 +109,9 @@ public class Profile extends AppCompatActivity {
                 JSONObject obj = new JSONObject();
                 if((mpd1.getText().toString().equals(mpd2.getText().toString()))&&(mpd1.getText().length()!=0)) {
                     try {
-                        obj.put("username", username.getText());
-                        obj.put("password", mpd1.getText());
+                        obj.put("username", username.getText().toString());
+                        obj.put("password", mpd1.getText().toString());
+                        obj.put("url",url.getText().toString());
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -136,6 +138,8 @@ public class Profile extends AppCompatActivity {
                                     if(rep.code()==200){
                                         Toast toast = Toast.makeText(Profile.this,"updated",Toast.LENGTH_SHORT);
                                         toast.show();
+                                        loadPosts();
+
                                     }
                                     else{
                                         Toast toast = Toast.makeText(Profile.this,"error during update",Toast.LENGTH_SHORT);
@@ -150,6 +154,9 @@ public class Profile extends AppCompatActivity {
 
                         }
                     }).start();
+
+
+                    popupWindow.dismiss();
                 }
                 else{
                     Toast toast = Toast.makeText(Profile.this,"mot de passe invalid",Toast.LENGTH_SHORT);

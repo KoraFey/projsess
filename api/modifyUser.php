@@ -23,8 +23,8 @@ if ($stmt->fetch()) {
     http_response_code(400);
     exit;
 } else {
-    $stmt = $pdo->prepare('UPDATE users SET username = ? , password = ? WHERE id =?');
-    $stmt->execute([$body->username,$passwordHash,$id]);
+    $stmt = $pdo->prepare('UPDATE users SET username = ? , password = ? ,url_pfp = ? WHERE id =?');
+    $stmt->execute([$body->username,$passwordHash,$body->url,$id]);
     $response="done";
 }
 

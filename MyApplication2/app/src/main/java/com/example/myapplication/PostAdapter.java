@@ -91,6 +91,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             final Button      comment = view.findViewById(R.id.comments);
             final LinearLayout  lay = view.findViewById(R.id.laypos);
             ListView l = view.findViewById(R.id.comm);
+            Picasso.get().load(post.getUrl_pfp()).placeholder(R.drawable.ic_info).into(icone);
 
             manager= new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false);
 

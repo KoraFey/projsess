@@ -15,13 +15,22 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iconeUser"
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                app:cardPreventCornerOverlap="false"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_info" />
+                app:cardCornerRadius="30dp"
+                >
+
+                <ImageView
+                    android:id="@+id/iconeUser"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_info" />
+            </androidx.cardview.widget.CardView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
