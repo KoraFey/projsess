@@ -38,6 +38,30 @@ $body = json_decode(file_get_contents("php://input"));
                 $stmt->execute([$tempId]);
             }
 
+            /* */
+            $stmt = $pdo->prepare('SELECT id FROM users WHERE id != ?');
+            $stmt->execute([$tempId]);
+            $userIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($userIds as $userId) {
+                $stmt = $pdo->prepare('SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ? AND chat_room_id IN (SELECT chat_room_id FROM Chat_Room_User WHERE user_id = ?)');
+                $stmt->execute([$tempId, $userId]);
+                $existChatRoomId = $stmt->fetchColumn();
+
+                if (!$existChatRoomId) {
+                    $stmt = $pdo->prepare('INSERT INTO Chat_Room (owner_id, name) VALUES (?, ?)');
+                    $stmt->execute([null, 'Chat Room']);
+                    $chatRoomId = $pdo->lastInsertId();
+
+                    $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+                    $stmt->execute([$chatRoomId, $tempId]);
+
+                    $stmt = $pdo->prepare('INSERT INTO Chat_Room_User (chat_room_id, user_id) VALUES (?, ?)');
+                    $stmt->execute([$chatRoomId, $userId]);
+                }
+            }
+            /* */
+
             $insertion = ["id"=>$tempId, "username"=>$body->username, "password"=>$body->password];
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode($insertion);
