@@ -1,6 +1,6 @@
 <?php
 $webAccess = true;
-require_once __DIR__.'/config.php'; // Assurez-vous que ce fichier contient la connexion à la base de données avec l'objet PDO $pdo.
+require_once __DIR__.'/config.php'; 
 
 
 

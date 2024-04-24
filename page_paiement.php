@@ -175,13 +175,13 @@ if (!$isAjaxRequest) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function retourIndex() {
-            window.location.href = "index.php";  // Modifiez si nécessaire pour rediriger vers la bonne page
+            window.location.href = "index.php";  
         }
         document.getElementById("formulaire-paiement").addEventListener("submit", function(event) {
             event.preventDefault();
             var formData = new FormData(this);
 
-            fetch('page_paiement.php', { // Ensure this is the correct URL
+            fetch('page_paiement.php', { 
                 method: 'POST',
                 body: formData
             })
@@ -190,9 +190,8 @@ if (!$isAjaxRequest) {
                 const responseMessage = document.getElementById('responseMessage');
                 responseMessage.style.display = 'block';
                 responseMessage.innerHTML = text;
-                // Update the credit display; ensure your PHP script outputs the new credit balance
-                document.getElementById("availableCredits").textContent = 'New credit value here'; // Adjust based on actual output
-                this.reset(); // Optional: Reset the form fields after submission
+                document.getElementById("availableCredits").textContent = 'New credit value here'; 
+                this.reset(); 
             })
             .catch(error => {
                 console.error('Error submitting form:', error);

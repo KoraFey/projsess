@@ -66,13 +66,9 @@ function afficherPublications(publications) {
             const btnFonctions = document.createElement('div');
             btnFonctions.classList.add('container-delete-modify');
 
-            //const btnModifier = document.createElement('img');
             const btnSupprimer = document.createElement('img');
 
-            //btnModifier.src = '../images/pen.png';
-            //btnModifier.alt = 'modify';
-            //btnModifier.classList.add('image-modifier'); 
-
+    
             btnSupprimer.src = '../images/remove.png';
             btnSupprimer.alt = 'delete';
             btnSupprimer.classList.add('image-delete'); 
@@ -304,9 +300,7 @@ function afficherPublications(publications) {
 
           const user = allUsersList.find(user => user.id === publication.user_id);
           h4.textContent = user.username; 
-          /*
-          const userPost = user.username; 
-          */
+
           p.textContent = publication.description + ' | ' + publication.date_publication;
 
           const price = document.createElement('h3');
@@ -318,13 +312,10 @@ function afficherPublications(publications) {
 
 
           if(publication.user_id == userActuel.id){
-            //const btnModifier = document.createElement('img');
+        
             const btnSupprimer = document.createElement('img');
 
-            //btnModifier.src = '../images/pen.png';
-            //btnModifier.alt = 'modify';
-            //btnModifier.classList.add('image-modifier'); 
-
+        
             btnSupprimer.src = '../images/remove.png';
             btnSupprimer.alt = 'delete';
             btnSupprimer.classList.add('annonce-delete'); 
@@ -360,7 +351,6 @@ function afficherPublications(publications) {
           });
           
 
-            //btnFonctions.appendChild(btnModifier);
             titreEtBtn.appendChild(btnSupprimer);
           }
 
@@ -875,22 +865,7 @@ function genererFormulaireAjout(modifier) {
   });
 
 
-  /*
-   if (modifier) {
-      switch (ids[i]) {
-        case 'newUrl':
-          input.value = modifier.urlImage;
-          break;
-        case 'newType':
-          input.value = modifier.type;
-          break;
-        case 'newDesc':
-          input.value = modifier.desc;
-          break;
-      }
-    }
-
-  */
+ 
 
   let divButton = document.createElement('div');
   divButton.id = 'divButtons';
@@ -1183,22 +1158,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
   getChatRoom();
   
-/*
-//lien pour les liens de convo vers --> profile
-const amisListe = document.querySelectorAll('.amis li');
 
-const tableauAmis = [];
-
-amisListe.forEach(li => {
-    const imgSrc = li.querySelector('img').src;
-    const nom = li.querySelector('a').textContent;
-
-    tableauAmis.push({ imgSrc, nom });
-});
-
-console.log("ALLALALAL");
-
-*/
 
 const btnSendMsg = document.getElementById('sendMessageButton');
 btnSendMsg.addEventListener('click', function(event) {
@@ -1637,19 +1597,6 @@ function toggleCreation() {
 
 
 
-// function toggleCreation() {
-//   const creation = document.getElementById("hide create");
-//   if (creation.style.display === "block") {
-//     creation.style.display = "none";
-//   } else {
-//     creation.style.display = "block";
-//   }
-//   const champs = document.querySelectorAll(".new");
-//   champs.forEach((e) => {
-//     e.remove();
-//   });
-// }
-
 function toggleDarkMode() {
  
   let body = document.body;
@@ -1786,7 +1733,6 @@ document
     console.log("Lien Changer Mot de Passe cliqué");
   });
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function sendMessage(msg) {
   

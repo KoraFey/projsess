@@ -14,7 +14,7 @@ $loggedUserId = $_SESSION["usager"];
 $stmt = $pdo->prepare("SELECT credits FROM PMT WHERE user_id = ?");
                     $stmt->execute([$loggedUserId]);
                     $result = $stmt->fetch();
-                    $availableCredits = $result ? $result['credits'] : 0; // Update available credits
+                    $availableCredits = $result ? $result['credits'] : 0; 
 
 $stmt = $pdo->prepare('SELECT * FROM users WHERE id != ?');
 $stmt->execute([$loggedUserId]);
@@ -290,18 +290,7 @@ $userAct = json_encode($userActual);
                 <p>Bonjour, vous avez atteint la fin de votre fil d'actualité.</p>
                 <img src="./images/download.jpeg" alt="post">
             </article>
-            <!--
-            <article>
-                <h3>Charlie Vu</h3>
-                <p>mon deuxieme post</p>
-                <img src="./images/download.jpeg" alt="post">
-            </article>
-            <article>
-                <h3>Charlie Vu</h3>
-                <p>mon troisieme post</p>
-                <img src="./images/download.jpeg" alt="post">
-            </article>
-                       -->
+           
         </div>
 
         <div id="conteneurProfile">
@@ -318,18 +307,7 @@ $userAct = json_encode($userActual);
                 <p>Machine à laver</p>
                 <img src="./images/imageMarket/machine.png" alt="machine">
             </article>
-            <!--
-            <article>
-                <h3>Charlie Vu</h3>
-                <p>divant</p>
-                <img src="./images/imageMarket/divant.jpeg" alt="machine">
-            </article>
-            <article>
-                <h3>Charlie Vu</h3>
-                <p>ps5</p>
-                <img src="./images/imageMarket/ps5.jpeg" alt="machine">
-            </article>
-            -->
+           
         </div>
 
         <div id="conteneurGroup">

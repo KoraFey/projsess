@@ -11,11 +11,6 @@ try{
     echo json_encode($response);
 }
 
-//faut checker cs la
-// if(!isset($_SERVER["CONTENT_TYPE"]) || $_SERVER["CONTENT_TYPE"]!='application/json'){
-//     http_response_code(400);
-//     exit;
-// }
 
 $body = json_decode(file_get_contents("php://input"));
 

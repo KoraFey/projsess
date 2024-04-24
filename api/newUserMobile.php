@@ -1,19 +1,6 @@
 <?php
 require_once __DIR__."/../config.php";
 
-// if(!isset($_SERVER["CONTENT_TYPE"]) || $_SERVER["CONTENT_TYPE"]!='application/json'){
-//     http_response_code(400);
-//     exit;
-// }
-
-// try{
-//     $gUserId = authentifier();
-// } catch(Exception $e){
-//     $response = [];
-//     http_response_code(401);
-//     $response['error'] = "Non autorisé";
-//     echo json_encode($response);
-// }
 
 
 //Obtenir le corps de la requête
