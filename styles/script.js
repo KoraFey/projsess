@@ -1,7 +1,6 @@
 let conteneurFeed = document.getElementById("conteneurFeed");
 let conteneurProfile = document.getElementById("conteneurProfile");
 let conteneurMarket = document.getElementById("conteneurMarket");
-let conteneurGroup = document.getElementById("conteneurGroup");
 let conteneurFood = document.getElementById("conteneurFood");
 let profileInfo = document.getElementById("profileInfo");
 let lienProfile;
@@ -24,7 +23,6 @@ let conteneurPrincipal = [
   conteneurFeed,
   conteneurProfile,
   conteneurMarket,
-  conteneurGroup,
   conteneurFood,
   profileInfo
 ];
