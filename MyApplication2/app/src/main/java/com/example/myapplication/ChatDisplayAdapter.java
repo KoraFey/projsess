@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,7 +46,7 @@ public class ChatDisplayAdapter extends ArrayAdapter<ChatRoomDisplay> {
         if(display != null){
             TextView titre = view.findViewById(R.id.displaytitre);
             ImageView icone = view.findViewById(R.id.imageChatRoom);
-
+            Picasso.get().load(display.getUrl_icone()).placeholder(R.drawable.ic_info).into(icone);
             titre.setText(display.getName());
 
 

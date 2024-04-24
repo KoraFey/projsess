@@ -30,6 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -60,6 +63,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
         this.viewRessourceId=resource;
         this.main=main;
         JSON = MediaType.parse("application/json; charset=utf-8");
+        Collections.reverse(Arrays.asList(list));
+
 
     }
 
@@ -95,24 +100,60 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             if(post.getType().equals("annonce")){
                 comment.setText("notifier vendeur");
+                if(like !=null) {
+                    lay.removeView(like);
 
-                lay.removeView(like);
-                final View memberView = main.getLayoutInflater().inflate(R.layout.prix_post_lay,null,false);
-                TextView prix = (TextView) memberView.findViewById(R.id.textView3);
-                prix.setText(String.valueOf(post.getPrix())+"$");
-                lay.addView(memberView,0);
+                    final View memberView = main.getLayoutInflater().inflate(R.layout.prix_post_lay, null, false);
+                    TextView prix = (TextView) memberView.findViewById(R.id.textView3);
+                    prix.setText(String.valueOf(post.getPrix()) + "$");
+                    lay.addView(memberView, 0);
+                }
 
 
 
 
 
             }
+            else{
+                if(post.getLike()==1){
+                    wasChecked=true;
+                    like.setBackgroundColor(context.getColor(R.color.green));
+                }
+                else{
+                    like.setBackgroundColor(context.getColor(R.color.grey));
+                    wasChecked=false;
+                }
+
+                like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!(wasChecked)){
+
+                            liked(true,post.getId());
+                            wasChecked=true;
+                            like.setBackgroundColor(context.getColor(R.color.green));
+
+                        }
+                        else{
+                            liked(false,post.getId());
+                            wasChecked=false;
+                            like.setBackgroundColor(context.getColor(R.color.grey));
+                        }
+
+                    }
+                });
+            }
             comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(post.getType().equals("annonce")){
+                        if(!(String.valueOf(post.getUser_id()).equals(main.getId()) )) {
+                            sendMessage(post.getDescription().toString(),post.getUser_id());
+                        }
+                        else{
+                            Toast.makeText(context,"vous etes le vendeur",Toast.LENGTH_SHORT).show();
+                        }
 
-                        sendMessage(post.getDescription().toString(),post.getUser_id());
                     }
                     else{
 
@@ -136,33 +177,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
             time.setText(post.getDate_publication());
             caption.setText(post.getDescription());
 
-            if(post.getLike()==1){
-                wasChecked=true;
-                like.setBackgroundColor(context.getColor(R.color.green));
-            }
-            else{
-                like.setBackgroundColor(context.getColor(R.color.grey));
-                wasChecked=false;
-            }
+
             //------------------------------
-            like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!(wasChecked)){
 
-                        liked(true,post.getId());
-                        wasChecked=true;
-                        like.setBackgroundColor(context.getColor(R.color.green));
-
-                    }
-                    else{
-                        liked(false,post.getId());
-                        wasChecked=false;
-                        like.setBackgroundColor(context.getColor(R.color.grey));
-                    }
-
-                }
-            });
 
 
 

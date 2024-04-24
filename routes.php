@@ -11,7 +11,7 @@ any('/newUser.php', 'newUser.php');
 any('/page_paiement.php','page_paiement.php');
 
 get('/api/getSettings/$id', '/api/getSettings.php');
-
+get('/api/getMyPost','/api/getMyPost.php');
 get('/api/getPostOf/$name/$type','/api/getPostOf.php');
 get('/api/posts/$type', '/api/getPosts.php');
 get('/api/getComments/$id','/api/getComments.php');
@@ -43,7 +43,7 @@ get('/api/chatrooms/$id', '/api/getChatRoomUser.php');
 get('/api/messages/$id', '/api/getMessages.php');
 
 put('/api/posts/$id', '/api/post/putPost.php');
-delete('/api/posts/$id', '/api/post/deletePost.php');
+delete('/api/posts/$id', '/api/deletePost.php');
 
 
 

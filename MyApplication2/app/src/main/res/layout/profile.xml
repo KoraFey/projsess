@@ -24,24 +24,20 @@
                 android:id="@+id/profilereturn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginRight="275dp"
                 android:layout_weight="1"
                 android:background="@drawable/baseline_arrow_back_ios_new_24"
 
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <Button
-                android:id="@+id/newpostbutton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nouveau post" />
-
-            <Button
                 android:id="@+id/toggleedit"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=" edit profile" />
+                android:background="@drawable/baseline_co_present_24"
+                android:textSize="12sp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -56,9 +52,10 @@
 
 
         <ListView
-            android:id="@+id/feed"
+            android:id="@+id/Myfeed"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

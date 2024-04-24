@@ -60,6 +60,10 @@ $body = json_decode(file_get_contents("php://input"));
                     $stmt->execute([$chatRoomId, $userId]);
                 }
             }
+            
+            $stmt = $pdo->prepare('INSERT INTO PMT (user_id, credits) VALUES (?, ?)');
+            $stmt->execute([$tempId, 0]);
+            $chatRoomId = $pdo->lastInsertId();
             /* */
 
             $insertion = ["id"=>$tempId, "username"=>$body->username, "password"=>$body->password];

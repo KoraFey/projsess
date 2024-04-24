@@ -13,10 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,9 @@ public class Profile extends AppCompatActivity {
     private String id;
 
     private String token;
+    private ListView scrollView;
+
+    private PostAdapterLite adapterLite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class Profile extends AppCompatActivity {
         layout = findViewById(R.id.profile);
         submit = findViewById(R.id.toggleedit);
         cancel = findViewById(R.id.profilereturn);
+        scrollView = findViewById(R.id.Myfeed);
 
 
 
@@ -71,6 +76,7 @@ public class Profile extends AppCompatActivity {
                 createPopUpEdit();
             }
         });
+        loadPosts();
     }
 
 
@@ -85,7 +91,7 @@ public class Profile extends AppCompatActivity {
         layout.post(new Runnable() {
             @Override
             public void run() {
-                popupWindow.showAtLocation(layout, Gravity.TOP,0,0);
+                popupWindow.showAtLocation(layout, Gravity.CENTER,0,0);
             }
         });
 
@@ -155,5 +161,80 @@ public class Profile extends AppCompatActivity {
 
 
     }
+
+
+    public void loadPosts(){
+        OkHttpClient client;
+        client = new OkHttpClient();
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        Request requete;
+
+            requete = new Request.Builder()
+                    .url(API_URL + "/api/getMyPost")
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonId;
+                int code;
+                Response response = null;
+                ResponseBody responseBody;
+                try {
+                    response = client.newCall(requete).execute();
+                    code = response.code();
+                    responseBody = response.body();
+                    jsonId = responseBody.string();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+
+                Profile.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Post[] list;
+
+                        Post post = new Post();
+                        ObjectMapper mapper = new ObjectMapper();
+
+                        if(code == 404){
+                            Toast.makeText(Profile.this,"aucun post",Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            try {
+
+
+
+                                list = mapper.readValue(jsonId, Post[].class);
+
+
+                                PostAdapterLite adaptater = new PostAdapterLite(Profile.this, R.layout.layout_lite, list, Profile.this);
+                                scrollView.setAdapter(adaptater);
+
+
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+
+                    }
+                });
+
+
+
+            }
+        }).start();
+    }
+
+    public String getToken(){
+        return token;
+    }
+
 
 }

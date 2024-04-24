@@ -73,7 +73,7 @@ public class MAIN extends AppCompatActivity {
         postDisplay=false;
         marketDisplay=false;
         search = findViewById(R.id.searchButton);
-        feed = findViewById(R.id.feed);
+        feed = findViewById(R.id.Myfeed);
         post = findViewById(R.id.createPost);
         comments = new Comments[0];
 
@@ -212,6 +212,8 @@ public class MAIN extends AppCompatActivity {
             intent.putExtra("id",id);
             intent.putExtra("username",username);
 
+
+
             startActivity(intent);
         }
     });
@@ -241,18 +243,22 @@ public class MAIN extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String jsonId;
                 int code;
                 Response response = null;
+                ResponseBody responseBody;
                 try {
                     response = client.newCall(requete).execute();
                     code = response.code();
+                    responseBody = response.body();
+                    jsonId = responseBody.string();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
 
 
-                    ResponseBody responseBody = response.body();
+
 
                     MAIN.this.runOnUiThread(new Runnable() {
                         @Override
@@ -261,14 +267,14 @@ public class MAIN extends AppCompatActivity {
 
                             Post post = new Post();
                             ObjectMapper mapper = new ObjectMapper();
-                            String jsonId;
+
                             if(code == 404){
-                                Toast.makeText(MAIN.this,"maucais username",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MAIN.this,"mauvais username",Toast.LENGTH_LONG).show();
                             }
                             else {
                                 try {
 
-                                    jsonId = responseBody.string();
+
 
                                     list = mapper.readValue(jsonId, Post[].class);
 
@@ -378,7 +384,7 @@ public class MAIN extends AppCompatActivity {
         layout.post(new Runnable() {
             @Override
             public void run() {
-                popupWindow.showAtLocation(layout, Gravity.BOTTOM,0,0);
+                popupWindow.showAtLocation(layout, Gravity.CENTER,0,0);
             }
         });
 
@@ -636,7 +642,7 @@ public class MAIN extends AppCompatActivity {
         layout.post(new Runnable() {
             @Override
             public void run() {
-                popupWindow.showAtLocation(layout, Gravity.BOTTOM,200,200);
+                popupWindow.showAtLocation(layout, Gravity.CENTER,0,0);
             }
         });
 
@@ -824,6 +830,10 @@ public String getToken(){
        }
 
 
+    }
+
+    public String getId(){
+        return id;
     }
 
 
