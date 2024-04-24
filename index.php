@@ -268,8 +268,6 @@ $userAct = json_encode($userActual);
                     onclick="displayConteneur('conteneurProfile')">Profile</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurMarketLink"
                     onclick="displayConteneur('conteneurMarket')">Marketplace</a></li>
-            <li><a href="#" class="unhighlighted" id="conteneurGroupLink"
-                    onclick="displayConteneur('conteneurGroup')">Group</a></li>
             <li><a href="#" class="unhighlighted" id="conteneurFoodLink"
                     onclick="displayConteneur('conteneurFood')">Food</a></li>
             <li><a href="#" class="unhighlighted" id="profileInfoLink"
