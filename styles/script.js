@@ -1045,16 +1045,13 @@ document.addEventListener("DOMContentLoaded", function () {
           let boutons = document.createElement('div')
           boutons.classList.add('profile-boutons')
 
-          let message = document.createElement('button')
           let block = document.createElement('button')
 
           block.addEventListener
-          message.type = 'button';
           block.type = 'button';
 
           if(user.id != userActuel.id) {
-          message.textContent = 'Messager';
-          message.id = "btnMsg-"+user.username;
+
           block.textContent = 'Bloquer';
 
           if(blockList != null){
@@ -1106,7 +1103,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
           });
 
-          boutons.appendChild(message);
           boutons.appendChild(block);
         }
 
@@ -1262,14 +1258,11 @@ function afficherProfile(user) {
 
   if(user.id != userActuel.id) {
 
-  let message = document.createElement('button')
   let block = document.createElement('button')
 
   block.addEventListener
-  message.type = 'button';
   block.type = 'button';
 
-  message.textContent = 'Messager';
   block.textContent = 'Bloquer';
 
   if (blockList != null) {
@@ -1320,7 +1313,6 @@ function afficherProfile(user) {
 
   });
 
-  boutons.appendChild(message);
   boutons.appendChild(block);
 }
   let publicationsPersonnel = [];
@@ -1619,13 +1611,11 @@ function createChatRoom() {
           if (!response.ok) {
               throw new Error('Network response was not ok');
           }
-          return response.json(); // Parse response as JSON
+          return response.json(); 
       })
       .then(data => {
-          // Handle successful response
       })
       .catch(error => {
-          // Handle errors
           console.error('There was a problem with the fetch operation:', error);
       });
   });
@@ -1636,7 +1626,7 @@ function ajoutChampsInput() {
   const usernamesContainer = document.getElementById("usernamesContainer");
   const inputField = document.createElement("input");
   inputField.type = "text";
-  inputField.name = "usernames[]"; // Use array notation to send multiple values
+  inputField.name = "usernames[]";
   inputField.placeholder = "Username";
   usernamesContainer.appendChild(inputField);
 }
@@ -1979,7 +1969,6 @@ function sendMessage(msg) {
       
             chatMessages.innerHTML = '';
           
-            // Iterate through each message in the data array
             data.forEach(message => {
               const divBase = document.createElement('div');
               const div = document.createElement('div');
@@ -2095,8 +2084,8 @@ function sendMessage(msg) {
 
       
 
-        var panierItems = []; // List of selected items
-        var total = 0; // Total of the cart
+        var panierItems = []; 
+        var total = 0; 
 
 
         function toggleMenu() {
@@ -2118,15 +2107,15 @@ function sendMessage(msg) {
 
         function removeFromCart(index) {
             if (index >= 0 && index < panierItems.length) {
-                total -= panierItems[index].prix; // Decrement total
-                panierItems.splice(index, 1); // Remove the item from the array
+                total -= panierItems[index].prix; 
+                panierItems.splice(index, 1); 
                 afficherPanier();
             }
         }
 
         function afficherPanier() {
             var panierItemsList = document.getElementById("panier-items");
-            panierItemsList.innerHTML = ""; // Clear existing entries in the cart
+            panierItemsList.innerHTML = ""; 
             panierItems.forEach((item, index) => {
                 var li = document.createElement("li");
                 li.textContent = item.nom + " - $" + item.prix.toFixed(2);
@@ -2134,7 +2123,7 @@ function sendMessage(msg) {
                 var removeButton = document.createElement("button");
                 removeButton.textContent = "Remove Item";
                 removeButton.onclick = function() { removeFromCart(index); };
-                removeButton.style.marginLeft = "10px"; // Style the button
+                removeButton.style.marginLeft = "10px"; 
                 removeButton.id = 'remove'
                 
                 li.appendChild(removeButton);
