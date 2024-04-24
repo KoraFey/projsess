@@ -1,14 +1,14 @@
 <?php
 require_once 'config.php';
 
-// Function to fetch user credits
 function getUserCredits($userId, $pdo) {
     $stmt = $pdo->prepare("SELECT credits FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     return $stmt->fetchColumn() ?? 0;
 }
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
-    $userId = $_SESSION['user_id']; // Assumed logged in user ID
+    $userId = $_SESSION['user_id']; 
 
     if ($_POST['action'] == 'fetchCredits') {
         echo json_encode(['credits' => getUserCredits($userId, $pdo)]);
@@ -17,10 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         $credits = getUserCredits($userId, $pdo);
 
         if ($total <= $credits) {
-            // Proceed with deduction
             $newCredits = $credits - $total;
-            $updateStmt = $pdo->prepare("UPDATE users SET credits = ? WHERE id = ?");
-            $updateStmt->execute([$newCredits, $userId]);
+            $updateStmt = $pdo->prepare("UPDATE PMT SET `credits` = :credit WHERE `user_id` = :id");
+            $stmt->bindParam(":credit", $newCredits);
+            $stmt->bindParam(":id", $userId);
+            $updateStmt->execute();
             echo json_encode(['success' => true, 'newCredits' => $newCredits]);
         } else {
             echo json_encode(['success' => false, 'error' => 'Insufficient credits']);
@@ -29,29 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
     exit;
 }
 
-// Start session and handle authentication
 if ($gUserId === 0) {
-    header('Location: login.php'); // Redirect to login if not authenticated
+    header('Location: login.php'); 
     exit;
 }
 
 $isAjaxRequest = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-// Handle form submission to update credits
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $creditAjoute = (int)($_POST['credit-ajoute'] ?? 0); // Safely fetch and cast the credit to add
+    $creditAjoute = (int)($_POST['credit-ajoute'] ?? 0); 
 
-    if ($creditAjoute > 0) {  // Accepts any positive amount
+    if ($creditAjoute > 0) {  
         $stmt = $pdo->prepare("UPDATE PMT SET credits = credits + ? WHERE user_id = ?");
         if ($stmt->execute([$creditAjoute, $gUserId])) {
             if ($stmt->rowCount() > 0) {
                 $message = 'Crédits ajoutés avec succès!';
-                // Re-fetch credits to update display after adding credits, only if not an AJAX request
                 if (!$isAjaxRequest) {
                     $stmt = $pdo->prepare("SELECT credits FROM PMT WHERE user_id = ?");
                     $stmt->execute([$gUserId]);
                     $result = $stmt->fetch();
-                    $availableCredits = $result ? $result['credits'] : 0; // Update available credits
+                    $availableCredits = $result ? $result['credits'] : 0; 
                 }
                 echo $message;
             } else {
@@ -61,23 +59,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo 'Erreur lors de l\'ajout de crédits.';
         }
-        exit; // Stop further execution for AJAX requests
+        exit;
     } else {
         echo 'Montant non pris en charge pour cette opération.';
-        exit; // Stop further execution for AJAX requests
+        exit; 
     }
 }
 
-// Normal page load logic, only executed if not a POST request or for non-AJAX requests
 if (!$isAjaxRequest) {
-    // Initialize available credits for normal page load
     $stmt = $pdo->prepare("SELECT credits FROM PMT WHERE user_id = ?");
     if ($stmt->execute([$gUserId])) {
         $result = $stmt->fetch();
-        $availableCredits = $result ? $result['credits'] : 0; // Set available credits
+        $availableCredits = $result ? $result['credits'] : 0; 
     }
-
-    // Here you could include the HTML part or further page-specific PHP logic
 }
 ?>
 

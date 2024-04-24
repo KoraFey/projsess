@@ -15,6 +15,7 @@ const postApiLikes = "/api/postLike/";
 const deletePost = "/api/deletePost/";
 const send_message = "/api/postMessages/";
 const postApiBlocker = "/api/blockUser/";
+const paiementApi = "/api/paiementRecu/";
 let chatroomList;
 let listeArticle = [];
 let postType = 'actualite';
@@ -1092,7 +1093,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             allCommentsList = data.allCommentsList;
             blockList = data.blockList;
-            console.log(listePosts);
             conteneurFeed.innerHTML = "";
             afficherPublications(listePosts);
 
@@ -1625,7 +1625,6 @@ function createChatRoom() {
       })
       .then(data => {
           // Handle successful response
-          console.log(data);
       })
       .catch(error => {
           // Handle errors
@@ -1844,36 +1843,14 @@ function sendMessage(msg) {
     )
   );
   }
-  // function getIdOtherPerson(){
-  //   fetch('/api/getIdOtherPerson/' + userActuel.id +'/'+ chatroom.id, {
-  //   method: "GET" })
-  //   .then((response) => {
-  //     if (!response.ok) {
-  //       throw new Error("Erreur HTTP: " + response.statusText);
-  //     }
-  //     return response.json();
-  //   })
-  //   .then((data) => {
-  //     if (data.error)
-  //       throw new Error("Erreur reçue du serveur: " + data.error);
-  //     idUser = data;
-  //   })
-  //   .catch((error) =>
-  //   console.error(
-  //     "Il y'a eu une erreur lors de l'obtention des données:" +
-  //       error.message
-  //   ));
-  // }      
-
 
 
   function linkChat(){
     setInterval(function() {
-      console.log("aasdf");
         if(chatroomID != null) {
           afficherMessage(chatroomID);
         }
-    }, 1000);
+    }, 100);
     chatroomList.forEach(chatroom =>{
       
       if (chatroom.nb_personnes == 2) { 
@@ -1965,13 +1942,28 @@ function sendMessage(msg) {
         anchorChat.setAttribute('href','#');
         anchorChat.textContent = chatroom.name;
         let imageChat = document.createElement('img');
-        console.log(chatroom);
+
+
           if(chatroom.url_icone != null){
             imageChat.src = chatroom.url_icone;
           } else {
             imageChat.src = './images/chat.png';
           }
         anchorChat.onclick = function(){
+          const username = document.getElementById('nomProfile');
+          username.textContent = chatroom.name;
+
+          const img = document.getElementById('profile-img');
+                  
+          if(chatroom.url_icone != null){
+            img.src = chatroom.url_icone;
+          } else {
+            img.src = "../images/chat.png";
+          }
+          img.alt = 'img user' 
+                  
+          console.log("mesgg: "+chatroom.id);
+          chatroomID = chatroom.id;
           currentChat = chatroom.id;  
           fetch(getMessage + chatroom.id, {
             method:"GET"})
@@ -1994,8 +1986,7 @@ function sendMessage(msg) {
               const divBase = document.createElement('div');
               const div = document.createElement('div');
 
-              console.log(message.username + userActuel.id);
-
+                
               if(message.username == userActuel.username){
               div.classList.add("messagesContainer-moi");
               divBase.classList.add("divBaseMsg-moi");
@@ -2012,6 +2003,8 @@ function sendMessage(msg) {
               nom.textContent = message.username;
           
               const containerWidth = Math.max(100, message.message.length * 10); 
+              messageElement.style.overflowWrap = 'break-word';
+
           
               div.style.width = `${containerWidth}px`;
           
@@ -2073,29 +2066,36 @@ function sendMessage(msg) {
 
 
         function processPayment() {
-            const total = parseFloat(document.getElementById('total').textContent.replace(/[^0-9.-]+/g,""));
-            
-            fetch('./page_paiement.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `action=processPayment&total=${total}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Payment successful');
-                    document.getElementById('creditsDisplay').textContent = `Credits: ${data.newCredits}`;
-                    // Reset cart or further actions
-                } else {
-                    alert('Payment failed: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
-        }
+
+          fetch(paiementApi, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({total: total}),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+          if(data.success){
+            document.getElementById('btnModal').click();
+            alert('La commande a été placée avec succès! Il vous reste '+ data.newCredits + " de credits.");
+            document.getElementById('creditsDisplay').textContent = `Credits: $${data.newCredits}`;
+          } else if(!data.success){
+            alert('Credits insuffisants!');
+          }
+
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+        });
+      }
+
+      
 
         var panierItems = []; // List of selected items
         var total = 0; // Total of the cart
@@ -2109,12 +2109,12 @@ function sendMessage(msg) {
         function ajouterAuPanier(element) {
             var nom = element.getAttribute('data-name');
             var prix = parseFloat(element.getAttribute('data-price'));
-            if (nom && !isNaN(prix)) { // Ensure name is not undefined and price is a number
+            if (nom && !isNaN(prix)) { 
                 panierItems.push({ nom: nom, prix: prix });
                 total += prix;
+                console.log(total)
+
                 afficherPanier();
-            } else {
-                console.error("Incorrect item data", element);
             }
         }
 
@@ -2151,14 +2151,7 @@ function sendMessage(msg) {
             afficherPanier();
         }
 
-        window.onload = function() {
-            var menuItems = document.querySelectorAll("#menu-items li");
-            menuItems.forEach(item => {
-                item.addEventListener("click", function() {
-                    ajouterAuPanier(item);
-                });
-            });
-        };
+
 
 
 
@@ -2181,12 +2174,10 @@ function sendMessage(msg) {
     
           chatMessages.innerHTML = '';
         
-          console.log(data);
           data.forEach(message => {
             const divBase = document.createElement('div');
             const div = document.createElement('div');
 
-            console.log(message.username + userActuel.id);
 
             if(message.username == userActuel.username){
             div.classList.add("messagesContainer-moi");

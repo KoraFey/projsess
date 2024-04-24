@@ -394,15 +394,11 @@ $userAct = json_encode($userActual);
                                     <li>
                                         <strong>Pizzas:</strong>
                                         <ul>
-                                            <li data-name="Pizza Margherita" data-price="10">Pizza Margherita - $22.45
+                                            <li data-name="Pizza Margherita" data-price="10">Pizza Margherita - $10.00
                                             </li>
-                                            <li data-name="Pizza Pepperoni" data-price="12">Pizza Pepperoni - $27.99
+                                            <li data-name="Pizza Pepperoni" data-price="12">Pizza Pepperoni - $12.00
                                             </li>
-                                            <li data-name="Pizza Vegetariana" data-price="11">Pizza Vegetariana - $25.79
-                                            </li>
-                                            <li data-name="Pizza Margherita" data-price="10">Pizza Frommage - $20.99
-                                            </li>
-                                            <li data-name="Pizza Margherita" data-price="10">Pizza Mixte - $30.22</li>
+                                            
                                             <!-- Ajoutez d'autres tailles de pizza si nécessaire -->
                                         </ul>
                                     </li>
@@ -443,7 +439,7 @@ $userAct = json_encode($userActual);
                                         <div class="modal fade" id="panierModal" tabindex="-1"
                                             aria-labelledby="panierModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
+                                                <div class="modal-content" id="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="panierModalLabel">Panier</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -456,8 +452,7 @@ $userAct = json_encode($userActual);
                                                         <p id="creditsDisplay">Credits: <?= htmlspecialchars((string)$availableCredits) ?>$</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Fermer</button>
+                                                        <button id="btnModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                                                         <button onclick="viderPanier()" type="button"
                                                             class="btn btn-danger">Vider le panier</button>
                                                         <button onclick="processPayment()" id="payButton" type="button"
@@ -595,64 +590,23 @@ $userAct = json_encode($userActual);
             });
         });
     </script>
-    <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu1");
-            if (menu.style.display === "none") {
-                menu.style.display = "block";
-            } else {
-                menu.style.display = "none";
-            }
-        }
-    </script>
+    
     <script>
         var panierItems = []; // Liste des articles sélectionnés
         var total = 0; // Total du panier
 
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            
-            if (menu.style.display === "none") {
-                menu.style.display = "block";
-            } else {
-                menu.style.display = "none";
-            }
-        }
-
-        function ajouterAuPanier(element) {
-            var nom = element.dataset.name;
-            var prix = parseFloat(element.dataset.price);
-            panierItems.push({ nom: nom, prix: prix });
-            total += prix;
-            afficherPanier();
-        }
-
-        function afficherPanier() {
-            var panierItemsList = document.getElementById("panier-items");
-            panierItemsList.innerHTML = "";
-            panierItems.forEach(function (item) {
-                var li = document.createElement("li");
-                li.textContent = item.nom + " - $" + item.prix;
-                panierItemsList.appendChild(li);
-            });
-            document.getElementById("total").textContent = "Total: $" + total.toFixed(2);
-        }
-
-        function viderPanier() {
-            panierItems = [];
-            total = 0;
-            afficherPanier();
-        }
+       
 
 
         window.onload = function () {
-            var menuItems = document.querySelectorAll("#menu-items li");
-            menuItems.forEach(function (item) {
-                item.addEventListener("click", function () {
-                    ajouterAuPanier(item);
-                });
-            });
-        };
+    var menuItems = document.querySelectorAll("#menu-items li");
+    menuItems.forEach(function (item) {
+        item.addEventListener("click", function () {
+            ajouterAuPanier(item);
+        });
+    });
+};
+
     </script>
 </body>
 
