@@ -57,6 +57,7 @@
                 android:id="@+id/addUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/blu"
                 android:text="add url" />
 
             <Button
@@ -64,6 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/blu"
                 android:text="create" />
         </LinearLayout>
 
