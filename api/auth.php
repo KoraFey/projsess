@@ -16,6 +16,7 @@ exit;
 
 $user = false;
 try{
+    
     $stmt = $pdo->prepare('SELECT * FROM users WHERE username = ?');
     $stmt->execute([$body->username]);
     $user = $stmt->fetch();
